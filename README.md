@@ -1,11 +1,28 @@
 # Task manager
 
+**Learning platform**: [Dualboot Partners courses](https://learn.dualboot.ru/courses)
+**Student**: Aynur Shauerman aykuli@ya.ru
+
 ## Description
+
 Project should work as [the Trello](https://trello.com/)
 
 ## Development
 
-Opening interactive bash session inside docker container:
+- Build containers
+
+```bash
+docker-compose build
+```
+
+- Install gems
+
+```bash
+  docker-compose run --rm web bash -c "bundle install"
+```
+
+- Opening interactive bash session inside docker container:
+
 ```bash
 docker-compose run --rm --service-ports web /bin/bash
 ```
