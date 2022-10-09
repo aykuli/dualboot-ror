@@ -10,4 +10,8 @@ FactoryBot.define do
   sequence :avatar do |_n|
     'https://via.placeholder.com/100'
   end
+
+  sequence :task, aliases: [:name, :description] do |n|
+    "task string #{n}"
+  end
 end
