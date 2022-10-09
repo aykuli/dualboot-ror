@@ -26,3 +26,9 @@ docker-compose build
 ```bash
 docker-compose run --rm --service-ports web /bin/bash
 ```
+
+- Checking code style
+
+```bash
+bundle exec rubocop -a
+```
