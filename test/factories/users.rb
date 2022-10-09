@@ -5,6 +5,6 @@ FactoryBot.define do
     password
     email
     avatar
-    type { "" }
+    type { '' }
   end
 end

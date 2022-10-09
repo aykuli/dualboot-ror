@@ -7,7 +7,7 @@ FactoryBot.define do
     "person#{n}@example.com"
   end
 
-  sequence :avatar do |n|
-    "https://via.placeholder.com/100"
+  sequence :avatar do |_n|
+    'https://via.placeholder.com/100'
   end
 end
