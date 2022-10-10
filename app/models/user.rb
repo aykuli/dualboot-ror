@@ -2,7 +2,7 @@ class User < ApplicationRecord
   has_many :my_tasks, class_name: 'Task', foreign_key: :author_id
   has_many :assignee_tasks, class_name: 'Task', foreign_key: :assignee_id
 
-  EMAIL_REGEXP = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d-]+)*\.[a-z]+\z/i
+  EMAIL_REGEXP = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d-]+)*\.[a-z]+\z/i.freeze
   before_save { email.downcase! }
 
   has_secure_password
