@@ -1,24 +1,34 @@
-# README
+# Task manager
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+**Learning platform**: [Dualboot Partners courses](https://learn.dualboot.ru/courses)
+**Student**: Aynur Shauerman aykuli@ya.ru
 
-Things you may want to cover:
+## Description
 
-* Ruby version
+Project should work as [the Trello](https://trello.com/)
 
-* System dependencies
+## Development
 
-* Configuration
+- Build containers
 
-* Database creation
+```bash
+docker-compose build
+```
 
-* Database initialization
+- Install gems
 
-* How to run the test suite
+```bash
+  docker-compose run --rm web bash -c "bundle install"
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+- Opening interactive bash session inside docker container:
 
-* Deployment instructions
+```bash
+docker-compose run --rm --service-ports web /bin/bash
+```
 
-* ...
+- Checking code style
+
+```bash
+bundle exec rubocop -a
+```
