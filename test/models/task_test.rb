@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class TaskTest < ActiveSupport::TestCase
-  test 'create' do
+  test 'create task' do
     [:new_task,
      :in_development,
      :in_qa,
