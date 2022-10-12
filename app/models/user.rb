@@ -12,4 +12,8 @@ class User < ApplicationRecord
             length: { maximum: 255, minimum: 6 },
             format: { with: URI::MailTo::EMAIL_REGEXP },
             uniqueness: { case_sensitive: false }
+
+  def email= (value)
+    super(value.mb_chars.downcase)
+  end
 end
