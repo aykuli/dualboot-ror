@@ -31,7 +31,7 @@ gem 'state_machines'
 gem 'state_machines-activerecord'
 
 # Slim engine to embed Ruby code directly in your HTML views
-gem "slim-rails"
+gem 'slim-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
