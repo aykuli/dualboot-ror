@@ -13,7 +13,7 @@ class User < ApplicationRecord
             format: { with: URI::MailTo::EMAIL_REGEXP },
             uniqueness: { case_sensitive: false }
 
-  def email= (value)
+  def email=(value)
     super(value.mb_chars.downcase)
   end
 end
