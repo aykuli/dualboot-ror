@@ -4,7 +4,6 @@ class Web::SessionsController < Web::ApplicationController
   end
 
   def create
-    puts("create params: #{params}")
     @session = SessionForm.new(session_params)
 
     if @session.valid?
