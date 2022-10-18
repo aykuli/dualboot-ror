@@ -56,3 +56,19 @@ group :test do
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers'
 end
+
+# https://github.com/kaminari/kaminari
+# Paginator
+gem 'kaminari'
+
+# https://github.com/activerecord-hackery/ransack
+# Ransack will help you easily add searching to your Rails application, without any additional dependencies
+gem 'ransack'
+
+# https://github.com/heartcombo/responders
+# A set of responders modules to dry up your Rails app
+gem 'responders'
+
+# https://github.com/rails-api/active_model_serializers
+# The easiest way to create a new serializer is to generate a new resource, which will generate a serializer at the same time:
+gem 'active_model_serializers'
