@@ -1,20 +1,25 @@
 //= require material-design-lite/material.min.css
 
 body {
-     min-height: 100vh;
-     display: flex;
-     flex-direction: column;
-     background-color: green;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 #main {
-    flex: 1 0 auto;
+  flex: 1 0 auto;
+  display: flex;
+  justify-content: center;
 }
 
 .page-content {
-    padding: 20px;
+  padding: 20px;
 }
 
 .page-content .mdl-textfield {
-    display: block;
+  display: block;
+}
+
+.mdl-mini-footer {
+  padding: 5px;
 }
