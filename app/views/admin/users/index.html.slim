@@ -1,7 +1,7 @@
 h3 Users list
 .mdl-grid
   .mdl-cell.mdl-cell--2-col
-    = link_to "Add new user". new_admin_users_path, class: 'mdl-button mdl-js-button mdl-button--raised mdl-button--colored'
+    = link_to "Add new user", new_admin_user_path, class: 'mdl-button mdl-js-button mdl-button--raised mdl-button--colored'
 
   .mdl-cell.mdl-cell--8-col
   .mdl-cell.mdl-cell--2-col
@@ -15,7 +15,7 @@ h3 Users list
   table.mdl-cell--12-col.mdl-data-table.mdl-js-data-table.mdl-shadow--2dp
     thead
       tr
-        th= sort_link(@q, :id. "#")
+        th= sort_link(@q, :id, "#")
         th= sort_link(@q, :first_name, "First name")
         th= sort_link(@q, :last_name, "Last name")
         th= sort_link(@q, :email, "Email")
