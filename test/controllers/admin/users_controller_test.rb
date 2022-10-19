@@ -41,4 +41,10 @@ class Admin::UsersControllerTest < ActionController::TestCase
     patch :update, params: {id: user.id, user: user_attributes}
     assert_response :redirect
   end
+
+  test 'should destroy user' do
+    user = create(:user)
+    delete :destroy, params: {id: user.id}
+    assert_response :redirect
+  end
 end
