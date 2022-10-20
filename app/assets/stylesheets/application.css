@@ -6,12 +6,6 @@ body {
   flex-direction: column;
 }
 
-#main {
-  flex: 1 0 auto;
-  display: flex;
-  justify-content: center;
-}
-
 .page-content {
   padding: 20px;
 }
@@ -28,6 +22,7 @@ body {
   max-width: 1200px;
   width: 100%;
   margin: auto;
+  padding: 0;
 }
 
 .mdl-navigation__link:hover,
