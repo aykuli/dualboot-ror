@@ -1,9 +1,12 @@
-p
-  = f.input :first_name
-  = f.input :last_name
-  = f.input :email
-  = f.input :type, as: :select, collection: ['Administrator', 'Manager', 'Developer']
+= simple_form_for user, url: url do |f|
+  h4
+    = title
+  p
+    = f.input :first_name
+    = f.input :last_name
+    = f.input :email
+    = f.input :type, as: :select, collection: ['Administrator', 'Manager', 'Developer']
 
-p
-  = f.button :submit, 'Confirm', class: 'mdl-button--accent mdl-js-ripple-effect', style: 'margin-right: 15px;'
-  = f.button :button, 'Back', formaction: admin_users_url, formmethod: 'get', class: 'mdl-button--colored'
+  p
+    = f.button :submit, 'Confirm', class: 'mdl-button--accent mdl-js-ripple-effect', style: 'margin-right: 15px;'
+    = f.button :button, 'Back', formaction: admin_users_url, formmethod: 'get', class: 'mdl-button--colored'
