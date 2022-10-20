@@ -30,6 +30,7 @@ gem 'simple_form'
 gem 'state_machines'
 gem 'state_machines-activerecord'
 
+# https://github.com/slim-template/slim
 # Slim engine to embed Ruby code directly in your HTML views
 gem 'slim-rails'
 
