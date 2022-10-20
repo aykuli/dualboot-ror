@@ -8,7 +8,7 @@ class Admin::UsersControllerTest < ActionController::TestCase
 
   test 'should get show' do
     user = create(:user)
-    get :show, params: {id: user.id}
+    get :show, params: { id: user.id }
     assert_response :success
   end
 
@@ -19,7 +19,7 @@ class Admin::UsersControllerTest < ActionController::TestCase
 
   test 'should get edit' do
     user = create(:user)
-    get :edit, params: {id: user.id}
+    get :edit, params: { id: user.id }
     assert_response :success
   end
 
@@ -30,7 +30,7 @@ class Admin::UsersControllerTest < ActionController::TestCase
 
   test 'should post create' do
     user = attributes_for(:user)
-    post :create, params: {user: user}
+    post :create, params: { user: user }
     assert_response :redirect
   end
 
@@ -38,13 +38,13 @@ class Admin::UsersControllerTest < ActionController::TestCase
     user = create(:user)
     user_attributes = attributes_for(:user)
 
-    patch :update, params: {id: user.id, user: user_attributes}
+    patch :update, params: { id: user.id, user: user_attributes }
     assert_response :redirect
   end
 
   test 'should destroy user' do
     user = create(:user)
-    delete :destroy, params: {id: user.id}
+    delete :destroy, params: { id: user.id }
     assert_response :redirect
   end
 end
