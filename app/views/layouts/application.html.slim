@@ -14,11 +14,9 @@ html lang="en"
   body
     = javascript_packs_with_chunks_tag 'application'
     header.mdl-layout__header
-      .mdl-layout__header-row
-        .material-icons tab
-
-        label.mdl-button.mdl-js-button.mdl-button--icon
-          i.material-icons
+      .mdl-layout__header-row.container
+        .mdl-button.mdl-js-button.mdl-button--icon
+          i.material-icons tab
 
         span.mdl-layout-title
           = "Task Manager"
@@ -30,17 +28,18 @@ html lang="en"
           - if current_user
             - if current_user.is_a? Admin
               = link_to "Admin page", admin_users_url, class: 'mdl-navigation__link'
-            = current_user.first_name
-            = link_to "Log out", session_path, method: 'delete', confirm: 'confirm?', class: 'dml-navigation__link'
+            span.user-name
+              = current_user.first_name
+            = link_to "Log out", session_path, method: 'delete', confirm: 'confirm?', class: 'mdl-navigation__link'
           - else
             = link_to "Sign in", new_session_path, class: 'mdl-navigation__link'
             = link_to "Sign up", new_developer_path, class: 'mdl-navigation__link'
 
-    main#main.mdl-layout__content
+    main#main.mdl-layout__content.container
       .page-content
         = yield
 
     footer#footer.mdl-mini-footer
-      .mdl-mini-footer__left-section
+      .mdl-mini-footer__left-section.container
         .mdl-logo
           | &copy; Dualboot Learn 2022

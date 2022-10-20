@@ -23,3 +23,28 @@ body {
 .mdl-mini-footer {
   padding: 5px;
 }
+
+.container {
+  max-width: 1200px;
+  width: 100%;
+  margin: auto;
+}
+
+.mdl-navigation__link:hover,
+.mdl-navigation__link:focus {
+  background-color: #5a69bd;
+}
+
+.user-name {
+  padding: 0 24px;
+}
+
+.mdl-button:hover,
+.mdl-button:focus {
+  opacity: 0.8;
+}
+
+.users--icon {
+  margin-right: 5px;
+  color: #3F51B5;
+}

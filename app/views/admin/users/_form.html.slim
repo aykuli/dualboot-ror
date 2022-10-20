@@ -5,6 +5,6 @@ p
   = f.input :type, as: :select, collection: ['Administrator', 'Manager', 'Developer']
 
 p
-  = f.button :submit, 'Confirm', class: 'mdl-button--colored'
-  = f.button :submit, 'Back', formaction: admin_users_url,formmethod: 'get', class: 'mdl-button--colored'
+  = f.button :submit, 'Confirm', class: 'mdl-button--accent mdl-js-ripple-effect', style: 'margin-right: 15px;'
+  = f.button :button, 'Back', formaction: admin_users_url, formmethod: 'get', class: 'mdl-button--colored'
   

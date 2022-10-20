@@ -63,6 +63,7 @@ end
 gem 'kaminari'
 
 # https://github.com/activerecord-hackery/ransack
+# https://www.rubydoc.info/github/ernie/ransack/Ransack
 # Ransack will help you easily add searching to your Rails application, without any additional dependencies
 gem 'ransack'
 
