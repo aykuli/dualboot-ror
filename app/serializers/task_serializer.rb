@@ -5,8 +5,7 @@ class TaskSerializer < ApplicationSerializer
   belongs_to :assignee
 
   def transitions
-    object.state_transitions.amp do |transition|
-      # transition
+    object.state_transitions.map do |transition|
       {
         event: transition.event,
         from: transition.from,
