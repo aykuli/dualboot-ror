@@ -43,7 +43,11 @@ class Api::V1::TasksControllerTest < ActionController::TestCase
     assert_response :success
 
     task.reload
-    assert_equal task.slice(*task_attributes.keys), task_attributes
+
+    assert_equal task_attributes['state'].to_s, task['state']
+
+    comparable_task_keys = task_attributes.except('expired_at').except('state')
+    assert_equal task.slice(*comparable_task_keys.keys), comparable_task_keys
   end
 
   test 'should delete task' do
