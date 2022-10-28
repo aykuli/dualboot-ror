@@ -16,18 +16,21 @@ class Api::V1::TasksControllerTest < ActionController::TestCase
   test 'should post create' do
     author = create(:user)
     sign_in author
-    assignee = create :user
-    task_attributes = attributes_for :task
-       .merge({ assignee_id: assignee.id })
 
-    poset :create, params: {task: task_attributes, format: :json}
+    assignee = create :user
+    task_attributes = attributes_for(:task).merge({ assignee_id: assignee.id })
+    post :create, params: { task: task_attributes, format: :json }
     assert_response :created
 
-    data=JSON.parse(response.body)
+    data = JSON.parse(response.body)
     created_task = Task.find(data['task']['id'])
+    assert created_task.present?
 
-    assert_created_task.present?
-    assert_equal task_attributes.stringify_keys, created_task.slice(*task_attributes.keys)
+    assert_equal task_attributes[:state].to_s, created_task['state']
+    assert_equal task_attributes[:expired_at].strftime("%d/%m/%Y, %k:%M"), created_task['expired_at'].strftime("%d/%m/%Y, %k:%M")
+
+    comparable_task_keys = task_attributes.except(:expired_at).except(:state)
+    assert_equal comparable_task_keys.stringify_keys, created_task.slice(*comparable_task_keys.keys)
   end
 
   test 'should put update' do
