@@ -49,7 +49,7 @@
         "ignore": ["classes", "match", "dictionaries", "errors", "history", "children", "location"]
       }
     ],
-    "no-debugger": 1,
+    "no-debugger": "warn",
     "react/destructuring-assignment": 0,
     "react/static-property-placement": 0,
     "func-names": "off"
