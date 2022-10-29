@@ -1,6 +1,9 @@
 {
   "name": "task-manager",
   "private": true,
+  "scripts": {
+    "lint": "node_modules/.bin/eslint app/javascript"
+  },
   "dependencies": {
     "@babel/eslint-parser": "^7.19.1",
     "@babel/preset-react": "^7.18.6",
