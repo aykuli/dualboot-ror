@@ -74,3 +74,6 @@ gem 'responders'
 # https://github.com/rails-api/active_model_serializers
 # The easiest way to create a new serializer is to generate a new resource, which will generate a serializer at the same time:
 gem 'active_model_serializers'
+
+# https://github.com/renchap/webpacker-react
+gem 'webpacker-react'
