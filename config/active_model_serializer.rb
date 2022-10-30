@@ -1,1 +1,0 @@
-ActiveModelSerializer.config.adapter = :json
