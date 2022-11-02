@@ -37,3 +37,5 @@ yarn-debug.log*
 
 /app/javascript/routes.js
 /app/javascript/routes.d.ts
+
+/app/javascript/routes/ApiRoutes.js
