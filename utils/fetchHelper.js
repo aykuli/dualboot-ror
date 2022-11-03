@@ -18,8 +18,8 @@ const headers = () => ({
 axios.defaults.headers = { ...axios.defaults.headers, post: headers(), put: headers(), delete: headers() };
 axios.interceptors.response.use(null, (error) => {
   if (error.response.status === 422) {
-    const errors = error?.response?.data?.errors;
-    return Promise.reject(errors?.errors);
+    const { errors } = error.response.data.errors;
+    return Promise.reject(errors);
   }
 
   if (error.response.status === 500) {
