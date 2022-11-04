@@ -3,8 +3,9 @@ import KanbanBoard from '@asseinfo/react-kanban';
 import '@asseinfo/react-kanban/dist/styles.css';
 import { propOr } from 'ramda';
 
-import Task from '../Task';
 import TasksRepository from '../../../repositories/TasksRepository';
+import Task from '../Task';
+import ColumnHeader from '../ColumnHeader';
 
 const STATES = [
   { key: 'new_task', value: 'New' },
@@ -18,7 +19,7 @@ const STATES = [
 
 const initialBoard = {
   columns: STATES.map(({ key, value }) => ({
-    id: key,
+    key,
     title: value,
     cards: [],
     meta: {},
@@ -45,7 +46,7 @@ function TaskBoard() {
   const updateBoard = () => {
     setBoard({
       columns: STATES.map(({ key, value }) => ({
-        id: key,
+        key,
         title: value,
         cards: propOr({}, 'cards', boardCards[key]),
         meta: propOr({}, 'meta', boardCards[key]),
@@ -67,7 +68,16 @@ function TaskBoard() {
     updateBoard();
   }, [boardCards]);
 
-  return <KanbanBoard renderCard={(card, index) => <Task key={index} task={card} />}>{board}</KanbanBoard>;
+  return (
+    <KanbanBoard
+      renderCard={(card, index) => <Task key={index} task={card} />}
+      renderColumnHeader={(column) => (
+        <ColumnHeader column={column} onLoadMore={(options) => loadColumn(options.key, options.currentPage, 10)} />
+      )}
+    >
+      {board}
+    </KanbanBoard>
+  );
 }
 
 export default TaskBoard;
