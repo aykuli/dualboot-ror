@@ -1,10 +1,8 @@
-/* eslint-disable no-unused-vars */
-import React, { Fragment, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import KanbanBoard from '@asseinfo/react-kanban';
 import '@asseinfo/react-kanban/dist/styles.css';
 import { propOr } from 'ramda';
 
-// es
 import Task from '../Task';
 import TasksRepository from '../../../repositories/TasksRepository';
 
@@ -27,33 +25,6 @@ const initialBoard = {
   })),
 };
 
-const data = {
-  columns: [
-    {
-      id: 1,
-      title: 'Backlog',
-      cards: [
-        {
-          id: 1,
-          title: 'Add card',
-          description: 'Add capability to add a card in a column',
-        },
-      ],
-    },
-    {
-      id: 2,
-      title: 'Doing',
-      cards: [
-        {
-          id: 1,
-          title: 'Drag-n-drop support',
-          description: 'Move a card between the columns',
-        },
-      ],
-    },
-  ],
-};
-
 function TaskBoard() {
   const [board, setBoard] = useState(initialBoard);
   const [boardCards, setBoardCards] = useState([]);
@@ -71,7 +42,7 @@ function TaskBoard() {
     });
   };
 
-  const generateBoard = () => {
+  const updateBoard = () => {
     setBoard({
       columns: STATES.map(({ key, value }) => ({
         id: key,
@@ -83,20 +54,20 @@ function TaskBoard() {
   };
 
   const loadBoard = () => {
-    STATES.map(({ key }) => loadColumnInitial(key));
+    STATES.forEach(({ key }) => {
+      loadColumnInitial(key);
+    });
   };
 
-  return (
-    <KanbanBoard
-      renderCard={(card, index) => (
-        <Fragment key={index}>
-          <Task task={card} />
-        </Fragment>
-      )}
-    >
-      {board}
-    </KanbanBoard>
-  );
+  useEffect(() => {
+    loadBoard();
+  }, []);
+
+  useEffect(() => {
+    updateBoard();
+  }, [boardCards]);
+
+  return <KanbanBoard renderCard={(card, index) => <Task key={index} task={card} />}>{board}</KanbanBoard>;
 }
 
 export default TaskBoard;
