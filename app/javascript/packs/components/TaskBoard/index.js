@@ -17,12 +17,14 @@ const STATES = [
   { key: 'archived', value: 'Archived' },
 ];
 
+const META_DEFAULT = { count: 0, totalCount: 0, currentPage: 0, perPage: 10 };
+
 const initialBoard = {
   columns: STATES.map(({ key, value }) => ({
     key,
     title: value,
     cards: [],
-    meta: {},
+    meta: META_DEFAULT,
   })),
 };
 // TODO set loader
@@ -37,7 +39,7 @@ function TaskBoard() {
       perPage,
     });
 
-  const loadColumnInitial = (state, page = 1, perPage = 10) => {
+  const setLoadedColumn = (state, page = 1, perPage = 10) => {
     loadColumn(state, page, perPage).then(({ data: { items, meta } }) => {
       setBoardCards((prev) => ({ ...prev, [state]: { cards: items, meta } }));
     });
@@ -48,15 +50,15 @@ function TaskBoard() {
       columns: STATES.map(({ key, value }) => ({
         key,
         title: value,
-        cards: propOr({}, 'cards', boardCards[key]),
-        meta: propOr({}, 'meta', boardCards[key]),
+        cards: propOr([], 'cards', boardCards[key]),
+        meta: propOr(META_DEFAULT, 'meta', boardCards[key]),
       })),
     });
   };
 
   const loadBoard = () => {
     STATES.forEach(({ key }) => {
-      loadColumnInitial(key);
+      setLoadedColumn(key);
     });
   };
 
@@ -72,7 +74,7 @@ function TaskBoard() {
     <KanbanBoard
       renderCard={(card, index) => <Task key={index} task={card} />}
       renderColumnHeader={(column) => (
-        <ColumnHeader column={column} onLoadMore={(options) => loadColumn(options.key, options.currentPage, 10)} />
+        <ColumnHeader column={column} onLoadMore={(options) => setLoadedColumn(options.key, options.currentPage, 10)} />
       )}
     >
       {board}
