@@ -24,14 +24,14 @@ const initialBoard = {
     meta: {},
   })),
 };
-
+// TODO set loader
 function TaskBoard() {
   const [board, setBoard] = useState(initialBoard);
   const [boardCards, setBoardCards] = useState([]);
 
   const loadColumn = (state, page, perPage) =>
     TasksRepository.index({
-      q: { stateEg: state },
+      q: { stateEq: state },
       page,
       perPage,
     });
