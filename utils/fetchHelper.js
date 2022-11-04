@@ -15,7 +15,13 @@ const headers = () => ({
   'X-Requested-With': 'XMLHttpRequest',
 });
 
-axios.defaults.headers = { ...axios.defaults.headers, post: headers(), put: headers(), delete: headers() };
+axios.defaults.headers = {
+  ...axios.defaults.headers,
+  post: headers(),
+  put: headers(),
+  delete: headers(),
+};
+
 axios.interceptors.response.use(null, (error) => {
   if (error.response.status === 422) {
     const { errors } = error.response.data.errors;
@@ -34,21 +40,18 @@ export default {
     return axios
       .get(url, {
         params: decamelize(params),
-        paramsSerializer: (parameters) => qs.stringify(parameters, { encode: false }),
+        paramsSerializer: { serialize: (parameters) => qs.stringify(parameters, { encode: false }) },
       })
       .then(camelize);
   },
-
   post(url, json) {
     const body = decamelize(json);
     return axios.post(url, body).then(camelize);
   },
-
   put(url, json) {
     const body = decamelize(json);
     return axios.put(url, body).then(camelize);
   },
-
   delete(url, json) {
     const body = decamelize(json);
     return axios.delete(url, body).then(camelize);
