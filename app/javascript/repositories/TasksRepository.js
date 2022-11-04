@@ -3,7 +3,6 @@ import FetchHelper from '../../../utils/fetchHelper';
 
 export default {
   index(params) {
-    console.log('params: ', params);
     const path = apiV1TasksPath();
     return FetchHelper.get(path, params);
   },

@@ -6,7 +6,6 @@ import { Card, CardHeader, CardContent, Typography } from '@material-ui/core';
 
 function Task({ task }) {
   const styles = useStyles();
-  console.log('task: ', task);
 
   return (
     <Card className={styles.root}>
