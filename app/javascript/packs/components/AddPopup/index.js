@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { has } from 'ramda';
-
 import { Card, CardActions, CardContent, CardHeader, Button, Modal, TextField, IconButton } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 import Snackbar from '../Snackbar';

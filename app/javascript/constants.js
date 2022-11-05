@@ -21,5 +21,6 @@ export const initialBoard = {
 
 export const MODE = {
   ADD: 'add',
+  EDIT: 'edit',
   NONE: 'none',
 };

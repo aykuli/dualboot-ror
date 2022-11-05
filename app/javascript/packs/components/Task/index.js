@@ -1,15 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Card, CardHeader, CardContent, Typography, IconButton } from '@material-ui/core';
+import { Edit } from '@material-ui/icon';
 import useStyles from './useStyles';
 
-import { Card, CardHeader, CardContent, Typography } from '@material-ui/core';
-
-function Task({ task }) {
+function Task({ task, onClick }) {
   const styles = useStyles();
+  const handleClick = () => onClick(task);
+  const action = (
+    <IconButton onClick={handleClick}>
+      <Edit />
+    </IconButton>
+  );
 
   return (
     <Card className={styles.root}>
-      <CardHeader title={task.name} />
+      <CardHeader action={action} title={task.name} />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
           {task.description}
@@ -24,6 +30,7 @@ Task.propTypes = {
     name: PropTypes.string,
     description: PropTypes.string,
   }).isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default Task;

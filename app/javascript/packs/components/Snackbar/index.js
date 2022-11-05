@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-
 import { Snackbar as MuiSnackbar, IconButton } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab/';

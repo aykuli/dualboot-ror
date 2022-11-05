@@ -4,16 +4,15 @@ import '@asseinfo/react-kanban/dist/styles.css';
 import { propOr } from 'ramda';
 import { Fab } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
-
-import Task from '../Task';
-import AddPopup from '../AddPopup';
+import { STATES, META_DEFAULT, initialBoard, MODE } from '../../../constants';
+import TasksRepository from '../../../repositories/TasksRepository';
+import TaskForm from '../../../forms/TaskForm';
 import ColumnHeader from '../ColumnHeader';
 import Snackbar from '../Snackbar';
-import TaskForm from '../../../forms/TaskForm';
-import TasksRepository from '../../../repositories/TasksRepository';
+import AddPopup from '../AddPopup';
+import EditPopup from '../EditPopup';
+import Task from '../Task';
 import useStyles from './useStyles';
-
-import { STATES, META_DEFAULT, initialBoard, MODE } from '../../../constants';
 
 // TODO set loader
 function TaskBoard() {
@@ -25,6 +24,7 @@ function TaskBoard() {
   const [isOpenSnakbar, setIsOpenSnackbar] = useState(false);
   // const [load, setLoad] = useState(null);
   const [mode, setMode] = useState(MODE.NONE);
+  const [openedTaskId, setOpenedTaskId] = useState(null);
 
   const loadColumn = (state, page, perPage) =>
     TasksRepository.index({
@@ -102,10 +102,42 @@ function TaskBoard() {
     });
   };
 
+  const loadTask = (id) => {
+    console.log('id to edit: ', id);
+    return TasksRepository.show(id).then(({ data: { task } }) => task);
+  };
+
+  const handleClose = () => {
+    setMode(MODE.NONE);
+    setOpenedTaskId(null);
+  };
+
+  const updateTask = (task) => {
+    console.log('task to edit: ', task);
+    const attributes = TaskForm.attributesToSubmit(task);
+    console.log('attributes: ', attributes);
+
+    return TasksRepository.update(task.id, attributes).then(() => {
+      setLoadedColumn(task.state);
+      handleClose();
+    });
+  };
+
+  const destroyTask = (task) => {
+    console.log('task to destroy: ', task);
+
+    // …
+  };
+
+  const handleOpenEditPopup = (task) => {
+    setOpenedTaskId(task.id);
+    setMode(MODE.EDIT);
+  };
+
   return (
     <>
       <KanbanBoard
-        renderCard={(card, index) => <Task key={index} task={card} />}
+        renderCard={(card, index) => <Task key={index} task={card} onClick={handleOpenEditPopup} />}
         renderColumnHeader={(column) => (
           <ColumnHeader
             column={column}
@@ -145,6 +177,15 @@ function TaskBoard() {
         <Add />
       </Fab>
       {mode === MODE.ADD && <AddPopup onCreateCard={createTask} onClose={toggleMode} />}
+      {mode === MODE.EDIT && (
+        <EditPopup
+          onLoadCard={loadTask}
+          onDestroyCard={destroyTask}
+          onUpdateCard={updateTask}
+          onClose={handleClose}
+          cardId={openedTaskId}
+        />
+      )}
 
       {isOpenSnakbar && message && <Snackbar isOpen={isOpenSnakbar} type={message?.type} text={message?.text} />}
     </>

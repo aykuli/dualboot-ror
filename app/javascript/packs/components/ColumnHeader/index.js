@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import useStyles from './useStyles';
-
 import { IconButton } from '@material-ui/core';
 import { SystemUpdateAlt } from '@material-ui/icons';
+import useStyles from './useStyles';
 
 function ColumnHeader({ column, onLoadMore }) {
   const styles = useStyles();
