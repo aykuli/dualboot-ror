@@ -180,8 +180,8 @@ function TaskBoard() {
       {mode === MODE.EDIT && (
         <EditPopup
           onLoadCard={loadTask}
-          onDestroyCard={destroyTask}
           onUpdateCard={updateTask}
+          onDestroyCard={destroyTask}
           onClose={handleClose}
           cardId={openedTaskId}
         />

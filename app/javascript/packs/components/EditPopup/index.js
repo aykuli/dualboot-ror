@@ -16,13 +16,14 @@ import { Close } from '@material-ui/icons';
 import Snackbar from '../Snackbar';
 import useStyles from './useStyles';
 
-function EditPopup({ cardId, onClose, onCardDestroy, onLoadCard, onCardUpdate }) {
+function EditPopup({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard }) {
+  const styles = useStyles();
+
   const [task, setTask] = useState(null);
   const [isSaving, setSaving] = useState(false);
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState(null);
   const [isOpenSnakbar, setIsOpenSnackbar] = useState(false);
-  const styles = useStyles();
 
   useEffect(() => {
     onLoadCard(cardId).then(setTask);
@@ -31,7 +32,7 @@ function EditPopup({ cardId, onClose, onCardDestroy, onLoadCard, onCardUpdate })
   const handleCardUpdate = () => {
     setSaving(true);
 
-    onCardUpdate(task).catch((error) => {
+    onUpdateCard(task).catch((error) => {
       setSaving(false);
       setErrors(error || {});
 
@@ -45,7 +46,7 @@ function EditPopup({ cardId, onClose, onCardDestroy, onLoadCard, onCardUpdate })
   const handleCardDestroy = () => {
     setSaving(true);
 
-    onCardDestroy(task).catch((error) => {
+    onDestroyCard(task).catch((error) => {
       setSaving(false);
 
       setMessage({ type: 'error', text: `Destrucion Failed! Error: ${error?.message || ''}` });
@@ -64,7 +65,7 @@ function EditPopup({ cardId, onClose, onCardDestroy, onLoadCard, onCardUpdate })
                 <Close />
               </IconButton>
             }
-            title={isLoading ? 'Your task is loading. Please be patient.' : `Task # ${task.id} [${task.name}]`}
+            title={isLoading ? 'Your task is loading...' : `Task # ${task.id} [${task.name}]`}
           />
           <CardContent>
             {isLoading ? (
@@ -105,9 +106,9 @@ function EditPopup({ cardId, onClose, onCardDestroy, onLoadCard, onCardUpdate })
 EditPopup.propTypes = {
   cardId: PropTypes.number.isRequired,
   onClose: PropTypes.func.isRequired,
-  onCardDestroy: PropTypes.func.isRequired,
+  onDestroyCard: PropTypes.func.isRequired,
   onLoadCard: PropTypes.func.isRequired,
-  onCardUpdate: PropTypes.func.isRequired,
+  onUpdateCard: PropTypes.func.isRequired,
 };
 
 export default EditPopup;
