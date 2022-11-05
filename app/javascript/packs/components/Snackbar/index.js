@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Snackbar as MuiSnackbar, Alert, IconButton } from '@material-ui/core';
+import { Snackbar as MuiSnackbar, IconButton } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
+import { Alert } from '@material-ui/lab/';
 
 function Snackbar({ isOpen, text, type }) {
   const [open, setOpen] = useState(isOpen);
@@ -30,10 +31,16 @@ function Snackbar({ isOpen, text, type }) {
   );
 }
 
+Snackbar.defaultProps = {
+  isOpen: false,
+  text: '',
+  type: 'success',
+};
+
 Snackbar.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  text: PropTypes.string.isRequired,
-  type: PropTypes.oneOf(['success', 'error']).isRequired,
+  isOpen: PropTypes.bool,
+  text: PropTypes.string,
+  type: PropTypes.oneOf(['success', 'error']),
 };
 
 export default Snackbar;

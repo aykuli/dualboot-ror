@@ -13,31 +13,7 @@ import TaskForm from '../../../forms/TaskForm';
 import TasksRepository from '../../../repositories/TasksRepository';
 import useStyles from './useStyles';
 
-const STATES = [
-  { key: 'new_task', value: 'New' },
-  { key: 'in_development', value: 'Dev' },
-  { key: 'in_qa', value: 'QA' },
-  { key: 'in_code_review', value: 'Code review' },
-  { key: 'ready_for_release', value: 'Ready for release' },
-  { key: 'released', value: 'Released' },
-  { key: 'archived', value: 'Archived' },
-];
-
-const META_DEFAULT = { count: 0, totalCount: 0, currentPage: 0, perPage: 10 };
-
-const initialBoard = {
-  columns: STATES.map(({ key, value }) => ({
-    key,
-    title: value,
-    cards: [],
-    meta: META_DEFAULT,
-  })),
-};
-
-const MODE = {
-  ADD: 'add',
-  NONE: 'none',
-};
+import { STATES, META_DEFAULT, initialBoard, MODE } from '../../../constants';
 
 // TODO set loader
 function TaskBoard() {
@@ -115,7 +91,13 @@ function TaskBoard() {
       setMessage({ type: 'success', text: 'Task created and saved!' });
       setIsOpenSnackbar(true);
 
-      setBoardCards((prev) => ({ ...prev, new_task: [...prev.new_task, task] }));
+      setBoardCards((prev) => {
+        const cards = [task, ...prev.new_task.cards];
+        const prevMeta = prev.new_task.meta;
+        const meta = { ...prevMeta, count: prevMeta.count + 1, totalCount: prevMeta.totalCount + 1 };
+        return { ...prev, new_task: { cards, meta } };
+      });
+
       toggleMode();
     });
   };
@@ -131,9 +113,9 @@ function TaskBoard() {
           />
         )}
         onCardDragEnd={(params, options, optins2) => {
-          console.log('params: ', params);
-          console.log('options: ', options);
-          console.log('optins2: ', optins2);
+          // console.log('params: ', params);
+          // console.log('options: ', options);
+          // console.log('optins2: ', optins2);
           handleCardDragEnd(params, options, optins2);
         }}
         allowAddCard={{ on: 'top' }}
@@ -141,20 +123,20 @@ function TaskBoard() {
           id: new Date().getTime(),
           ...draftCard,
         })}
-        onCardNew={console.log}
+        // onCardNew={console.log}
         allowAddColumn={{ on: 'right' }}
         onNewColumnConfirm={(draftColumn) => ({
           id: new Date().getTime(),
           title: 'new Card',
           ...draftColumn,
         })}
-        onColumnNew={console.log}
+        // onColumnNew={console.log}
         allowRemoveCard
         allowRemoveColumn
         allowRenameColumn
-        onCardRemove={console.log}
-        onColumnRemove={console.log}
-        onColumnRename={console.log}
+        // onCardRemove={console.log}
+        // onColumnRemove={console.log}
+        // onColumnRename={console.log}
       >
         {board}
       </KanbanBoard>
@@ -164,7 +146,7 @@ function TaskBoard() {
       </Fab>
       {mode === MODE.ADD && <AddPopup onCreateCard={createTask} onClose={toggleMode} />}
 
-      {isOpenSnakbar && <Snackbar isOpen={isOpenSnakbar} {...{ message }} />}
+      {isOpenSnakbar && message && <Snackbar isOpen={isOpenSnakbar} type={message?.type} text={message?.text} />}
     </>
   );
 }

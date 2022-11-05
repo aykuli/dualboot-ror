@@ -76,7 +76,7 @@ function AddPopup({ onClose, onCreateCard }) {
         </Card>
       </Modal>
 
-      {isOpenSnakbar && <Snackbar isOpen={isOpenSnakbar} {...{ message }} />}
+      {isOpenSnakbar && message && <Snackbar isOpen={isOpenSnakbar} type={message.type} text={message.text} />}
     </>
   );
 }
