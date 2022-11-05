@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react';
 import KanbanBoard from '@asseinfo/react-kanban';
 import '@asseinfo/react-kanban/dist/styles.css';
 import { propOr } from 'ramda';
-import { Modal } from '@material-ui/core';
+import { Fab } from '@material-ui/core';
+import { Add } from '@material-ui/icons';
 
 import TasksRepository from '../../../repositories/TasksRepository';
 import Task from '../Task';
 import ColumnHeader from '../ColumnHeader';
+import ErrorSnackbar from '../ErrorSnackbar';
+import useStyles from './useStyles';
 
 const STATES = [
   { key: 'new_task', value: 'New' },
@@ -30,10 +33,12 @@ const initialBoard = {
 };
 // TODO set loader
 function TaskBoard() {
+  const styles = useStyles();
+
   const [board, setBoard] = useState(initialBoard);
   const [boardCards, setBoardCards] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
-  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isOpenError, setIsOpenError] = useState(false);
 
   const loadColumn = (state, page, perPage) =>
     TasksRepository.index({
@@ -78,6 +83,7 @@ function TaskBoard() {
       })
       .catch((error) => {
         setErrorMessage(`Move failed! ${error?.message || ''}`);
+        setIsOpenError(true);
       });
   };
 
@@ -91,9 +97,6 @@ function TaskBoard() {
 
   return (
     <>
-      <Modal open={isOpenModal} onClose={() => setIsOpenModal(false)}>
-        <span>{errorMessage}</span>
-      </Modal>
       <KanbanBoard
         renderCard={(card, index) => <Task key={index} task={card} />}
         renderColumnHeader={(column) => (
@@ -130,6 +133,12 @@ function TaskBoard() {
       >
         {board}
       </KanbanBoard>
+
+      <Fab className={styles.addButton} color="primary" aria-label="add">
+        <Add />
+      </Fab>
+
+      {errorMessage ? <ErrorSnackbar isOpen={isOpenError} message={errorMessage} /> : null}
     </>
   );
 }

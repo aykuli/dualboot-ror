@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import useStyles from './useStyles';
 
 import { IconButton } from '@material-ui/core';
-import SystemUpdateAltIcon from '@material-ui/icons/SystemUpdateAlt';
+import { SystemUpdateAlt } from '@material-ui/icons';
 
 function ColumnHeader({ column, onLoadMore }) {
   const styles = useStyles();
@@ -24,7 +24,7 @@ function ColumnHeader({ column, onLoadMore }) {
       <div className={styles.actions}>
         {isShowloadIcon && (
           <IconButton aria-label="Load more" onClick={() => onLoadMore({ key, currentPage: currentPage + 1 })}>
-            <SystemUpdateAltIcon fontSize="small" />
+            <SystemUpdateAlt fontSize="small" />
           </IconButton>
         )}
       </div>
