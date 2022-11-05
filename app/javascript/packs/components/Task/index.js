@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardHeader, CardContent, Typography, IconButton } from '@material-ui/core';
-import { Edit } from '@material-ui/icon';
+import { Edit } from '@material-ui/icons';
 import useStyles from './useStyles';
 
 function Task({ task, onClick }) {

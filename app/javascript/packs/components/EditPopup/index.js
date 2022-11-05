@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { isNil } from 'ramda';
-import Form from '../components/Form';
+import Form from '../Form';
 import {
   Card,
   CardHeader,
