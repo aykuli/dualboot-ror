@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import KanbanBoard from '@asseinfo/react-kanban';
 import '@asseinfo/react-kanban/dist/styles.css';
 import { propOr } from 'ramda';
+import { Modal } from '@material-ui/core';
 
 import TasksRepository from '../../../repositories/TasksRepository';
 import Task from '../Task';
@@ -31,6 +32,8 @@ const initialBoard = {
 function TaskBoard() {
   const [board, setBoard] = useState(initialBoard);
   const [boardCards, setBoardCards] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
   const loadColumn = (state, page, perPage) =>
     TasksRepository.index({
@@ -62,6 +65,22 @@ function TaskBoard() {
     });
   };
 
+  const handleCardDragEnd = (task, source, destination) => {
+    const transition = task.transitions.find(({ to }) => destination.toColumnId === to);
+    if (!transition) {
+      return null;
+    }
+
+    return TasksRepository.update(task.id, { stateEvent: transition.event })
+      .then(() => {
+        setLoadedColumn(destination.toColumnId);
+        setLoadedColumn(source.fromColumnId);
+      })
+      .catch((error) => {
+        setErrorMessage(`Move failed! ${error?.message || ''}`);
+      });
+  };
+
   useEffect(() => {
     loadBoard();
   }, []);
@@ -71,14 +90,47 @@ function TaskBoard() {
   }, [boardCards]);
 
   return (
-    <KanbanBoard
-      renderCard={(card, index) => <Task key={index} task={card} />}
-      renderColumnHeader={(column) => (
-        <ColumnHeader column={column} onLoadMore={(options) => setLoadedColumn(options.key, options.currentPage, 10)} />
-      )}
-    >
-      {board}
-    </KanbanBoard>
+    <>
+      <Modal open={isOpenModal} onClose={() => setIsOpenModal(false)}>
+        <span>{errorMessage}</span>
+      </Modal>
+      <KanbanBoard
+        renderCard={(card, index) => <Task key={index} task={card} />}
+        renderColumnHeader={(column) => (
+          <ColumnHeader
+            column={column}
+            onLoadMore={(options) => setLoadedColumn(options.key, options.currentPage, 10)}
+          />
+        )}
+        onCardDragEnd={(params, options, optins2) => {
+          console.log('params: ', params);
+          console.log('options: ', options);
+          console.log('optins2: ', optins2);
+          handleCardDragEnd(params, options, optins2);
+        }}
+        allowAddCard={{ on: 'top' }}
+        onNewCardConfirm={(draftCard) => ({
+          id: new Date().getTime(),
+          ...draftCard,
+        })}
+        onCardNew={console.log}
+        allowAddColumn={{ on: 'right' }}
+        onNewColumnConfirm={(draftColumn) => ({
+          id: new Date().getTime(),
+          title: 'new Card',
+          ...draftColumn,
+        })}
+        onColumnNew={console.log}
+        allowRemoveCard
+        allowRemoveColumn
+        allowRenameColumn
+        onCardRemove={console.log}
+        onColumnRemove={console.log}
+        onColumnRename={console.log}
+      >
+        {board}
+      </KanbanBoard>
+    </>
   );
 }
 
