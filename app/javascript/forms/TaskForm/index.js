@@ -10,7 +10,7 @@ export default {
   },
 
   attributesToSubmit(task) {
-    const pertmittedKeys = ['id', 'name', 'description'];
+    const pertmittedKeys = ['id', 'name', 'description', 'expired_at', 'assignee'];
 
     return {
       ...pick(pertmittedKeys, task),

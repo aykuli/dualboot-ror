@@ -4,7 +4,7 @@ import { has } from 'ramda';
 
 import { Card, CardActions, CardContent, CardHeader, Button, Modal, TextField, IconButton } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
-import ErrorSnackbar from '../ErrorSnackbar';
+import Snackbar from '../Snackbar';
 import TaskForm from '../../../forms/TaskForm';
 import useStyles from './useStyles';
 
@@ -12,8 +12,8 @@ function AddPopup({ onClose, onCreateCard }) {
   const [task, changeTask] = useState(TaskForm.defaultAttributes());
   const [isSaving, setSaving] = useState(false);
   const [errors, setErrors] = useState({});
-  const [errorMessage, setErrorMessage] = useState('');
-  const [isOpenError, setIsOpenError] = useState(false);
+  const [message, setMessage] = useState(null);
+  const [isOpenSnakbar, setIsOpenSnackbar] = useState(false);
 
   const handleCreate = () => {
     setSaving(true);
@@ -23,17 +23,16 @@ function AddPopup({ onClose, onCreateCard }) {
       setErrors(error || {});
 
       if (error instanceof Error) {
-        setErrorMessage(`Creation Failed! Error: ${error.message}`);
-        setIsOpenError(true);
-      } else {
-        setErrorMessage(`Creation Failed! Error: ${error.message}`);
-        setIsOpenError(false);
+        setMessage({ type: 'error', text: `Task saving failed! ${error?.message || ''}` });
+        setIsOpenSnackbar(true);
       }
     });
   };
 
   const handleChangeTextField = (fieldName) => (event) => changeTask({ ...task, [fieldName]: event.target.value });
   const styles = useStyles();
+
+  // todo add expired_at field, assignee - list of devs
 
   return (
     <>
@@ -71,12 +70,13 @@ function AddPopup({ onClose, onCreateCard }) {
           </CardContent>
           <CardActions className={styles.actions}>
             <Button disabled={isSaving} onClick={handleCreate} variant="contained" size="small" color="primary">
-              Add
+              {isSaving ? 'Saving...' : 'Add'}
             </Button>
           </CardActions>
         </Card>
       </Modal>
-      <ErrorSnackbar isOpen={isOpenError} message={errorMessage} />
+
+      {isOpenSnakbar && <Snackbar isOpen={isOpenSnakbar} {...{ message }} />}
     </>
   );
 }

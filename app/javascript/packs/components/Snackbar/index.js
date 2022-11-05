@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Snackbar, Alert, IconButton } from '@material-ui/core';
+import { Snackbar as MuiSnackbar, Alert, IconButton } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 
-function ErrorSnackbar({ isOpen, message }) {
+function Snackbar({ isOpen, text, type }) {
   const [open, setOpen] = useState(isOpen);
 
   const handleClose = (_, reason) => {
@@ -22,17 +22,18 @@ function ErrorSnackbar({ isOpen, message }) {
   );
 
   return (
-    <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-      <Alert severity="error" onClose={handleClose} sx={{ width: '100%' }} action={action}>
-        {message}
+    <MuiSnackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+      <Alert severity={type} onClose={handleClose} sx={{ width: '100%' }} action={action}>
+        {text}
       </Alert>
-    </Snackbar>
+    </MuiSnackbar>
   );
 }
 
-ErrorSnackbar.propTypes = {
+Snackbar.propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  message: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(['success', 'error']).isRequired,
 };
 
-export default ErrorSnackbar;
+export default Snackbar;

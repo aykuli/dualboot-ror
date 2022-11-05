@@ -5,10 +5,12 @@ import { propOr } from 'ramda';
 import { Fab } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 
-import TasksRepository from '../../../repositories/TasksRepository';
 import Task from '../Task';
+import AddPopup from '../AddPopup';
 import ColumnHeader from '../ColumnHeader';
-import ErrorSnackbar from '../ErrorSnackbar';
+import Snackbar from '../Snackbar';
+import TaskForm from '../../../forms/TaskForm';
+import TasksRepository from '../../../repositories/TasksRepository';
 import useStyles from './useStyles';
 
 const STATES = [
@@ -31,14 +33,22 @@ const initialBoard = {
     meta: META_DEFAULT,
   })),
 };
+
+const MODE = {
+  ADD: 'add',
+  NONE: 'none',
+};
+
 // TODO set loader
 function TaskBoard() {
   const styles = useStyles();
 
   const [board, setBoard] = useState(initialBoard);
   const [boardCards, setBoardCards] = useState([]);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [isOpenError, setIsOpenError] = useState(false);
+  const [message, setMessage] = useState(null);
+  const [isOpenSnakbar, setIsOpenSnackbar] = useState(false);
+  // const [load, setLoad] = useState(null);
+  const [mode, setMode] = useState(MODE.NONE);
 
   const loadColumn = (state, page, perPage) =>
     TasksRepository.index({
@@ -80,10 +90,12 @@ function TaskBoard() {
       .then(() => {
         setLoadedColumn(destination.toColumnId);
         setLoadedColumn(source.fromColumnId);
+        setMessage({ type: 'success', text: `Task move to new state` });
+        setIsOpenSnackbar(true);
       })
       .catch((error) => {
-        setErrorMessage(`Move failed! ${error?.message || ''}`);
-        setIsOpenError(true);
+        setMessage({ type: 'error', text: `Move failed! ${error?.message || ''}` });
+        setIsOpenSnackbar(true);
       });
   };
 
@@ -94,6 +106,19 @@ function TaskBoard() {
   useEffect(() => {
     updateBoard();
   }, [boardCards]);
+
+  const toggleMode = () => setMode(mode === MODE.ADD ? MODE.NONE : MODE.ADD);
+
+  const createTask = (params) => {
+    const attributes = TaskForm.attributesToSubmit(params);
+    return TasksRepository.create(attributes).then(({ data: { task } }) => {
+      setMessage({ type: 'success', text: 'Task created and saved!' });
+      setIsOpenSnackbar(true);
+
+      setBoardCards((prev) => ({ ...prev, new_task: [...prev.new_task, task] }));
+      toggleMode();
+    });
+  };
 
   return (
     <>
@@ -134,11 +159,12 @@ function TaskBoard() {
         {board}
       </KanbanBoard>
 
-      <Fab className={styles.addButton} color="primary" aria-label="add">
+      <Fab className={styles.addButton} color="primary" aria-label="add" onClick={toggleMode}>
         <Add />
       </Fab>
+      {mode === MODE.ADD && <AddPopup onCreateCard={createTask} onClose={toggleMode} />}
 
-      {errorMessage ? <ErrorSnackbar isOpen={isOpenError} message={errorMessage} /> : null}
+      {isOpenSnakbar && <Snackbar isOpen={isOpenSnakbar} {...{ message }} />}
     </>
   );
 }
