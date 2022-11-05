@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { has } from 'ramda';
 import { Card, CardActions, CardContent, CardHeader, Button, Modal, TextField, IconButton } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
+import { SEVERITY } from '../../../constants';
 import Snackbar from '../Snackbar';
 import TaskForm from '../../../forms/TaskForm';
 import useStyles from './useStyles';
@@ -22,7 +23,7 @@ function AddPopup({ onClose, onCreateCard }) {
       setErrors(error || {});
 
       if (error instanceof Error) {
-        setMessage({ type: 'error', text: `Task saving failed! ${error?.message || ''}` });
+        setMessage({ type: SEVERITY.ERROR, text: `Task saving failed! ${error?.message || ''}` });
         setIsOpenSnackbar(true);
       }
     });

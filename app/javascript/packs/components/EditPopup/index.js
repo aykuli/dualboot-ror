@@ -13,6 +13,7 @@ import {
   CircularProgress,
 } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
+import { SEVERITY } from '../../../constants';
 import Snackbar from '../Snackbar';
 import useStyles from './useStyles';
 
@@ -37,7 +38,7 @@ function EditPopup({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard })
       setErrors(error || {});
 
       if (error instanceof Error) {
-        setMessage({ type: 'error', text: `Update Failed! Error: ${error?.message || ''}` });
+        setMessage({ type: SEVERITY.ERROR, text: `Update Failed! Error: ${error?.message || ''}` });
         setIsOpenSnackbar(true);
       }
     });
@@ -49,7 +50,7 @@ function EditPopup({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard })
     onDestroyCard(task).catch((error) => {
       setSaving(false);
 
-      setMessage({ type: 'error', text: `Destrucion Failed! Error: ${error?.message || ''}` });
+      setMessage({ type: SEVERITY.ERROR, text: `Destrucion Failed! Error: ${error?.message || ''}` });
       setIsOpenSnackbar(true);
     });
   };

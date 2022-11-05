@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Snackbar as MuiSnackbar, IconButton } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab/';
+import { SEVERITY } from '../../../constants';
 
 function Snackbar({ isOpen, text, type }) {
   const [open, setOpen] = useState(isOpen);
@@ -33,13 +34,13 @@ function Snackbar({ isOpen, text, type }) {
 Snackbar.defaultProps = {
   isOpen: false,
   text: '',
-  type: 'success',
+  type: SEVERITY.SUCCESS,
 };
 
 Snackbar.propTypes = {
   isOpen: PropTypes.bool,
   text: PropTypes.string,
-  type: PropTypes.oneOf(['success', 'error']),
+  type: PropTypes.oneOf([SEVERITY.SUCCESS, SEVERITY.ERROR]),
 };
 
 export default Snackbar;

@@ -4,7 +4,7 @@ import '@asseinfo/react-kanban/dist/styles.css';
 import { propOr } from 'ramda';
 import { Fab } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
-import { STATES, META_DEFAULT, initialBoard, MODE } from '../../../constants';
+import { COLUMNS, META_DEFAULT, initialBoard, MODE, STATE, SEVERITY } from '../../../constants';
 import TasksRepository from '../../../repositories/TasksRepository';
 import TaskForm from '../../../forms/TaskForm';
 import ColumnHeader from '../ColumnHeader';
@@ -33,7 +33,7 @@ function TaskBoard() {
       perPage,
     });
 
-  const setLoadedColumn = (state, page = 1, perPage = 10) => {
+  const loadColumnInitial = (state, page = 1, perPage = 10) => {
     loadColumn(state, page, perPage).then(({ data: { items, meta } }) => {
       setBoardCards((prev) => ({ ...prev, [state]: { cards: items, meta } }));
     });
@@ -41,7 +41,7 @@ function TaskBoard() {
 
   const updateBoard = () => {
     setBoard({
-      columns: STATES.map(({ key, value }) => ({
+      columns: COLUMNS.map(({ key, value }) => ({
         key,
         title: value,
         cards: propOr([], 'cards', boardCards[key]),
@@ -51,8 +51,8 @@ function TaskBoard() {
   };
 
   const loadBoard = () => {
-    STATES.forEach(({ key }) => {
-      setLoadedColumn(key);
+    COLUMNS.forEach(({ key }) => {
+      loadColumnInitial(key);
     });
   };
 
@@ -64,13 +64,14 @@ function TaskBoard() {
 
     return TasksRepository.update(task.id, { stateEvent: transition.event })
       .then(() => {
-        setLoadedColumn(destination.toColumnId);
-        setLoadedColumn(source.fromColumnId);
-        setMessage({ type: 'success', text: `Task move to new state` });
+        loadColumnInitial(destination.toColumnId);
+        loadColumnInitial(source.fromColumnId);
+
+        setMessage({ type: SEVERITY.SUCCESS, text: `Task move to new state` });
         setIsOpenSnackbar(true);
       })
       .catch((error) => {
-        setMessage({ type: 'error', text: `Move failed! ${error?.message || ''}` });
+        setMessage({ type: SEVERITY.ERROR, text: `Move failed! ${error?.message || ''}` });
         setIsOpenSnackbar(true);
       });
   };
@@ -88,24 +89,22 @@ function TaskBoard() {
   const createTask = (params) => {
     const attributes = TaskForm.attributesToSubmit(params);
     return TasksRepository.create(attributes).then(({ data: { task } }) => {
-      setMessage({ type: 'success', text: 'Task created and saved!' });
+      setMessage({ type: SEVERITY.SUCCESS, text: 'Task created and saved!' });
       setIsOpenSnackbar(true);
 
       setBoardCards((prev) => {
-        const cards = [task, ...prev.new_task.cards];
-        const prevMeta = prev.new_task.meta;
+        const cards = [task, ...prev[STATE.NEW_TASK].cards];
+        const prevMeta = prev[STATE.NEW_TASK].meta;
         const meta = { ...prevMeta, count: prevMeta.count + 1, totalCount: prevMeta.totalCount + 1 };
-        return { ...prev, new_task: { cards, meta } };
+        return { ...prev, [STATE.NEW_TASK]: { cards, meta } };
       });
 
       toggleMode();
+      loadColumnInitial(STATE.NEW_TASK);
     });
   };
 
-  const loadTask = (id) => {
-    console.log('id to edit: ', id);
-    return TasksRepository.show(id).then(({ data: { task } }) => task);
-  };
+  const loadTask = (id) => TasksRepository.show(id).then(({ data: { task } }) => task);
 
   const handleClose = () => {
     setMode(MODE.NONE);
@@ -113,21 +112,19 @@ function TaskBoard() {
   };
 
   const updateTask = (task) => {
-    console.log('task to edit: ', task);
     const attributes = TaskForm.attributesToSubmit(task);
-    console.log('attributes: ', attributes);
 
     return TasksRepository.update(task.id, attributes).then(() => {
-      setLoadedColumn(task.state);
+      loadColumnInitial(task.state);
       handleClose();
     });
   };
 
-  const destroyTask = (task) => {
-    console.log('task to destroy: ', task);
-
-    // …
-  };
+  const destroyTask = (task) =>
+    TasksRepository.destroy(task.id).then(() => {
+      loadColumnInitial(task.state);
+      handleClose();
+    });
 
   const handleOpenEditPopup = (task) => {
     setOpenedTaskId(task.id);
@@ -141,7 +138,7 @@ function TaskBoard() {
         renderColumnHeader={(column) => (
           <ColumnHeader
             column={column}
-            onLoadMore={(options) => setLoadedColumn(options.key, options.currentPage, 10)}
+            onLoadMore={(options) => loadColumnInitial(options.key, options.currentPage, 10)}
           />
         )}
         onCardDragEnd={(params, options, optins2) => {
