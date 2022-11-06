@@ -13,7 +13,7 @@ import {
   CircularProgress,
 } from '@material-ui/core';
 import { Close, Delete, Save } from '@material-ui/icons';
-import { SEVERITY } from '../../../constants';
+import { SEVERITY } from '../../constants';
 import Snackbar from '../Snackbar';
 import useStyles from './useStyles';
 
