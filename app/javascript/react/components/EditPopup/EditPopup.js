@@ -13,8 +13,10 @@ import {
   CircularProgress,
 } from '@material-ui/core';
 import { Close, Delete, Save } from '@material-ui/icons';
-import { SEVERITY } from '../../constants';
-import Snackbar from '../Snackbar';
+
+import { SEVERITY } from 'constants';
+import Snackbar from 'components/Snackbar';
+
 import useStyles from './useStyles';
 
 function EditPopup({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard }) {

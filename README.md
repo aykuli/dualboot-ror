@@ -32,3 +32,12 @@ docker-compose run --rm --service-ports web /bin/bash
 ```bash
 bundle exec rubocop -a
 ```
+
+## Webpacker
+
+After installing ` webpacker` run this command to build files in `public` folder:
+
+```bash
+bundle exec rails assets:precompile
+bundle exec rails webpacker:compile
+```

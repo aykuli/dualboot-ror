@@ -12,11 +12,13 @@ import {
   CircularProgress,
 } from '@material-ui/core';
 import { Close, Save } from '@material-ui/icons';
-import { SEVERITY } from '../../../constants';
+
+import { SEVERITY } from 'constants';
 import Snackbar from '../Snackbar';
-import TaskForm from '../../../forms/TaskForm';
-import useStyles from './useStyles';
+import TaskForm from 'forms/TaskForm';
 import Form from '../Form';
+
+import useStyles from './useStyles';
 
 function AddPopup({ onClose, onCreateCard }) {
   const styles = useStyles();

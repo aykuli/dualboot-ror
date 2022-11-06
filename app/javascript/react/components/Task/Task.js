@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardHeader, CardContent, Typography, IconButton } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
+
+import { dateHelper } from 'helpers';
+
 import useStyles from './useStyles';
-import { dateHelper } from '../../helpers';
 
 function Task({ task, onClick }) {
   const styles = useStyles();
