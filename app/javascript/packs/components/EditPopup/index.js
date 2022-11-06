@@ -96,7 +96,7 @@ function EditPopup({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard })
               color="secondary"
               size="medium"
               className={styles.btn}
-              startIcon={isSaving ? <CircularProgress size={15} /> : <Delete />}
+              startIcon={isDestroying ? <CircularProgress size={15} /> : <Delete />}
               disabled={isDisableActions}
               onClick={handleCardDestroy}
             >

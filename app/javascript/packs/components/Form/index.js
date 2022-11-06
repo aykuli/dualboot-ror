@@ -38,7 +38,7 @@ function Form({ task, errors, onChange, onSubmit }) {
           type="date"
           inputProps={{ min: new Date() }}
           className={styles.dateInput}
-          value={task.expiredAt}
+          value={task.expiredAt || new Date()}
           onChange={handleChangeTextField('expiredAt')}
           autoFocus
         />

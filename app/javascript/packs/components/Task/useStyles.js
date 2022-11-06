@@ -12,6 +12,9 @@ const useStyles = makeStyles(() => ({
     textOverflow: 'ellipsis',
     overflow: 'hidden',
   },
+  expiredAt: {
+    marginTop: 16,
+  },
 }));
 
 export default useStyles;

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Card, CardHeader, CardContent, Typography, IconButton } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
 import useStyles from './useStyles';
+import { dateHelper } from '../../../helpers';
 
 function Task({ task, onClick }) {
   const styles = useStyles();
@@ -33,9 +34,14 @@ function Task({ task, onClick }) {
           {description}
         </Typography>
         {expiredAt && (
-          <Typography sx={{ mb: 1.5 }} color="text.secondary" component="p">
-            {`Expired at: ${expiredAt}`}
-          </Typography>
+          <div className={styles.expiredAt}>
+            <Typography sx={{ mb: 1.5 }} color="textSecondary" component="h5">
+              Expires at:
+            </Typography>
+            <Typography sx={{ mb: 1.5 }} color="textSecondary" component="span">
+              {dateHelper.humanify(expiredAt)}
+            </Typography>
+          </div>
         )}
       </CardContent>
     </Card>

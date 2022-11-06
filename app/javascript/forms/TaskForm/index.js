@@ -10,12 +10,13 @@ export default {
   },
 
   attributesToSubmit(task) {
-    const pertmittedKeys = ['id', 'name', 'description', 'expired_at', 'assignee'];
+    const pertmittedKeys = ['id', 'name', 'description'];
 
     return {
       ...pick(pertmittedKeys, task),
-      assigneeId: propOr(null, 'id', task.assignee),
       authorId: propOr(null, 'id', task.author),
+      assigneeId: propOr(null, 'id', task.assignee),
+      expiredAt: task.expiredAt ? new Date(task.expiredAt).toISOString() : undefined,
     };
   },
 };
