@@ -512,7 +512,7 @@ export const serialize = __jsr.serialize;
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const admin_user_path = __jsr.r({ id: { r: true }, format: {} }, [
+export const adminUserPath = __jsr.r({ id: { r: true }, format: {} }, [
   2,
   [7, '/'],
   [2, [6, 'admin'], [2, [7, '/'], [2, [6, 'users'], [2, [7, '/'], [2, [3, 'id'], [1, [2, [8, '.'], [3, 'format']]]]]]]],
@@ -524,7 +524,7 @@ export const admin_user_path = __jsr.r({ id: { r: true }, format: {} }, [
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const admin_users_path = __jsr.r({ format: {} }, [
+export const adminUsersPath = __jsr.r({ format: {} }, [
   2,
   [7, '/'],
   [2, [6, 'admin'], [2, [7, '/'], [2, [6, 'users'], [1, [2, [8, '.'], [3, 'format']]]]]],
@@ -537,7 +537,7 @@ export const admin_users_path = __jsr.r({ format: {} }, [
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const api_v1_task_path = __jsr.r({ id: { r: true }, format: {} }, [
+export const apiV1TaskPath = __jsr.r({ id: { r: true }, format: {} }, [
   2,
   [7, '/'],
   [
@@ -561,10 +561,47 @@ export const api_v1_task_path = __jsr.r({ id: { r: true }, format: {} }, [
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const api_v1_tasks_path = __jsr.r({ format: {} }, [
+export const apiV1TasksPath = __jsr.r({ format: {} }, [
   2,
   [7, '/'],
   [2, [6, 'api'], [2, [7, '/'], [2, [6, 'v1'], [2, [7, '/'], [2, [6, 'tasks'], [1, [2, [8, '.'], [3, 'format']]]]]]]],
+]);
+
+/**
+ * Generates rails route to
+ * /api/v1/users/:id(.:format)
+ * @param {any} id
+ * @param {object | undefined} options
+ * @returns {string} route path
+ */
+export const apiV1UserPath = __jsr.r({ id: { r: true }, format: {} }, [
+  2,
+  [7, '/'],
+  [
+    2,
+    [6, 'api'],
+    [
+      2,
+      [7, '/'],
+      [
+        2,
+        [6, 'v1'],
+        [2, [7, '/'], [2, [6, 'users'], [2, [7, '/'], [2, [3, 'id'], [1, [2, [8, '.'], [3, 'format']]]]]]],
+      ],
+    ],
+  ],
+]);
+
+/**
+ * Generates rails route to
+ * /api/v1/users(.:format)
+ * @param {object | undefined} options
+ * @returns {string} route path
+ */
+export const apiV1UsersPath = __jsr.r({ format: {} }, [
+  2,
+  [7, '/'],
+  [2, [6, 'api'], [2, [7, '/'], [2, [6, 'v1'], [2, [7, '/'], [2, [6, 'users'], [1, [2, [8, '.'], [3, 'format']]]]]]]],
 ]);
 
 /**
@@ -573,7 +610,7 @@ export const api_v1_tasks_path = __jsr.r({ format: {} }, [
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const board_path = __jsr.r({ format: {} }, [2, [7, '/'], [2, [6, 'board'], [1, [2, [8, '.'], [3, 'format']]]]]);
+export const boardPath = __jsr.r({ format: {} }, [2, [7, '/'], [2, [6, 'board'], [1, [2, [8, '.'], [3, 'format']]]]]);
 
 /**
  * Generates rails route to
@@ -581,7 +618,7 @@ export const board_path = __jsr.r({ format: {} }, [2, [7, '/'], [2, [6, 'board']
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const developers_path = __jsr.r({ format: {} }, [
+export const developersPath = __jsr.r({ format: {} }, [
   2,
   [7, '/'],
   [2, [6, 'developers'], [1, [2, [8, '.'], [3, 'format']]]],
@@ -594,7 +631,7 @@ export const developers_path = __jsr.r({ format: {} }, [
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const edit_admin_user_path = __jsr.r({ id: { r: true }, format: {} }, [
+export const editAdminUserPath = __jsr.r({ id: { r: true }, format: {} }, [
   2,
   [7, '/'],
   [
@@ -619,7 +656,7 @@ export const edit_admin_user_path = __jsr.r({ id: { r: true }, format: {} }, [
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const edit_rails_conductor_inbound_email_path = __jsr.r({ id: { r: true }, format: {} }, [
+export const editRailsConductorInboundEmailPath = __jsr.r({ id: { r: true }, format: {} }, [
   2,
   [7, '/'],
   [
@@ -659,7 +696,7 @@ export const edit_rails_conductor_inbound_email_path = __jsr.r({ id: { r: true }
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const new_admin_user_path = __jsr.r({ format: {} }, [
+export const newAdminUserPath = __jsr.r({ format: {} }, [
   2,
   [7, '/'],
   [
@@ -675,7 +712,7 @@ export const new_admin_user_path = __jsr.r({ format: {} }, [
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const new_developer_path = __jsr.r({ format: {} }, [
+export const newDeveloperPath = __jsr.r({ format: {} }, [
   2,
   [7, '/'],
   [2, [6, 'developers'], [2, [7, '/'], [2, [6, 'new'], [1, [2, [8, '.'], [3, 'format']]]]]],
@@ -687,7 +724,7 @@ export const new_developer_path = __jsr.r({ format: {} }, [
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const new_rails_conductor_inbound_email_path = __jsr.r({ format: {} }, [
+export const newRailsConductorInboundEmailPath = __jsr.r({ format: {} }, [
   2,
   [7, '/'],
   [
@@ -723,7 +760,7 @@ export const new_rails_conductor_inbound_email_path = __jsr.r({ format: {} }, [
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const new_rails_conductor_inbound_email_source_path = __jsr.r({ format: {} }, [
+export const newRailsConductorInboundEmailSourcePath = __jsr.r({ format: {} }, [
   2,
   [7, '/'],
   [
@@ -763,7 +800,7 @@ export const new_rails_conductor_inbound_email_source_path = __jsr.r({ format: {
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const new_session_path = __jsr.r({ format: {} }, [
+export const newSessionPath = __jsr.r({ format: {} }, [
   2,
   [7, '/'],
   [2, [6, 'session'], [2, [7, '/'], [2, [6, 'new'], [1, [2, [8, '.'], [3, 'format']]]]]],
@@ -772,13 +809,13 @@ export const new_session_path = __jsr.r({ format: {} }, [
 /**
  * Generates rails route to
  * /rails/active_storage/representations/redirect/:signed_blob_id/:variation_key/*filename(.:format)
- * @param {any} signed_blob_id
- * @param {any} variation_key
+ * @param {any} signedBlobId
+ * @param {any} variationKey
  * @param {any} filename
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const rails_blob_representation_path = __jsr.r(
+export const railsBlobRepresentationPath = __jsr.r(
   { signed_blob_id: { r: true }, variation_key: { r: true }, filename: { r: true }, format: {} },
   [
     2,
@@ -834,13 +871,13 @@ export const rails_blob_representation_path = __jsr.r(
 /**
  * Generates rails route to
  * /rails/active_storage/representations/proxy/:signed_blob_id/:variation_key/*filename(.:format)
- * @param {any} signed_blob_id
- * @param {any} variation_key
+ * @param {any} signedBlobId
+ * @param {any} variationKey
  * @param {any} filename
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const rails_blob_representation_proxy_path = __jsr.r(
+export const railsBlobRepresentationProxyPath = __jsr.r(
   { signed_blob_id: { r: true }, variation_key: { r: true }, filename: { r: true }, format: {} },
   [
     2,
@@ -900,7 +937,7 @@ export const rails_blob_representation_proxy_path = __jsr.r(
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const rails_conductor_inbound_email_path = __jsr.r({ id: { r: true }, format: {} }, [
+export const railsConductorInboundEmailPath = __jsr.r({ id: { r: true }, format: {} }, [
   2,
   [7, '/'],
   [
@@ -929,11 +966,11 @@ export const rails_conductor_inbound_email_path = __jsr.r({ id: { r: true }, for
 /**
  * Generates rails route to
  * /rails/conductor/action_mailbox/:inbound_email_id/reroute(.:format)
- * @param {any} inbound_email_id
+ * @param {any} inboundEmailId
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const rails_conductor_inbound_email_reroute_path = __jsr.r({ inbound_email_id: { r: true }, format: {} }, [
+export const railsConductorInboundEmailReroutePath = __jsr.r({ inbound_email_id: { r: true }, format: {} }, [
   2,
   [7, '/'],
   [
@@ -969,7 +1006,7 @@ export const rails_conductor_inbound_email_reroute_path = __jsr.r({ inbound_emai
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const rails_conductor_inbound_email_sources_path = __jsr.r({ format: {} }, [
+export const railsConductorInboundEmailSourcesPath = __jsr.r({ format: {} }, [
   2,
   [7, '/'],
   [
@@ -1005,7 +1042,7 @@ export const rails_conductor_inbound_email_sources_path = __jsr.r({ format: {} }
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const rails_conductor_inbound_emails_path = __jsr.r({ format: {} }, [
+export const railsConductorInboundEmailsPath = __jsr.r({ format: {} }, [
   2,
   [7, '/'],
   [
@@ -1033,7 +1070,7 @@ export const rails_conductor_inbound_emails_path = __jsr.r({ format: {} }, [
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const rails_direct_uploads_path = __jsr.r({ format: {} }, [
+export const railsDirectUploadsPath = __jsr.r({ format: {} }, [
   2,
   [7, '/'],
   [
@@ -1050,12 +1087,12 @@ export const rails_direct_uploads_path = __jsr.r({ format: {} }, [
 /**
  * Generates rails route to
  * /rails/active_storage/disk/:encoded_key/*filename(.:format)
- * @param {any} encoded_key
+ * @param {any} encodedKey
  * @param {any} filename
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const rails_disk_service_path = __jsr.r({ encoded_key: { r: true }, filename: { r: true }, format: {} }, [
+export const railsDiskServicePath = __jsr.r({ encoded_key: { r: true }, filename: { r: true }, format: {} }, [
   2,
   [7, '/'],
   [
@@ -1091,7 +1128,7 @@ export const rails_disk_service_path = __jsr.r({ encoded_key: { r: true }, filen
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const rails_info_path = __jsr.r({ format: {} }, [
+export const railsInfoPath = __jsr.r({ format: {} }, [
   2,
   [7, '/'],
   [2, [6, 'rails'], [2, [7, '/'], [2, [6, 'info'], [1, [2, [8, '.'], [3, 'format']]]]]],
@@ -1103,7 +1140,7 @@ export const rails_info_path = __jsr.r({ format: {} }, [
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const rails_info_properties_path = __jsr.r({ format: {} }, [
+export const railsInfoPropertiesPath = __jsr.r({ format: {} }, [
   2,
   [7, '/'],
   [
@@ -1119,7 +1156,7 @@ export const rails_info_properties_path = __jsr.r({ format: {} }, [
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const rails_info_routes_path = __jsr.r({ format: {} }, [
+export const railsInfoRoutesPath = __jsr.r({ format: {} }, [
   2,
   [7, '/'],
   [
@@ -1135,7 +1172,7 @@ export const rails_info_routes_path = __jsr.r({ format: {} }, [
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const rails_mailers_path = __jsr.r({ format: {} }, [
+export const railsMailersPath = __jsr.r({ format: {} }, [
   2,
   [7, '/'],
   [2, [6, 'rails'], [2, [7, '/'], [2, [6, 'mailers'], [1, [2, [8, '.'], [3, 'format']]]]]],
@@ -1147,7 +1184,7 @@ export const rails_mailers_path = __jsr.r({ format: {} }, [
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const rails_mailgun_inbound_emails_path = __jsr.r({ format: {} }, [
+export const railsMailgunInboundEmailsPath = __jsr.r({ format: {} }, [
   2,
   [7, '/'],
   [
@@ -1183,7 +1220,7 @@ export const rails_mailgun_inbound_emails_path = __jsr.r({ format: {} }, [
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const rails_mandrill_inbound_emails_path = __jsr.r({ format: {} }, [
+export const railsMandrillInboundEmailsPath = __jsr.r({ format: {} }, [
   2,
   [7, '/'],
   [
@@ -1211,7 +1248,7 @@ export const rails_mandrill_inbound_emails_path = __jsr.r({ format: {} }, [
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const rails_mandrill_inbound_health_check_path = __jsr.r({ format: {} }, [
+export const railsMandrillInboundHealthCheckPath = __jsr.r({ format: {} }, [
   2,
   [7, '/'],
   [
@@ -1239,7 +1276,7 @@ export const rails_mandrill_inbound_health_check_path = __jsr.r({ format: {} }, 
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const rails_postmark_inbound_emails_path = __jsr.r({ format: {} }, [
+export const railsPostmarkInboundEmailsPath = __jsr.r({ format: {} }, [
   2,
   [7, '/'],
   [
@@ -1267,7 +1304,7 @@ export const rails_postmark_inbound_emails_path = __jsr.r({ format: {} }, [
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const rails_relay_inbound_emails_path = __jsr.r({ format: {} }, [
+export const railsRelayInboundEmailsPath = __jsr.r({ format: {} }, [
   2,
   [7, '/'],
   [
@@ -1291,7 +1328,7 @@ export const rails_relay_inbound_emails_path = __jsr.r({ format: {} }, [
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const rails_sendgrid_inbound_emails_path = __jsr.r({ format: {} }, [
+export const railsSendgridInboundEmailsPath = __jsr.r({ format: {} }, [
   2,
   [7, '/'],
   [
@@ -1316,12 +1353,12 @@ export const rails_sendgrid_inbound_emails_path = __jsr.r({ format: {} }, [
 /**
  * Generates rails route to
  * /rails/active_storage/blobs/redirect/:signed_id/*filename(.:format)
- * @param {any} signed_id
+ * @param {any} signedId
  * @param {any} filename
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const rails_service_blob_path = __jsr.r({ signed_id: { r: true }, filename: { r: true }, format: {} }, [
+export const railsServiceBlobPath = __jsr.r({ signed_id: { r: true }, filename: { r: true }, format: {} }, [
   2,
   [7, '/'],
   [
@@ -1362,12 +1399,12 @@ export const rails_service_blob_path = __jsr.r({ signed_id: { r: true }, filenam
 /**
  * Generates rails route to
  * /rails/active_storage/blobs/proxy/:signed_id/*filename(.:format)
- * @param {any} signed_id
+ * @param {any} signedId
  * @param {any} filename
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const rails_service_blob_proxy_path = __jsr.r({ signed_id: { r: true }, filename: { r: true }, format: {} }, [
+export const railsServiceBlobProxyPath = __jsr.r({ signed_id: { r: true }, filename: { r: true }, format: {} }, [
   2,
   [7, '/'],
   [
@@ -1411,7 +1448,7 @@ export const rails_service_blob_proxy_path = __jsr.r({ signed_id: { r: true }, f
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const root_path = __jsr.r({}, [7, '/']);
+export const rootPath = __jsr.r({}, [7, '/']);
 
 /**
  * Generates rails route to
@@ -1419,7 +1456,7 @@ export const root_path = __jsr.r({}, [7, '/']);
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const session_path = __jsr.r({ format: {} }, [
+export const sessionPath = __jsr.r({ format: {} }, [
   2,
   [7, '/'],
   [2, [6, 'session'], [1, [2, [8, '.'], [3, 'format']]]],
@@ -1428,11 +1465,11 @@ export const session_path = __jsr.r({ format: {} }, [
 /**
  * Generates rails route to
  * /rails/active_storage/disk/:encoded_token(.:format)
- * @param {any} encoded_token
+ * @param {any} encodedToken
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const update_rails_disk_service_path = __jsr.r({ encoded_token: { r: true }, format: {} }, [
+export const updateRailsDiskServicePath = __jsr.r({ encoded_token: { r: true }, format: {} }, [
   2,
   [7, '/'],
   [
