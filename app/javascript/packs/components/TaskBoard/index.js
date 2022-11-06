@@ -49,10 +49,7 @@ function TaskBoard() {
     });
   };
 
-  const loadBoard = () => {
-    COLUMNS.forEach(({ key }) => loadColumnInitial(key));
-    updateBoard();
-  };
+  const loadBoard = () => COLUMNS.forEach(({ key }) => loadColumnInitial(key));
 
   const handleCardDragEnd = (task, source, destination) => {
     const transition = task.transitions.find(({ to }) => destination.toColumnId === to);
@@ -86,7 +83,7 @@ function TaskBoard() {
   }, []);
 
   useEffect(() => {
-    // updateBoard();
+    updateBoard();
   }, [boardCards]);
 
   const createTask = (params) => {
