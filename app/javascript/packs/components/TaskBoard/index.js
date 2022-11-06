@@ -42,7 +42,7 @@ function TaskBoard() {
   const updateBoard = () => {
     setBoard({
       columns: COLUMNS.map(({ key, value }) => ({
-        key,
+        id: key,
         title: value,
         cards: propOr([], 'cards', boardCards[key]),
         meta: propOr(META_DEFAULT, 'meta', boardCards[key]),
@@ -50,11 +50,7 @@ function TaskBoard() {
     });
   };
 
-  const loadBoard = () => {
-    COLUMNS.forEach(({ key }) => {
-      loadColumnInitial(key);
-    });
-  };
+  const loadBoard = () => COLUMNS.forEach(({ key }) => loadColumnInitial(key));
 
   const handleCardDragEnd = (task, source, destination) => {
     const transition = task.transitions.find(({ to }) => destination.toColumnId === to);
@@ -138,34 +134,10 @@ function TaskBoard() {
         renderColumnHeader={(column) => (
           <ColumnHeader
             column={column}
-            onLoadMore={(options) => loadColumnInitial(options.key, options.currentPage, 10)}
+            onLoadMore={(options) => loadColumnInitial(options.id, options.currentPage, 10)}
           />
         )}
-        onCardDragEnd={(params, options, optins2) => {
-          // console.log('params: ', params);
-          // console.log('options: ', options);
-          // console.log('optins2: ', optins2);
-          handleCardDragEnd(params, options, optins2);
-        }}
-        allowAddCard={{ on: 'top' }}
-        onNewCardConfirm={(draftCard) => ({
-          id: new Date().getTime(),
-          ...draftCard,
-        })}
-        // onCardNew={console.log}
-        allowAddColumn={{ on: 'right' }}
-        onNewColumnConfirm={(draftColumn) => ({
-          id: new Date().getTime(),
-          title: 'new Card',
-          ...draftColumn,
-        })}
-        // onColumnNew={console.log}
-        allowRemoveCard
-        allowRemoveColumn
-        allowRenameColumn
-        // onCardRemove={console.log}
-        // onColumnRemove={console.log}
-        // onColumnRename={console.log}
+        onCardDragEnd={handleCardDragEnd}
       >
         {board}
       </KanbanBoard>

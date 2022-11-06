@@ -6,7 +6,11 @@ import useStyles from './useStyles';
 
 function Task({ task, onClick }) {
   const styles = useStyles();
+
+  const { name, description, expiredAt } = task;
+
   const handleClick = () => onClick(task);
+
   const action = (
     <IconButton onClick={handleClick}>
       <Edit />
@@ -15,11 +19,24 @@ function Task({ task, onClick }) {
 
   return (
     <Card className={styles.root}>
-      <CardHeader action={action} title={task.name} />
+      <CardHeader
+        action={action}
+        title={name}
+        className={styles.header}
+        classes={{
+          content: styles.content,
+          title: styles.title,
+        }}
+      />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
-          {task.description}
+          {description}
         </Typography>
+        {expiredAt && (
+          <Typography sx={{ mb: 1.5 }} color="text.secondary" component="p">
+            {`Expired at: ${expiredAt}`}
+          </Typography>
+        )}
       </CardContent>
     </Card>
   );
@@ -29,6 +46,7 @@ Task.propTypes = {
   task: PropTypes.shape({
     name: PropTypes.string,
     description: PropTypes.string,
+    expiredAt: PropTypes.string,
   }).isRequired,
   onClick: PropTypes.func.isRequired,
 };

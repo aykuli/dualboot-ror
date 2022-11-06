@@ -7,7 +7,7 @@ import useStyles from './useStyles';
 function ColumnHeader({ column, onLoadMore }) {
   const styles = useStyles();
   const {
-    key,
+    id,
     title,
     cards,
     meta: { totalCount, currentPage, perPage },
@@ -22,7 +22,7 @@ function ColumnHeader({ column, onLoadMore }) {
       </div>
       <div className={styles.actions}>
         {isShowloadIcon && (
-          <IconButton aria-label="Load more" onClick={() => onLoadMore({ key, currentPage: currentPage + 1 })}>
+          <IconButton aria-label="Load more" onClick={() => onLoadMore({ id, currentPage: currentPage + 1 })}>
             <SystemUpdateAlt fontSize="small" />
           </IconButton>
         )}
@@ -33,7 +33,7 @@ function ColumnHeader({ column, onLoadMore }) {
 
 ColumnHeader.propTypes = {
   column: PropTypes.shape({
-    key: PropTypes.string,
+    id: PropTypes.string,
     title: PropTypes.string,
     cards: PropTypes.arrayOf(PropTypes.shape()),
     meta: PropTypes.shape({

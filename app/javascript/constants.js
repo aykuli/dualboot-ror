@@ -21,7 +21,7 @@ export const META_DEFAULT = { count: 0, totalCount: 0, currentPage: 0, perPage: 
 
 export const initialBoard = {
   columns: COLUMNS.map(({ key, value }) => ({
-    key,
+    id: key,
     title: value,
     cards: [],
     meta: META_DEFAULT,
