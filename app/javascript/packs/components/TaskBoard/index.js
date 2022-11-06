@@ -14,7 +14,6 @@ import EditPopup from '../EditPopup';
 import Task from '../Task';
 import useStyles from './useStyles';
 
-// TODO set loader
 function TaskBoard() {
   const styles = useStyles();
 
@@ -22,7 +21,6 @@ function TaskBoard() {
   const [boardCards, setBoardCards] = useState([]);
   const [message, setMessage] = useState(null);
   const [isOpenSnakbar, setIsOpenSnackbar] = useState(false);
-  // const [load, setLoad] = useState(null);
   const [mode, setMode] = useState(MODE.NONE);
   const [openedTaskId, setOpenedTaskId] = useState(null);
 

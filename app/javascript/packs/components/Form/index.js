@@ -32,7 +32,7 @@ function Form({ task, errors, onChange, onSubmit }) {
       />
 
       <FormControl variant="standard" margin="dense" className={styles.dateFromControl}>
-        <InputLabel htmlFor="date">Expired at:</InputLabel>
+        <InputLabel htmlFor="date">Expires at:</InputLabel>
         <InputBase
           id="date"
           type="date"
