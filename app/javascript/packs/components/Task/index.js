@@ -35,10 +35,10 @@ function Task({ task, onClick }) {
         </Typography>
         {expiredAt && (
           <div className={styles.expiredAt}>
-            <Typography sx={{ mb: 1.5 }} color="textSecondary" component="h5">
+            <Typography color="textSecondary" component="h5" className={styles.expiredAtTitle}>
               Expires at:
             </Typography>
-            <Typography sx={{ mb: 1.5 }} color="textSecondary" component="span">
+            <Typography color="textSecondary" component="span">
               {dateHelper.humanify(expiredAt)}
             </Typography>
           </div>

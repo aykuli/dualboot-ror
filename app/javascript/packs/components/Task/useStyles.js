@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(() => ({
   root: {
     width: 250,
+    paddingBottom: 0,
   },
   content: {
     maxWidth: '100%',
@@ -13,7 +14,12 @@ const useStyles = makeStyles(() => ({
     overflow: 'hidden',
   },
   expiredAt: {
+    display: 'flex',
     marginTop: 16,
+  },
+  expiredAtTitle: {
+    marginRight: 4,
+    fontWeight: 600,
   },
 }));
 
