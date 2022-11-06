@@ -5,6 +5,9 @@ const useStyles = makeStyles(() => ({
     width: 250,
     paddingBottom: 0,
   },
+  headerRoot: {
+    paddingBottom: 0,
+  },
   content: {
     maxWidth: '100%',
     overflow: 'hidden',

@@ -4,6 +4,7 @@ import '@asseinfo/react-kanban/dist/styles.css';
 import { propOr } from 'ramda';
 import { Fab } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
+
 import { COLUMNS, META_DEFAULT, initialBoard, MODE, STATE, SEVERITY } from '../../../constants';
 import TasksRepository from '../../../repositories/TasksRepository';
 import TaskForm from '../../../forms/TaskForm';
@@ -18,7 +19,7 @@ function TaskBoard() {
   const styles = useStyles();
 
   const [board, setBoard] = useState(initialBoard);
-  const [boardCards, setBoardCards] = useState([]);
+  const [boardCards, setBoardCards] = useState({});
   const [message, setMessage] = useState(null);
   const [isOpenSnakbar, setIsOpenSnackbar] = useState(false);
   const [mode, setMode] = useState(MODE.NONE);
@@ -48,7 +49,10 @@ function TaskBoard() {
     });
   };
 
-  const loadBoard = () => COLUMNS.forEach(({ key }) => loadColumnInitial(key));
+  const loadBoard = () => {
+    COLUMNS.forEach(({ key }) => loadColumnInitial(key));
+    updateBoard();
+  };
 
   const handleCardDragEnd = (task, source, destination) => {
     const transition = task.transitions.find(({ to }) => destination.toColumnId === to);
@@ -58,8 +62,15 @@ function TaskBoard() {
 
     return TasksRepository.update(task.id, { task: { stateEvent: transition.event } })
       .then(() => {
-        loadColumnInitial(destination.toColumnId);
-        loadColumnInitial(source.fromColumnId);
+        Promise.all([loadColumn(destination.toColumnId), loadColumn(source.fromColumnId)]).then((res) => {
+          const newStates = {};
+          res.forEach(({ data: { items, meta } }, index) => {
+            const state = index ? source.fromColumnId : destination.toColumnId;
+            newStates[state] = { cards: items, meta };
+          });
+
+          setBoardCards((prev) => ({ ...prev, ...newStates }));
+        });
 
         setMessage({ type: SEVERITY.SUCCESS, text: `Task move to new state` });
         setIsOpenSnackbar(true);
@@ -75,25 +86,16 @@ function TaskBoard() {
   }, []);
 
   useEffect(() => {
-    updateBoard();
+    // updateBoard();
   }, [boardCards]);
-
-  const toggleMode = () => setMode(mode === MODE.ADD ? MODE.NONE : MODE.ADD);
 
   const createTask = (params) => {
     const attributes = TaskForm.attributesToSubmit(params);
-    return TasksRepository.create(attributes).then(({ data: { task } }) => {
+    return TasksRepository.create(attributes).then(() => {
       setMessage({ type: SEVERITY.SUCCESS, text: 'Task created and saved!' });
       setIsOpenSnackbar(true);
 
-      setBoardCards((prev) => {
-        const cards = [task, ...prev[STATE.NEW_TASK].cards];
-        const prevMeta = prev[STATE.NEW_TASK].meta;
-        const meta = { ...prevMeta, count: prevMeta.count + 1, totalCount: prevMeta.totalCount + 1 };
-        return { ...prev, [STATE.NEW_TASK]: { cards, meta } };
-      });
-
-      toggleMode();
+      setMode(MODE.NONE);
       loadColumnInitial(STATE.NEW_TASK);
     });
   };
@@ -140,11 +142,11 @@ function TaskBoard() {
         {board}
       </KanbanBoard>
 
-      <Fab className={styles.addButton} color="primary" aria-label="add" onClick={toggleMode}>
+      <Fab className={styles.addButton} color="primary" aria-label="add" onClick={() => setMode(MODE.ADD)}>
         <Add />
       </Fab>
 
-      {mode === MODE.ADD && <AddPopup onCreateCard={createTask} onClose={toggleMode} />}
+      {mode === MODE.ADD && <AddPopup onCreateCard={createTask} onClose={() => setMode(MODE.NONE)} />}
       {mode === MODE.EDIT && (
         <EditPopup
           onLoadCard={loadTask}
@@ -155,7 +157,7 @@ function TaskBoard() {
         />
       )}
 
-      {isOpenSnakbar && message && <Snackbar isOpen={isOpenSnakbar} type={message?.type} text={message?.text} />}
+      {isOpenSnakbar && <Snackbar isOpen={isOpenSnakbar} type={message?.type} text={message?.text} />}
     </>
   );
 }

@@ -27,6 +27,7 @@ function Task({ task, onClick }) {
         classes={{
           content: styles.content,
           title: styles.title,
+          root: styles.headerRoot,
         }}
       />
       <CardContent>

@@ -1,5 +1,5 @@
 import { api_v1_tasks_path as apiV1TasksPath, api_v1_task_path as apiV1TaskPath } from '../routes/ApiRoutes';
-import FetchHelper from '../../../utils/fetchHelper';
+import FetchHelper from '../utils/fetchHelper';
 
 export default {
   index(params) {
