@@ -65,7 +65,7 @@ function AddPopup({ onClose, onCreateCard }) {
               className={styles.btn}
               onClick={handleCreate}
               disabled={isSaving}
-              startIcon={isSaving ? <CircularProgress /> : <Save />}
+              startIcon={isSaving ? <CircularProgress size={15} /> : <Save />}
             >
               Add
             </Button>

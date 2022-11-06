@@ -18,6 +18,12 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     justifyContent: 'flex-end',
   },
+  btn: {
+    padding: '16px 12px',
+    fontSize: 14,
+    lineHeight: '14px',
+    height: 14,
+  },
 }));
 
 export default useStyles;

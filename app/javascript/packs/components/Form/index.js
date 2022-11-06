@@ -9,9 +9,6 @@ function Form({ task, errors, onChange, onSubmit }) {
   const styles = useStyles();
 
   const handleChangeTextField = (fieldName) => (event) => onChange({ ...task, [fieldName]: event.target.value });
-
-  const dafaultDate = new Date().toLocaleDateString('ru', { year: 'numeric', month: 'numeric', day: 'numeric' });
-
   return (
     <form className={styles.root} onSubmit={onSubmit}>
       <TextField
@@ -41,7 +38,7 @@ function Form({ task, errors, onChange, onSubmit }) {
           type="date"
           inputProps={{ min: new Date() }}
           className={styles.dateInput}
-          value={task.expiredAt || dafaultDate}
+          value={task.expiredAt}
           onChange={handleChangeTextField('expiredAt')}
           autoFocus
         />

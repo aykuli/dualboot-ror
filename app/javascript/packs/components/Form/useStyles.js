@@ -5,6 +5,12 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     flexDirection: 'column',
   },
+  dateFromControl: {
+    marginTop: 16,
+  },
+  dateInput: {
+    marginTop: 10,
+  },
 }));
 
 export default useStyles;

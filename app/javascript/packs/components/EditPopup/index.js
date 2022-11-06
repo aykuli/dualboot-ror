@@ -12,7 +12,7 @@ import {
   IconButton,
   CircularProgress,
 } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
+import { Close, Delete, Save } from '@material-ui/icons';
 import { SEVERITY } from '../../../constants';
 import Snackbar from '../Snackbar';
 import useStyles from './useStyles';
@@ -22,6 +22,7 @@ function EditPopup({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard })
 
   const [task, setTask] = useState(null);
   const [isSaving, setSaving] = useState(false);
+  const [isDestroying, setIsDestroying] = useState(false);
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState(null);
   const [isOpenSnakbar, setIsOpenSnackbar] = useState(false);
@@ -45,16 +46,17 @@ function EditPopup({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard })
   };
 
   const handleCardDestroy = () => {
-    setSaving(true);
+    setIsDestroying(true);
 
     onDestroyCard(task).catch((error) => {
-      setSaving(false);
+      setIsDestroying(false);
 
       setMessage({ type: SEVERITY.ERROR, text: `Destrucion Failed! Error: ${error?.message || ''}` });
       setIsOpenSnackbar(true);
     });
   };
   const isLoading = isNil(task);
+  const isDisableActions = isLoading || isSaving || isDestroying;
 
   return (
     <>
@@ -74,25 +76,29 @@ function EditPopup({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard })
                 <CircularProgress />
               </div>
             ) : (
-              <Form errors={errors} onChange={setTask} task={task} />
+              <Form errors={errors} onChange={setTask} task={task} onSubmit={handleCardUpdate} />
             )}
           </CardContent>
           <CardActions className={styles.actions}>
             <Button
-              disabled={isLoading || isSaving}
-              onClick={handleCardUpdate}
-              size="small"
               variant="contained"
               color="primary"
+              size="medium"
+              className={styles.btn}
+              startIcon={isSaving ? <CircularProgress size={15} /> : <Save />}
+              disabled={isDisableActions}
+              onClick={handleCardUpdate}
             >
               Update
             </Button>
             <Button
-              disabled={isLoading || isSaving}
-              onClick={handleCardDestroy}
-              size="small"
               variant="contained"
               color="secondary"
+              size="medium"
+              className={styles.btn}
+              startIcon={isSaving ? <CircularProgress size={15} /> : <Delete />}
+              disabled={isDisableActions}
+              onClick={handleCardDestroy}
             >
               Destroy
             </Button>
