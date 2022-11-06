@@ -1,15 +1,27 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { has } from 'ramda';
-import { Card, CardActions, CardContent, CardHeader, Button, Modal, TextField, IconButton } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
+import {
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Button,
+  Modal,
+  IconButton,
+  CircularProgress,
+} from '@material-ui/core';
+import { Close, Save } from '@material-ui/icons';
 import { SEVERITY } from '../../../constants';
 import Snackbar from '../Snackbar';
 import TaskForm from '../../../forms/TaskForm';
 import useStyles from './useStyles';
+import Form from '../Form';
 
 function AddPopup({ onClose, onCreateCard }) {
-  const [task, changeTask] = useState(TaskForm.defaultAttributes());
+  const styles = useStyles();
+
+  const [task, setTask] = useState(TaskForm.defaultAttributes());
   const [isSaving, setSaving] = useState(false);
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState(null);
@@ -29,11 +41,6 @@ function AddPopup({ onClose, onCreateCard }) {
     });
   };
 
-  const handleChangeTextField = (fieldName) => (event) => changeTask({ ...task, [fieldName]: event.target.value });
-  const styles = useStyles();
-
-  // todo add expired_at field, assignee - list of devs
-
   return (
     <>
       <Modal className={styles.modal} open onClose={onClose}>
@@ -47,30 +54,20 @@ function AddPopup({ onClose, onCreateCard }) {
             title="Add new task"
           />
           <CardContent>
-            <div className={styles.form}>
-              <TextField
-                error={has('name', errors)}
-                helperText={errors.name}
-                onChange={handleChangeTextField('name')}
-                value={task.name}
-                label="Name"
-                required
-                margin="dense"
-              />
-              <TextField
-                error={has('description', errors)}
-                helperText={errors.description}
-                onChange={handleChangeTextField('description')}
-                value={task.description}
-                label="Description"
-                required
-                margin="dense"
-              />
-            </div>
+            <Form errors={errors} onChange={setTask} task={task} onSubmit={handleCreate} />
           </CardContent>
+
           <CardActions className={styles.actions}>
-            <Button disabled={isSaving} onClick={handleCreate} variant="contained" size="small" color="primary">
-              {isSaving ? 'Saving...' : 'Add'}
+            <Button
+              variant="contained"
+              color="primary"
+              size="medium"
+              className={styles.btn}
+              onClick={handleCreate}
+              disabled={isSaving}
+              startIcon={isSaving ? <CircularProgress /> : <Save />}
+            >
+              Add
             </Button>
           </CardActions>
         </Card>

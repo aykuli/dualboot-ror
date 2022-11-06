@@ -7,19 +7,26 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
     outline: 0,
   },
-
   root: {
     width: 465,
   },
-
   actions: {
     display: 'flex',
-    justifyContent: '…',
+    justifyContent: 'center',
+    padding: 16,
   },
-
   form: {
     display: 'flex',
     flexDirection: 'column',
+  },
+  btn: {
+    fontSize: 14,
+    lineHeight: '14px',
+    height: 14,
+  },
+  loader: {
+    display: 'flex',
+    justifyContent: 'center',
   },
 }));
 

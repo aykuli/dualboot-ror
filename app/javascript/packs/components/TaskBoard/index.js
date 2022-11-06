@@ -58,7 +58,7 @@ function TaskBoard() {
       return null;
     }
 
-    return TasksRepository.update(task.id, { stateEvent: transition.event })
+    return TasksRepository.update(task.id, { task: { stateEvent: transition.event } })
       .then(() => {
         loadColumnInitial(destination.toColumnId);
         loadColumnInitial(source.fromColumnId);
@@ -145,6 +145,7 @@ function TaskBoard() {
       <Fab className={styles.addButton} color="primary" aria-label="add" onClick={toggleMode}>
         <Add />
       </Fab>
+
       {mode === MODE.ADD && <AddPopup onCreateCard={createTask} onClose={toggleMode} />}
       {mode === MODE.EDIT && (
         <EditPopup

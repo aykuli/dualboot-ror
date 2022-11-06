@@ -1,16 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { has } from 'ramda';
-import { TextField } from '@material-ui/core';
+import { TextField, InputLabel, InputBase, FormControl } from '@material-ui/core';
 
 import useStyles from './useStyles';
 
-function Form({ errors, onChange, task }) {
-  const handleChangeTextField = (fieldName) => (event) => onChange({ ...task, [fieldName]: event.target.value });
+function Form({ task, errors, onChange, onSubmit }) {
   const styles = useStyles();
 
+  const handleChangeTextField = (fieldName) => (event) => onChange({ ...task, [fieldName]: event.target.value });
+
+  const dafaultDate = new Date().toLocaleDateString('ru', { year: 'numeric', month: 'numeric', day: 'numeric' });
+
   return (
-    <form className={styles.root}>
+    <form className={styles.root} onSubmit={onSubmit}>
       <TextField
         error={has('name', errors)}
         helperText={errors.name}
@@ -30,12 +33,24 @@ function Form({ errors, onChange, task }) {
         multiline
         margin="dense"
       />
+
+      <FormControl variant="standard" margin="dense" className={styles.dateFromControl}>
+        <InputLabel htmlFor="date">Expired at:</InputLabel>
+        <InputBase
+          id="date"
+          type="date"
+          inputProps={{ min: new Date() }}
+          className={styles.dateInput}
+          value={task.expiredAt || dafaultDate}
+          onChange={handleChangeTextField('expiredAt')}
+          autoFocus
+        />
+      </FormControl>
     </form>
   );
 }
 
 Form.propTypes = {
-  onChange: PropTypes.func.isRequired,
   task: PropTypes.shape().isRequired,
   errors: PropTypes.shape({
     name: PropTypes.arrayOf(PropTypes.string),
@@ -43,6 +58,8 @@ Form.propTypes = {
     author: PropTypes.arrayOf(PropTypes.string),
     assignee: PropTypes.arrayOf(PropTypes.string),
   }),
+  onChange: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 Form.defaultProps = {
