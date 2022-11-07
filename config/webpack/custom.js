@@ -8,9 +8,10 @@ module.exports = {
     alias: {
       repositories: path.resolve(reactFolder, 'repositories'),
       components: path.resolve(reactFolder, 'components'),
-      routes: path.resolve(reactFolder, 'repositories'),
       constants: path.resolve(reactFolder, 'constants'),
       helpers: path.resolve(reactFolder, 'helpers'),
+      routes: path.resolve(reactFolder, 'routes'),
+      utils: path.resolve(reactFolder, 'utils'),
       forms: path.resolve(reactFolder, 'forms'),
     },
   },
