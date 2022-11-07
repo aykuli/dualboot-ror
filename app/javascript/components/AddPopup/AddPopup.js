@@ -13,10 +13,10 @@ import {
 } from '@material-ui/core';
 import { Close, Save } from '@material-ui/icons';
 
-import { SEVERITY } from 'constants';
-import Snackbar from '../Snackbar';
+import Snackbar from 'components/Snackbar';
+import Form from 'components/Form';
 import TaskForm from 'forms/TaskForm';
-import Form from '../Form';
+import { SEVERITY } from 'constants/ui';
 
 import useStyles from './useStyles';
 

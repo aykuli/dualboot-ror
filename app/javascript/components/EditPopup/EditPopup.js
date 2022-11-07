@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { isNil } from 'ramda';
-import Form from '../Form';
 import {
   Card,
   CardHeader,
@@ -14,8 +13,9 @@ import {
 } from '@material-ui/core';
 import { Close, Delete, Save } from '@material-ui/icons';
 
-import { SEVERITY } from 'constants';
 import Snackbar from 'components/Snackbar';
+import Form from 'components/Form';
+import { SEVERITY } from 'constants/ui';
 
 import useStyles from './useStyles';
 

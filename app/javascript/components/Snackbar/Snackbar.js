@@ -4,7 +4,7 @@ import { Snackbar as MuiSnackbar, IconButton } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab/';
 
-import { SEVERITY } from 'constants';
+import { SEVERITY } from 'constants/ui';
 
 function Snackbar({ isOpen, text, type }) {
   const [open, setOpen] = useState(isOpen);

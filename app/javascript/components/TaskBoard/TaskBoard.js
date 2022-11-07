@@ -5,14 +5,14 @@ import { propOr } from 'ramda';
 import { Fab } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 
-import { COLUMNS, META_DEFAULT, initialBoard, MODE, STATE, SEVERITY } from 'constants';
-import TasksRepository from 'repositories/TasksRepository';
-import TaskForm from 'forms/TaskForm';
 import ColumnHeader from 'components/ColumnHeader';
 import Snackbar from 'components/Snackbar';
 import AddPopup from 'components/AddPopup';
 import EditPopup from 'components/EditPopup';
 import Task from 'components/Task';
+import TaskForm from 'forms/TaskForm';
+import { COLUMNS, META_DEFAULT, initialBoard, MODE, STATE, SEVERITY } from 'constants';
+import TasksRepository from 'repositories/TasksRepository';
 
 import useStyles from './useStyles';
 

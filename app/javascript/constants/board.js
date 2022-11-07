@@ -33,8 +33,3 @@ export const MODE = {
   EDIT: 'edit',
   NONE: 'none',
 };
-
-export const SEVERITY = {
-  SUCCESS: 'success',
-  ERROR: 'error',
-};
