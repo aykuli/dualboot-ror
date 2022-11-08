@@ -17,6 +17,7 @@ const headers = () => ({
 
 axios.defaults.headers = {
   ...axios.defaults.headers,
+  get: headers(),
   post: headers(),
   put: headers(),
   delete: headers(),
