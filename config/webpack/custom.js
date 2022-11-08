@@ -3,7 +3,6 @@ const path = require('path');
 const reactFolder = path.resolve(__dirname, '../../app/javascript/');
 
 module.exports = {
-  entry: path.resolve(__dirname, '../../app/javascript/applications.js'),
   resolve: {
     alias: {
       repositories: path.resolve(reactFolder, 'repositories'),

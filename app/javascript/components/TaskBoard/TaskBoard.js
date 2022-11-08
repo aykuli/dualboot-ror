@@ -11,7 +11,8 @@ import AddPopup from 'components/AddPopup';
 import EditPopup from 'components/EditPopup';
 import Task from 'components/Task';
 import TaskForm from 'forms/TaskForm';
-import { COLUMNS, META_DEFAULT, initialBoard, MODE, STATE, SEVERITY } from 'constants';
+import { COLUMNS, META_DEFAULT, initialBoard, MODE, STATE } from 'constants/board';
+import { SEVERITY } from 'constants/ui';
 import TasksRepository from 'repositories/TasksRepository';
 
 import useStyles from './useStyles';

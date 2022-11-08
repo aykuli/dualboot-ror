@@ -1,5 +1,4 @@
 class Api::V1::TasksController < Api::V1::ApplicationController
-  respond_to :json, :html
   def index
     tasks = Task.ransack(ransack_params).result.page(page).per(per_page)
     byebug
