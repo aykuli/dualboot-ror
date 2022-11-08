@@ -16,7 +16,7 @@ export default {
       ...pick(pertmittedKeys, task),
       authorId: propOr(null, 'id', task.author),
       assigneeId: propOr(null, 'id', task.assignee),
-      expiredAt: task.expiredAt ? new Date(task.expiredAt).toISOString() : undefined,
+      expiredAt: task.expiredAt,
     };
   },
 };
