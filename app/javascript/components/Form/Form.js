@@ -3,12 +3,15 @@ import PropTypes from 'prop-types';
 import { has } from 'ramda';
 import { TextField, InputLabel, InputBase, FormControl } from '@material-ui/core';
 
+import UserSelect from 'components/UserSelect';
 import useStyles from './useStyles';
 
 function Form({ task, errors, onChange, onSubmit }) {
   const styles = useStyles();
 
   const handleChangeTextField = (fieldName) => (event) => onChange({ ...task, [fieldName]: event.target.value });
+
+  const handleChangeSelect = (fieldName) => (user) => onChange({ ...task, [fieldName]: user });
 
   return (
     <form className={styles.root} onSubmit={onSubmit}>
@@ -42,6 +45,19 @@ function Form({ task, errors, onChange, onSubmit }) {
           value={task.expiredAt || new Date()}
           onChange={handleChangeTextField('expiredAt')}
           autoFocus
+        />
+      </FormControl>
+
+      <FormControl variant="standard" margin="dense">
+        <UserSelect
+          label="Assignee"
+          value={task.assignee}
+          onChange={handleChangeSelect('assignee')}
+          error={has('assignee', errors)}
+          helperText={errors.assignee}
+          isSearchable
+          isClearable
+          isRequired
         />
       </FormControl>
     </form>

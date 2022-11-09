@@ -4,14 +4,18 @@ import AsyncSelect from 'react-select/async';
 import { FormControl, FormHelperText, InputLabel } from '@material-ui/core';
 
 import UsersRepository from 'repositories/UsersRepository';
+import UserPresenter from 'presenters/UserPresenter';
+
 import useStyles from './useStyles';
 
-function UserSelect({ error, label, isClearable, isDisabled, isRequired, onChange, value, helperText }) {
-  const [isFocused, setFocus] = useState(false);
+function UserSelect({ label, value, error, isClearable, isDisabled, isRequired, isSearchable, onChange, helperText }) {
   const styles = useStyles();
+
+  const [isFocused, setFocus] = useState(false);
+
   const handleLoadOptions = (inputValue) =>
     UsersRepository.index({ q: { firstNameOrLastNameCont: inputValue } }).then(({ data }) => data.items);
-
+  console.log('value: ', value);
   return (
     <FormControl margin="dense" disabled={isDisabled} focused={isFocused} error={error} required={isRequired}>
       <InputLabel shrink>{label}</InputLabel>
@@ -20,10 +24,11 @@ function UserSelect({ error, label, isClearable, isDisabled, isRequired, onChang
           cacheOptions
           loadOptions={handleLoadOptions}
           defaultOptions
-          getOptionLabel={(user) => `${user.firstName} ${user.lastName}`}
+          getOptionLabel={(user) => (user ? UserPresenter.fullName(user) : '')}
           getOptionValue={(user) => user.id}
           isDisabled={isDisabled}
           isClearable={isClearable}
+          isSearchable={isSearchable}
           defaultValue={value}
           onChange={onChange}
           onFocus={() => setFocus(true)}
@@ -32,30 +37,33 @@ function UserSelect({ error, label, isClearable, isDisabled, isRequired, onChang
           styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
         />
       </div>
+
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>
   );
 }
 
 UserSelect.defaultProps = {
-  error: false,
+  onChange: () => {},
+  isSearchable: true,
   isClearable: false,
   isDisabled: false,
   isRequired: false,
-  onChange: () => {},
-  value: {},
   helperText: '',
+  error: false,
+  value: null,
 };
 
 UserSelect.propTypes = {
-  error: PropTypes.bool,
   label: PropTypes.string.isRequired,
+  helperText: PropTypes.string,
+  isSearchable: PropTypes.bool,
   isClearable: PropTypes.bool,
   isDisabled: PropTypes.bool,
   isRequired: PropTypes.bool,
   onChange: PropTypes.func,
   value: PropTypes.shape(),
-  helperText: PropTypes.string,
+  error: PropTypes.bool,
 };
 
 export default UserSelect;
