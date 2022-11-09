@@ -27,7 +27,7 @@ function AddPopup({ onClose, onCreateCard }) {
   const [isSaving, setSaving] = useState(false);
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState(null);
-  const [isOpenSnakbar, setIsOpenSnackbar] = useState(false);
+  const [isOpenSnackbar, setIsOpenSnackbar] = useState(false);
 
   const handleCreate = () => {
     setSaving(true);
@@ -75,7 +75,7 @@ function AddPopup({ onClose, onCreateCard }) {
         </Card>
       </Modal>
 
-      {isOpenSnakbar && message && <Snackbar isOpen={isOpenSnakbar} type={message.type} text={message.text} />}
+      {isOpenSnackbar && <Snackbar isOpen={isOpenSnackbar} type={message.type} text={message.text} />}
     </>
   );
 }

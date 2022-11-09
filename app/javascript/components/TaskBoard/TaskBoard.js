@@ -23,7 +23,7 @@ function TaskBoard() {
   const [board, setBoard] = useState(initialBoard);
   const [boardCards, setBoardCards] = useState({});
   const [message, setMessage] = useState(null);
-  const [isOpenSnakbar, setIsOpenSnackbar] = useState(false);
+  const [isOpenSnackbar, setIsOpenSnackbar] = useState(false);
   const [mode, setMode] = useState(MODE.NONE);
   const [openedTaskId, setOpenedTaskId] = useState(null);
 
@@ -156,7 +156,7 @@ function TaskBoard() {
         />
       )}
 
-      {isOpenSnakbar && <Snackbar isOpen={isOpenSnakbar} type={message?.type} text={message?.text} />}
+      {isOpenSnackbar && <Snackbar isOpen={isOpenSnackbar} type={message.type} text={message.text} />}
     </>
   );
 }

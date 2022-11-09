@@ -27,7 +27,7 @@ function EditPopup({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard })
   const [isDestroying, setIsDestroying] = useState(false);
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState(null);
-  const [isOpenSnakbar, setIsOpenSnackbar] = useState(false);
+  const [isOpenSnackbar, setIsOpenSnackbar] = useState(false);
 
   useEffect(() => {
     onLoadCard(cardId).then(setTask);
@@ -107,7 +107,7 @@ function EditPopup({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard })
           </CardActions>
         </Card>
       </Modal>
-      {isOpenSnakbar && message && <Snackbar isOpen={isOpenSnakbar} type={message.type} text={message.text} />}
+      {isOpenSnackbar && <Snackbar isOpen={isOpenSnackbar} type={message.type} text={message.text} />}
     </>
   );
 }
