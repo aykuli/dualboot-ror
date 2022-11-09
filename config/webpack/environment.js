@@ -1,7 +1,5 @@
 const { environment } = require('@rails/webpacker');
 
-const aliases = require('./custom');
-
-environment.config.merge(aliases);
+environment.loaders.delete('nodeModules');
 
 module.exports = environment;
