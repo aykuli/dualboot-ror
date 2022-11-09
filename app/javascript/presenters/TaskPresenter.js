@@ -13,16 +13,18 @@ export default new PropTypesPresenter(
   },
   {
     expiredDate(task) {
-      const isoDate = new Date(task.expiredAt);
-      const delimiter = '/';
+      const isoDate = new Date(this.expiredAt(task));
       const year = isoDate.getFullYear();
       const month = isoDate.getMonth();
       const date = isoDate.getDate();
 
       return `${date}/${month}/${year}`;
     },
-    valid(task) {
-      return !!(task.name && task.description && task.assignee);
+    invalid(task) {
+      return !(this.name(task) && this.description(task) && this.assignee(task));
+    },
+    title(task) {
+      return `Task # ${this.id(task)} [${this.name(task)}]`;
     },
   },
 );

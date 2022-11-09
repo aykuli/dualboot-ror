@@ -4,7 +4,10 @@ import { has } from 'ramda';
 import { TextField, InputLabel, InputBase, FormControl } from '@material-ui/core';
 
 import UserSelect from 'components/UserSelect';
+import TaskPresenter from 'presenters/TaskPresenter';
+
 import useStyles from './useStyles';
+import UserPresenter from 'presenters/UserPresenter';
 
 function Form({ task, errors, onChange, onSubmit }) {
   const styles = useStyles();
@@ -17,7 +20,7 @@ function Form({ task, errors, onChange, onSubmit }) {
     <form className={styles.root} onSubmit={onSubmit}>
       <TextField
         label="Name"
-        value={task.name}
+        value={TaskPresenter.name(task)}
         error={has('name', errors)}
         helperText={errors.name}
         onChange={handleChangeTextField('name')}
@@ -26,7 +29,7 @@ function Form({ task, errors, onChange, onSubmit }) {
       />
       <TextField
         label="Description"
-        value={task.description}
+        value={TaskPresenter.description(task)}
         error={has('description', errors)}
         helperText={errors.description}
         onChange={handleChangeTextField('description')}
@@ -42,7 +45,7 @@ function Form({ task, errors, onChange, onSubmit }) {
           type="date"
           className={styles.dateInput}
           inputProps={{ min: new Date() }}
-          value={task.expiredAt || new Date()}
+          value={TaskPresenter.expiredAt(task)}
           onChange={handleChangeTextField('expiredAt')}
           autoFocus
         />
@@ -51,7 +54,7 @@ function Form({ task, errors, onChange, onSubmit }) {
       <FormControl variant="standard" margin="dense">
         <UserSelect
           label="Assignee"
-          value={task.assignee}
+          value={UserPresenter.fullName(task.assignee)}
           onChange={handleChangeSelect('assignee')}
           error={has('assignee', errors)}
           helperText={errors.assignee}

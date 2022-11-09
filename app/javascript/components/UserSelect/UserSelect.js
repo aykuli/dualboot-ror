@@ -15,7 +15,7 @@ function UserSelect({ label, value, error, isClearable, isDisabled, isRequired, 
 
   const handleLoadOptions = (inputValue) =>
     UsersRepository.index({ q: { firstNameOrLastNameCont: inputValue } }).then(({ data }) => data.items);
-  console.log('value: ', value);
+
   return (
     <FormControl margin="dense" disabled={isDisabled} focused={isFocused} error={error} required={isRequired}>
       <InputLabel shrink>{label}</InputLabel>

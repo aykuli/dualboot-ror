@@ -18,6 +18,7 @@ import TaskForm from 'forms/TaskForm';
 import { SEVERITY } from 'constants/ui';
 
 import useStyles from './useStyles';
+import TaskPresenter from 'presenters/TaskPresenter';
 
 function AddPopup({ onClose, onCreateCard }) {
   const styles = useStyles();
@@ -65,7 +66,7 @@ function AddPopup({ onClose, onCreateCard }) {
               size="medium"
               className={styles.btn}
               onClick={handleCreate}
-              disabled={isSaving}
+              disabled={isSaving || TaskPresenter.invalid(task)}
               startIcon={isSaving ? <CircularProgress size={15} /> : <Save />}
             >
               Add
