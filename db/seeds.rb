@@ -11,25 +11,4 @@ admin.save
   u.save
 end
 
-manager = Manager.first
-developer = Developer.first
-developer_second = Developer.second
-
-10.times do |i|
-  task = manager.my_tasks.new(
-    name: "Task #{i}",
-    description: "Task description #{i}",
-    assignee_id: developer.id,
-    )
-  task.save
-end
-
-5.times do |i|
-  task = manager.my_tasks.new(
-    name: "Task 1 #{i}",
-    description: "Task description 1 #{i}",
-    assignee: developer_second,
-    )
-  task.save
-end
 

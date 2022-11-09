@@ -16,9 +16,9 @@ import Snackbar from 'components/Snackbar';
 import Form from 'components/Form';
 import TaskForm from 'forms/TaskForm';
 import { SEVERITY } from 'constants/ui';
+import TaskPresenter from 'presenters/TaskPresenter';
 
 import useStyles from './useStyles';
-import TaskPresenter from 'presenters/TaskPresenter';
 
 function AddPopup({ onClose, onCreateCard }) {
   const styles = useStyles();

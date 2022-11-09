@@ -5,9 +5,9 @@ import { TextField, InputLabel, InputBase, FormControl } from '@material-ui/core
 
 import UserSelect from 'components/UserSelect';
 import TaskPresenter from 'presenters/TaskPresenter';
+import UserPresenter from 'presenters/UserPresenter';
 
 import useStyles from './useStyles';
-import UserPresenter from 'presenters/UserPresenter';
 
 function Form({ task, errors, onChange, onSubmit }) {
   const styles = useStyles();
