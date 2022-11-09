@@ -24,6 +24,7 @@ function TaskBoard() {
   const [boardCards, setBoardCards] = useState({});
   const [message, setMessage] = useState(null);
   const [isOpenSnackbar, setIsOpenSnackbar] = useState(false);
+  const [isUpdateBoard, setIsUpdateBoard] = useState(false);
   const [mode, setMode] = useState(MODE.NONE);
   const [openedTaskId, setOpenedTaskId] = useState(null);
 
@@ -34,11 +35,10 @@ function TaskBoard() {
       perPage,
     });
 
-  const loadColumnInitial = (state, page = 1, perPage = 10) => {
+  const loadColumnInitial = (state, page = 1, perPage = 10) =>
     loadColumn(state, page, perPage).then(({ data: { items, meta } }) => {
       setBoardCards((prev) => ({ ...prev, [state]: { cards: items, meta } }));
     });
-  };
 
   const updateBoard = () => {
     setBoard({
@@ -49,9 +49,14 @@ function TaskBoard() {
         meta: propOr(META_DEFAULT, 'meta', boardCards[key]),
       })),
     });
+
+    setIsUpdateBoard(false);
   };
 
-  const loadBoard = () => COLUMNS.forEach(({ key }) => loadColumnInitial(key));
+  const loadBoard = () =>
+    COLUMNS.forEach(({ key }, index) =>
+      loadColumnInitial(key).then(() => (index === COLUMNS.length - 1 ? setIsUpdateBoard(true) : undefined)),
+    );
 
   const handleCardDragEnd = (task, source, destination) => {
     const transition = task.transitions.find(({ to }) => destination.toColumnId === to);
@@ -61,17 +66,13 @@ function TaskBoard() {
 
     return TasksRepository.update(task.id, { task: { stateEvent: transition.event } })
       .then(() => {
-        Promise.all([loadColumn(destination.toColumnId), loadColumn(source.fromColumnId)]).then((res) => {
-          const newStates = {};
-          res.forEach(({ data: { items, meta } }, index) => {
-            const state = index ? source.fromColumnId : destination.toColumnId;
-            newStates[state] = { cards: items, meta };
-          });
+        loadColumnInitial(destination.toColumnId);
+        loadColumnInitial(source.fromColumnId).then(() => setIsUpdateBoard(true));
 
-          setBoardCards((prev) => ({ ...prev, ...newStates }));
+        setMessage({
+          type: SEVERITY.SUCCESS,
+          text: `Task "${task.name}" moved from state ${source.fromColumnId} to ${destination.toColumnId}`,
         });
-
-        setMessage({ type: SEVERITY.SUCCESS, text: `Task move to new state` });
         setIsOpenSnackbar(true);
       })
       .catch((error) => {
@@ -85,17 +86,20 @@ function TaskBoard() {
   }, []);
 
   useEffect(() => {
-    updateBoard();
-  }, [boardCards]);
+    if (isUpdateBoard) {
+      updateBoard();
+    }
+  }, [isUpdateBoard]);
 
   const createTask = (params) => {
     const attributes = TaskForm.attributesToSubmit(params);
     return TasksRepository.create(attributes).then(() => {
+      loadColumnInitial(STATE.NEW_TASK).then(() => setIsUpdateBoard(true));
+
       setMessage({ type: SEVERITY.SUCCESS, text: 'Task created and saved!' });
       setIsOpenSnackbar(true);
 
       setMode(MODE.NONE);
-      loadColumnInitial(STATE.NEW_TASK);
     });
   };
 
@@ -110,14 +114,16 @@ function TaskBoard() {
     const attributes = TaskForm.attributesToSubmit(task);
 
     return TasksRepository.update(task.id, attributes).then(() => {
-      loadColumnInitial(task.state);
+      loadColumnInitial(task.state).then(() => setIsUpdateBoard(true));
+
       handleClose();
     });
   };
 
   const destroyTask = (task) =>
     TasksRepository.destroy(task.id).then(() => {
-      loadColumnInitial(task.state);
+      loadColumnInitial(task.state).then(() => setIsUpdateBoard(true));
+
       handleClose();
     });
 
