@@ -51,7 +51,7 @@ function TaskBoard() {
 
   const loadBoard = () =>
     COLUMNS.forEach(({ key }, index) =>
-      loadColumnInitial(key).then(() => (index === COLUMNS.length - 1 ? setIsUpdateBoard(true) : undefined)),
+      loadColumnInitial(key).then(() => index === COLUMNS.length - 1 && setIsUpdateBoard(true)),
     );
 
   const handleCardDragEnd = (task, source, destination) => {
