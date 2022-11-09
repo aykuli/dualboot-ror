@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 import { Card, CardHeader, CardContent, Typography, IconButton } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
 
-import { dateHelper } from 'helpers';
+import TaskPresenter from 'presenters/TaskPresenter';
+import UserPresenter from 'presenters/UserPresenter';
 
 import useStyles from './useStyles';
 
 function Task({ task, onClick }) {
   const styles = useStyles();
 
-  const { name, description, expiredAt } = task;
+  const { expiredAt } = task;
 
   const handleClick = () => onClick(task);
 
@@ -24,7 +25,7 @@ function Task({ task, onClick }) {
     <Card className={styles.root}>
       <CardHeader
         action={action}
-        title={name}
+        title={TaskPresenter.name(task)}
         className={styles.header}
         classes={{
           content: styles.content,
@@ -34,7 +35,7 @@ function Task({ task, onClick }) {
       />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
-          {description}
+          {TaskPresenter.description(task)}
         </Typography>
         {expiredAt && (
           <div className={styles.expiredAt}>
@@ -42,10 +43,28 @@ function Task({ task, onClick }) {
               Expires at:
             </Typography>
             <Typography color="textSecondary" component="span">
-              {dateHelper.humanify(expiredAt)}
+              {TaskPresenter.expiredDate(task)}
             </Typography>
           </div>
         )}
+
+        <div className={styles.expiredAt}>
+          <Typography color="textSecondary" component="h5" className={styles.expiredAtTitle}>
+            Assignee:
+          </Typography>
+          <Typography color="textSecondary" component="span">
+            {UserPresenter.fullName(task.assignee)}
+          </Typography>
+        </div>
+
+        <div className={styles.expiredAt}>
+          <Typography color="textSecondary" component="h5" className={styles.expiredAtTitle}>
+            Author:
+          </Typography>
+          <Typography color="textSecondary" component="span">
+            {UserPresenter.fullName(task.author)}
+          </Typography>
+        </div>
       </CardContent>
     </Card>
   );
@@ -54,7 +73,9 @@ function Task({ task, onClick }) {
 Task.propTypes = {
   task: PropTypes.shape({
     name: PropTypes.string,
+    author: PropTypes.shape(),
     expiredAt: PropTypes.string,
+    assignee: PropTypes.shape(),
     description: PropTypes.string,
   }).isRequired,
   onClick: PropTypes.func.isRequired,

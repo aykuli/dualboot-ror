@@ -1,5 +1,5 @@
-import { apiV1UsersPath, apiV1UserPath } from '../routes/ApiRoutes';
-import FetchHelper from '../utils/fetchHelper';
+import { apiV1UsersPath, apiV1UserPath } from 'routes/ApiRoutes';
+import FetchHelper from 'utils/fetchHelper';
 
 export default {
   index(params) {
