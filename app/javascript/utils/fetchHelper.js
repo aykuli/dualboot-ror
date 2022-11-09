@@ -5,7 +5,7 @@ import { camelize, decamelize } from './keysConverter';
 
 const authenticityToken = () => {
   const token = document.querySelector('meta[name="csrf-token"]');
-  return token ? token.content : null;
+  return token?.content || null;
 };
 
 const headers = () => ({

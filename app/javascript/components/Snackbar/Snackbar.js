@@ -33,8 +33,8 @@ function Snackbar({ isOpen, text, type }) {
 }
 
 Snackbar.defaultProps = {
-  isOpen: false,
   text: '',
+  isOpen: false,
   type: SEVERITY.SUCCESS,
 };
 

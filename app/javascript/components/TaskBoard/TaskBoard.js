@@ -148,13 +148,14 @@ function TaskBoard() {
       </Fab>
 
       {mode === MODE.ADD && <AddPopup onCreateCard={createTask} onClose={() => setMode(MODE.NONE)} />}
+
       {mode === MODE.EDIT && (
         <EditPopup
+          cardId={openedTaskId}
+          onClose={handleClose}
           onLoadCard={loadTask}
           onUpdateCard={updateTask}
           onDestroyCard={destroyTask}
-          onClose={handleClose}
-          cardId={openedTaskId}
         />
       )}
 

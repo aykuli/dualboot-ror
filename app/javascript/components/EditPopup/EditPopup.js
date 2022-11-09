@@ -23,11 +23,12 @@ function EditPopup({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard })
   const styles = useStyles();
 
   const [task, setTask] = useState(null);
-  const [isSaving, setSaving] = useState(false);
-  const [isDestroying, setIsDestroying] = useState(false);
-  const [errors, setErrors] = useState({});
-  const [message, setMessage] = useState(null);
+
   const [isOpenSnackbar, setIsOpenSnackbar] = useState(false);
+  const [isDestroying, setIsDestroying] = useState(false);
+  const [isSaving, setSaving] = useState(false);
+  const [message, setMessage] = useState(null);
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     onLoadCard(cardId).then(setTask);
@@ -57,6 +58,7 @@ function EditPopup({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard })
       setIsOpenSnackbar(true);
     });
   };
+
   const isLoading = isNil(task);
   const isDisableActions = isLoading || isSaving || isDestroying;
 
@@ -115,9 +117,9 @@ function EditPopup({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard })
 EditPopup.propTypes = {
   cardId: PropTypes.number.isRequired,
   onClose: PropTypes.func.isRequired,
-  onDestroyCard: PropTypes.func.isRequired,
   onLoadCard: PropTypes.func.isRequired,
   onUpdateCard: PropTypes.func.isRequired,
+  onDestroyCard: PropTypes.func.isRequired,
 };
 
 export default EditPopup;

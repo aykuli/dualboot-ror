@@ -24,10 +24,10 @@ function AddPopup({ onClose, onCreateCard }) {
   const styles = useStyles();
 
   const [task, setTask] = useState(TaskForm.defaultAttributes());
-  const [isSaving, setSaving] = useState(false);
-  const [errors, setErrors] = useState({});
-  const [message, setMessage] = useState(null);
   const [isOpenSnackbar, setIsOpenSnackbar] = useState(false);
+  const [isSaving, setSaving] = useState(false);
+  const [message, setMessage] = useState(null);
+  const [errors, setErrors] = useState({});
 
   const handleCreate = () => {
     setSaving(true);

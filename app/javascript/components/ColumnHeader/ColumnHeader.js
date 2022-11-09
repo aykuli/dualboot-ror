@@ -38,9 +38,9 @@ ColumnHeader.propTypes = {
     title: PropTypes.string,
     cards: PropTypes.arrayOf(PropTypes.shape()),
     meta: PropTypes.shape({
+      perPage: PropTypes.number,
       totalCount: PropTypes.number,
       currentPage: PropTypes.number,
-      perPage: PropTypes.number,
     }),
   }).isRequired,
   onLoadMore: PropTypes.func.isRequired,

@@ -5,6 +5,7 @@ export const dateHelper = {
     const year = isoDate.getFullYear();
     const month = isoDate.getMonth();
     const date = isoDate.getDate();
+
     return `${date}${delimiter}${month}${delimiter}${year}`;
   },
 };

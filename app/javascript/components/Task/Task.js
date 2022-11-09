@@ -54,8 +54,8 @@ function Task({ task, onClick }) {
 Task.propTypes = {
   task: PropTypes.shape({
     name: PropTypes.string,
-    description: PropTypes.string,
     expiredAt: PropTypes.string,
+    description: PropTypes.string,
   }).isRequired,
   onClick: PropTypes.func.isRequired,
 };
