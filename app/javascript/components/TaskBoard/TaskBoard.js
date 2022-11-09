@@ -22,18 +22,14 @@ function TaskBoard() {
 
   const [board, setBoard] = useState(initialBoard);
   const [boardCards, setBoardCards] = useState({});
-  const [message, setMessage] = useState(null);
-  const [isOpenSnackbar, setIsOpenSnackbar] = useState(false);
-  const [isUpdateBoard, setIsUpdateBoard] = useState(false);
-  const [mode, setMode] = useState(MODE.NONE);
-  const [openedTaskId, setOpenedTaskId] = useState(null);
 
-  const loadColumn = (state, page, perPage) =>
-    TasksRepository.index({
-      q: { stateEq: state },
-      page,
-      perPage,
-    });
+  const [mode, setMode] = useState(MODE.NONE);
+  const [message, setMessage] = useState(null);
+  const [openedTaskId, setOpenedTaskId] = useState(null);
+  const [isUpdateBoard, setIsUpdateBoard] = useState(false);
+  const [isOpenSnackbar, setIsOpenSnackbar] = useState(false);
+
+  const loadColumn = (state, page, perPage) => TasksRepository.index({ q: { stateEq: state }, page, perPage });
 
   const loadColumnInitial = (state, page = 1, perPage = 10) =>
     loadColumn(state, page, perPage).then(({ data: { items, meta } }) => {
