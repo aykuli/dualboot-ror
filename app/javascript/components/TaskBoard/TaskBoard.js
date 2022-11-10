@@ -14,13 +14,14 @@ import TaskForm from 'forms/TaskForm';
 import { COLUMNS, META_DEFAULT, initialBoard, MODE, STATE } from 'constants/board';
 import { SEVERITY } from 'constants/ui';
 import TasksRepository from 'repositories/TasksRepository';
+import useTasks from 'hooks/store/useTasks';
 
 import useStyles from './useStyles';
 
 function TaskBoard() {
   const styles = useStyles();
 
-  const [board, setBoard] = useState(initialBoard);
+  const { board, setBoard } = useTasks(initialBoard);
   const [boardCards, setBoardCards] = useState({});
 
   const [mode, setMode] = useState(MODE.NONE);
