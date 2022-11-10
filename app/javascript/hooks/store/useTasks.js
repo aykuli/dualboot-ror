@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 
-import { useTasksActions } from 'slices/useTasksActions';
+import useTasksActions from 'slices/useTasksActions';
 import { COLUMNS } from 'constants/board';
 
 const useTasks = () => {

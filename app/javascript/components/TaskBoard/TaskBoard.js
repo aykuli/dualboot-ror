@@ -11,8 +11,8 @@ import AddPopup from 'components/AddPopup';
 import EditPopup from 'components/EditPopup';
 import Task from 'components/Task';
 
-import { useTasksActions } from 'slices/useTasksActions';
-import { useUiAction } from 'slices/useUiActions';
+import useTasksActions from 'slices/useTasksActions';
+import useUiAction from 'slices/useUiActions';
 import useTasks from 'hooks/store/useTasks';
 import useStyles from './useStyles';
 
