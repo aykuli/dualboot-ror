@@ -11,8 +11,8 @@ import AddPopup from 'components/AddPopup';
 import EditPopup from 'components/EditPopup';
 import Task from 'components/Task';
 
-import useTasks from 'hooks/store/useTasks';
-import { useTasksActions, useUiAction } from 'slices/TasksSlice';
+import { useTasksActions } from 'slices/useTasksActions';
+import { useUiAction } from 'slices/useUiAction';
 import useStyles from './useStyles';
 
 function TaskBoard() {

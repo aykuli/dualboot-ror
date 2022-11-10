@@ -17,7 +17,8 @@ import TaskPresenter from 'presenters/TaskPresenter';
 import { MODE } from 'constants/board';
 import TaskForm from 'forms/TaskForm';
 
-import { useTasksActions, useUiAction } from 'slices/TasksSlice';
+import { useTasksActions } from 'slices/useTasksActions';
+import { useUiAction } from 'slices/useUiAction';
 import useStyles from './useStyles';
 import useTasks from 'hooks/store/useTasks';
 

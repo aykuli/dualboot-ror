@@ -5,7 +5,7 @@ import { Edit } from '@material-ui/icons';
 import TaskPresenter from 'presenters/TaskPresenter';
 import UserPresenter from 'presenters/UserPresenter';
 
-import { useTasksActions } from 'slices/TasksSlice';
+import { useTasksActions } from 'slices/useTasksActions';
 import useStyles from './useStyles';
 
 function Task({ task }) {
