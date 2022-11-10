@@ -109,7 +109,7 @@ function TaskBoard() {
         {board}
       </KanbanBoard>
 
-      <Fab className={styles.addButton} color="primary" aria-label="add" onClick={() => setMode(MODE.ADD)}>
+      <Fab className={styles.addButton} color="secondary" aria-label="add" onClick={() => setMode(MODE.ADD)}>
         <Add />
       </Fab>
 
