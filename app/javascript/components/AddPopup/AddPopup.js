@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import {
   Card,
   CardActions,
@@ -12,71 +11,63 @@ import {
 } from '@material-ui/core';
 import { Close, Save } from '@material-ui/icons';
 
-import Snackbar from 'components/Snackbar';
+import { MODE } from 'constants/board';
 import Form from 'components/Form';
 import TaskForm from 'forms/TaskForm';
-import { SEVERITY } from 'constants/ui';
 import TaskPresenter from 'presenters/TaskPresenter';
 
-import { useTasksActions } from 'slices/TasksSlice';
+import { useTasksActions, useUiAction } from 'slices/TasksSlice';
 import useStyles from './useStyles';
 
-function AddPopup({ onClose }) {
+function AddPopup() {
   const styles = useStyles();
 
   const { createTask } = useTasksActions();
+  const { setMode } = useUiAction();
 
   const [task, setTask] = useState(TaskForm.defaultAttributes());
-  const [isOpenSnackbar, setIsOpenSnackbar] = useState(false);
-  const [isSaving, setSaving] = useState(false);
-  const [message, setMessage] = useState(null);
-  const [errors, setErrors] = useState({});
+  const [isSaving, setIsSaving] = useState(false);
+  const [errors] = useState({});
 
   const handleCreate = () => {
-    setSaving(true);
+    setIsSaving(true);
     const attributes = TaskForm.attributesToSubmit(task);
-    createTask(attributes);
+    createTask(attributes).then(() => setIsSaving(false));
   };
 
+  const handleClose = () => setMode(MODE.NONE);
+
   return (
-    <>
-      <Modal className={styles.modal} open onClose={onClose}>
-        <Card className={styles.root}>
-          <CardHeader
-            action={
-              <IconButton onClick={onClose}>
-                <Close />
-              </IconButton>
-            }
-            title="Add new task"
-          />
-          <CardContent>
-            <Form errors={errors} onChange={setTask} task={task} onSubmit={handleCreate} />
-          </CardContent>
+    <Modal className={styles.modal} open onClose={handleClose}>
+      <Card className={styles.root}>
+        <CardHeader
+          action={
+            <IconButton onClick={handleClose}>
+              <Close />
+            </IconButton>
+          }
+          title="Add new task"
+        />
+        <CardContent>
+          <Form errors={errors} onChange={setTask} task={task} onSubmit={handleCreate} />
+        </CardContent>
 
-          <CardActions className={styles.actions}>
-            <Button
-              variant="contained"
-              color="primary"
-              size="medium"
-              className={styles.btn}
-              onClick={handleCreate}
-              disabled={isSaving || TaskPresenter.isInvalid(task)}
-              startIcon={isSaving ? <CircularProgress size={15} /> : <Save />}
-            >
-              Add
-            </Button>
-          </CardActions>
-        </Card>
-      </Modal>
-
-      {isOpenSnackbar && <Snackbar isOpen={isOpenSnackbar} type={message.type} text={message.text} />}
-    </>
+        <CardActions className={styles.actions}>
+          <Button
+            variant="contained"
+            color="primary"
+            size="medium"
+            className={styles.btn}
+            onClick={handleCreate}
+            disabled={isSaving || TaskPresenter.isInvalid(task)}
+            startIcon={isSaving ? <CircularProgress size={15} /> : <Save />}
+          >
+            Add
+          </Button>
+        </CardActions>
+      </Card>
+    </Modal>
   );
 }
-
-AddPopup.propTypes = {
-  onClose: PropTypes.func.isRequired,
-};
 
 export default AddPopup;

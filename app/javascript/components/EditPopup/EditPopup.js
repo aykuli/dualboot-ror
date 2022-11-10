@@ -13,115 +13,97 @@ import {
 } from '@material-ui/core';
 import { Close, Delete, Save } from '@material-ui/icons';
 
-import Snackbar from 'components/Snackbar';
 import Form from 'components/Form';
-import { SEVERITY } from 'constants/ui';
 import TaskPresenter from 'presenters/TaskPresenter';
+import { MODE } from 'constants/board';
 
-import { useTasksActions } from 'slices/TasksSlice';
+import TaskForm from 'forms/TaskForm';
+import { useTasksActions, useUiAction } from 'slices/TasksSlice';
 import useStyles from './useStyles';
 
-function EditPopup({ cardId, onClose, onDestroyCard, onUpdateCard }) {
+function EditPopup({ cardId }) {
   const styles = useStyles();
-  const { loadTask } = useTasksActions();
+
+  const { setMode } = useUiAction();
+  const { loadTask, updateTask, destroyTask } = useTasksActions();
 
   const [task, setTask] = useState(null);
 
-  const [isOpenSnackbar, setIsOpenSnackbar] = useState(false);
   const [isDestroying, setIsDestroying] = useState(false);
-  const [isSaving, setSaving] = useState(false);
-  const [message, setMessage] = useState(null);
-  const [errors, setErrors] = useState({});
+  const [isSaving, setIsSaving] = useState(false);
+  // const [errors, setErrors] = useState({});
 
   useEffect(() => {
     loadTask(cardId).then(setTask);
   }, []);
 
   const handleCardUpdate = () => {
-    setSaving(true);
-
-    onUpdateCard(task).catch((error) => {
-      setSaving(false);
-      setErrors(error || {});
-
-      if (error instanceof Error) {
-        setMessage({ type: SEVERITY.ERROR, text: `Update Failed! Error: ${error?.message || ''}` });
-        setIsOpenSnackbar(true);
-      }
-    });
+    setIsSaving(true);
+    const attributes = TaskForm.attributesToSubmit(task);
+    updateTask(task, attributes).then(() => setIsSaving(false));
   };
 
   const handleCardDestroy = () => {
     setIsDestroying(true);
-
-    onDestroyCard(task).catch((error) => {
-      setIsDestroying(false);
-
-      setMessage({ type: SEVERITY.ERROR, text: `Destrucion Failed! Error: ${error?.message || ''}` });
-      setIsOpenSnackbar(true);
-    });
+    destroyTask(task).then(() => setIsDestroying(false));
   };
 
   const isLoading = isNil(task);
   const isDisableActions = isLoading || isSaving || isDestroying;
 
+  const handleClose = () => setMode(MODE.NONE);
+
   return (
-    <>
-      <Modal className={styles.modal} open onClose={onClose}>
-        <Card className={styles.root}>
-          <CardHeader
-            action={
-              <IconButton onClick={onClose}>
-                <Close />
-              </IconButton>
-            }
-            title={isLoading ? 'Your task is loading...' : TaskPresenter.title(task)}
-          />
-          <CardContent>
-            {isLoading ? (
-              <div className={styles.loader}>
-                <CircularProgress />
-              </div>
-            ) : (
-              <Form errors={errors} onChange={setTask} task={task} onSubmit={handleCardUpdate} />
-            )}
-          </CardContent>
-          <CardActions className={styles.actions}>
-            <Button
-              variant="contained"
-              color="primary"
-              size="medium"
-              className={styles.btn}
-              startIcon={isSaving ? <CircularProgress size={15} /> : <Save />}
-              disabled={isDisableActions}
-              onClick={handleCardUpdate}
-            >
-              Update
-            </Button>
-            <Button
-              variant="contained"
-              color="secondary"
-              size="medium"
-              className={styles.btn}
-              startIcon={isDestroying ? <CircularProgress size={15} /> : <Delete />}
-              disabled={isDisableActions}
-              onClick={handleCardDestroy}
-            >
-              Destroy
-            </Button>
-          </CardActions>
-        </Card>
-      </Modal>
-      {isOpenSnackbar && <Snackbar isOpen={isOpenSnackbar} type={message.type} text={message.text} />}
-    </>
+    <Modal className={styles.modal} open onClose={handleClose}>
+      <Card className={styles.root}>
+        <CardHeader
+          action={
+            <IconButton onClick={handleClose}>
+              <Close />
+            </IconButton>
+          }
+          title={isLoading ? 'Your task is loading...' : TaskPresenter.title(task)}
+        />
+        <CardContent>
+          {isLoading ? (
+            <div className={styles.loader}>
+              <CircularProgress />
+            </div>
+          ) : (
+            <Form onChange={setTask} task={task} onSubmit={handleCardUpdate} />
+          )}
+        </CardContent>
+        <CardActions className={styles.actions}>
+          <Button
+            variant="contained"
+            color="primary"
+            size="medium"
+            className={styles.btn}
+            startIcon={isSaving ? <CircularProgress size={15} /> : <Save />}
+            disabled={isDisableActions}
+            onClick={handleCardUpdate}
+          >
+            Update
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            size="medium"
+            className={styles.btn}
+            startIcon={isDestroying ? <CircularProgress size={15} /> : <Delete />}
+            disabled={isDisableActions}
+            onClick={handleCardDestroy}
+          >
+            Destroy
+          </Button>
+        </CardActions>
+      </Card>
+    </Modal>
   );
 }
 
 EditPopup.propTypes = {
   cardId: PropTypes.number.isRequired,
-  onClose: PropTypes.func.isRequired,
-  onUpdateCard: PropTypes.func.isRequired,
-  onDestroyCard: PropTypes.func.isRequired,
 };
 
 export default EditPopup;

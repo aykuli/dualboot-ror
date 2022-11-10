@@ -9,25 +9,21 @@ import Snackbar from 'components/Snackbar';
 import AddPopup from 'components/AddPopup';
 import EditPopup from 'components/EditPopup';
 import Task from 'components/Task';
-import TaskForm from 'forms/TaskForm';
 import { MODE } from 'constants/board';
-import { SEVERITY } from 'constants/ui';
 import TasksRepository from 'repositories/TasksRepository';
 import useTasks from 'hooks/store/useTasks';
 
-import { useTasksActions } from 'slices/TasksSlice';
+import { useTasksActions, useUiAction } from 'slices/TasksSlice';
 import useStyles from './useStyles';
 
 function TaskBoard() {
   const styles = useStyles();
 
-  const { board, loadBoard } = useTasks();
+  const { board, ui, loadBoard } = useTasks();
   const { loadColumn } = useTasksActions();
+  const { setMode } = useUiAction();
 
-  const [mode, setMode] = useState(MODE.NONE);
-  const [message, setMessage] = useState(null);
   const [openedTaskId, setOpenedTaskId] = useState(null);
-  const [isOpenSnackbar, setIsOpenSnackbar] = useState(false);
 
   const handleCardDragEnd = (task, source, destination) => {
     const transition = task.transitions.find(({ to }) => destination.toColumnId === to);
@@ -40,15 +36,15 @@ function TaskBoard() {
         loadColumn(destination.toColumnId);
         loadColumn(source.fromColumnId);
 
-        setMessage({
-          type: SEVERITY.SUCCESS,
-          text: `Task "${task.name}" moved from state ${source.fromColumnId} to ${destination.toColumnId}`,
-        });
-        setIsOpenSnackbar(true);
+        // setMessage({
+        //   type: SEVERITY.SUCCESS,
+        //   text: `Task "${task.name}" moved from state ${source.fromColumnId} to ${destination.toColumnId}`,
+        // });
+        // setIsOpenSnackbar(true);
       })
-      .catch((error) => {
-        setMessage({ type: SEVERITY.ERROR, text: `Move failed! ${error?.message || ''}` });
-        setIsOpenSnackbar(true);
+      .catch(() => {
+        // setMessage({ type: SEVERITY.ERROR, text: `Move failed! ${error?.message || ''}` });
+        // setIsOpenSnackbar(true);
       });
   };
 
@@ -61,20 +57,9 @@ function TaskBoard() {
     setOpenedTaskId(null);
   };
 
-  const updateTask = (task) => {
-    const attributes = TaskForm.attributesToSubmit(task);
-
-    return TasksRepository.update(task.id, attributes).then(() => {
-      loadColumn(task.state);
-
-      handleClose();
-    });
-  };
-
   const destroyTask = (task) =>
     TasksRepository.destroy(task.id).then(() => {
       loadColumn(task.state);
-
       handleClose();
     });
 
@@ -99,13 +84,11 @@ function TaskBoard() {
         <Add />
       </Fab>
 
-      {mode === MODE.ADD && <AddPopup onClose={() => setMode(MODE.NONE)} />}
+      {ui.mode === MODE.ADD && <AddPopup />}
 
-      {mode === MODE.EDIT && (
-        <EditPopup cardId={openedTaskId} onClose={handleClose} onUpdateCard={updateTask} onDestroyCard={destroyTask} />
-      )}
+      {ui.mode === MODE.EDIT && <EditPopup cardId={openedTaskId} />}
 
-      {isOpenSnackbar && <Snackbar isOpen={isOpenSnackbar} type={message.type} text={message.text} />}
+      {ui.snackbar.isOpen && <Snackbar isOpen={ui.snackbar.isOpen} type={ui.snackbar.type} text={ui.snackbar.text} />}
     </div>
   );
 }

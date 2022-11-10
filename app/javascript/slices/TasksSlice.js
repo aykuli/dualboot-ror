@@ -10,12 +10,14 @@ import { SEVERITY } from 'constants/ui';
 const initialState = {
   board: {
     columns: initialColumns,
+  },
+  ui: {
     snackbar: {
       isOpen: false,
       text: '',
       type: SEVERITY.ERROR,
     },
-    modalState: MODE.NONE,
+    mode: MODE.NONE,
   },
 };
 
@@ -34,11 +36,11 @@ const tasksSlice = createSlice({
 
       return state;
     },
-    showSnackbar(state, payload) {
-      state.board.snackbar = { isOpen: true, ...payload };
+    showSnackbar(state, { payload }) {
+      state.ui.snackbar = { isOpen: true, ...payload };
     },
-    changeModalState(state, payload) {
-      state.board.modalState = payload;
+    changeModalState(state, { payload }) {
+      state.ui.mode = payload;
     },
   },
 });
@@ -63,12 +65,48 @@ export const useTasksActions = () => {
   const loadTask = (id) => TasksRepository.show(id).then(({ data: { task } }) => task);
 
   const createTask = (attributes) =>
-    TasksRepository.create(attributes).then(() => {
-      loadColumn(STATE.NEW_TASK);
-      dispatch(showSnackbar({ type: SEVERITY.SUCCESS, text: 'Task created and saved!' }));
+    TasksRepository.create(attributes)
+      .then(() => {
+        loadColumn(STATE.NEW_TASK);
+        dispatch(showSnackbar({ type: SEVERITY.SUCCESS, text: 'Task created and saved!' }));
 
-      changeModalState(MODE.NONE);
-    });
+        dispatch(changeModalState(MODE.NONE));
+      })
+      .catch((error) => {
+        dispatch(showSnackbar({ type: SEVERITY.ERROR, text: `Task creating failed! ${error?.message || ''}` }));
+      });
 
-  return { loadColumn, loadTask, createTask };
+  const updateTask = (task, attributes) =>
+    TasksRepository.update(task.id, attributes)
+      .then(() => {
+        loadColumn(task.state);
+        dispatch(showSnackbar({ type: SEVERITY.SUCCESS, text: 'Task was updated!' }));
+
+        dispatch(changeModalState(MODE.NONE));
+      })
+      .catch((error) => {
+        dispatch(showSnackbar({ type: SEVERITY.ERROR, text: `Update Failed! Error: ${error?.message || ''}` }));
+      });
+
+  const destroyTask = (task) =>
+    TasksRepository.destroy(task.id)
+      .then(() => {
+        loadColumn(task.state);
+        dispatch(showSnackbar({ type: SEVERITY.SUCCESS, text: 'Task was updated!' }));
+
+        dispatch(changeModalState(MODE.NONE));
+      })
+      .catch((error) => {
+        dispatch(showSnackbar({ type: SEVERITY.ERROR, text: `Update Failed! Error: ${error?.message || ''}` }));
+      });
+
+  return { loadColumn, loadTask, createTask, updateTask, destroyTask };
+};
+
+export const useUiAction = () => {
+  const dispatch = useDispatch();
+
+  const setMode = (mode) => dispatch(changeModalState(mode));
+
+  return { setMode };
 };
