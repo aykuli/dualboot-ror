@@ -66,7 +66,7 @@ function AddPopup({ onClose, onCreateCard }) {
               size="medium"
               className={styles.btn}
               onClick={handleCreate}
-              disabled={isSaving || TaskPresenter.invalid(task)}
+              disabled={isSaving || TaskPresenter.isInvalid(task)}
               startIcon={isSaving ? <CircularProgress size={15} /> : <Save />}
             >
               Add

@@ -16,10 +16,6 @@ function ColumnHeader({ column, onLoadMore }) {
     meta: { totalCount, currentPage, totalPages },
   } = column;
 
-  const handleChangePage = (page) => {
-    onLoadMore({ id, currentPage: page });
-  };
-
   return (
     <div className={styles.root}>
       <div className={styles.title}>
@@ -31,9 +27,12 @@ function ColumnHeader({ column, onLoadMore }) {
             ({cards.length}/{Number.isNaN(totalCount) ? '…' : totalCount})
           </div>
           {!!totalCount && (
-            <div>
-              <Pagination count={totalPages} page={currentPage} onChange={handleChangePage} size="small" />
-            </div>
+            <Pagination
+              count={totalPages}
+              page={currentPage}
+              onChange={(page) => onLoadMore({ id, currentPage: page })}
+              size="small"
+            />
           )}
         </div>
       </div>
@@ -47,7 +46,6 @@ ColumnHeader.propTypes = {
     title: PropTypes.string,
     cards: PropTypes.arrayOf(TaskPresenter.shape()),
     meta: PropTypes.shape({
-      perPage: PropTypes.number,
       totalCount: PropTypes.number,
       currentPage: PropTypes.number,
       totalPages: PropTypes.number,

@@ -38,7 +38,7 @@ export default new PropTypesPresenter(
       const { year, month, date } = this.dateObject(task);
       return `${year}-${this.twoDigit(month)}-${this.twoDigit(date)}`;
     },
-    invalid(task) {
+    isInvalid(task) {
       return !(this.name(task) && this.description(task) && this.assignee(task));
     },
     title(task) {
