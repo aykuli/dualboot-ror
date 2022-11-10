@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import { isNil } from 'ramda';
 import {
   Card,
@@ -20,12 +19,16 @@ import { MODE } from 'constants/board';
 import TaskForm from 'forms/TaskForm';
 import { useTasksActions, useUiAction } from 'slices/TasksSlice';
 import useStyles from './useStyles';
+import useTasks from 'hooks/store/useTasks';
 
-function EditPopup({ cardId }) {
+function EditPopup() {
   const styles = useStyles();
 
   const { setMode } = useUiAction();
   const { loadTask, updateTask, destroyTask } = useTasksActions();
+  const {
+    board: { openedTaskId, currentTask },
+  } = useTasks();
 
   const [task, setTask] = useState(null);
 
@@ -34,7 +37,13 @@ function EditPopup({ cardId }) {
   // const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    loadTask(cardId).then(setTask);
+    if (currentTask) {
+      setTask(currentTask);
+    }
+  }, [currentTask]);
+
+  useEffect(() => {
+    loadTask(openedTaskId);
   }, []);
 
   const handleCardUpdate = () => {
@@ -48,10 +57,10 @@ function EditPopup({ cardId }) {
     destroyTask(task).then(() => setIsDestroying(false));
   };
 
+  const handleClose = () => setMode(MODE.NONE);
+
   const isLoading = isNil(task);
   const isDisableActions = isLoading || isSaving || isDestroying;
-
-  const handleClose = () => setMode(MODE.NONE);
 
   return (
     <Modal className={styles.modal} open onClose={handleClose}>
@@ -101,9 +110,5 @@ function EditPopup({ cardId }) {
     </Modal>
   );
 }
-
-EditPopup.propTypes = {
-  cardId: PropTypes.number.isRequired,
-};
 
 export default EditPopup;

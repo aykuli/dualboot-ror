@@ -9,6 +9,8 @@ import { SEVERITY } from 'constants/ui';
 
 const initialState = {
   board: {
+    currentTask: null,
+    openedTaskId: null,
     columns: initialColumns,
   },
   ui: {
@@ -42,10 +44,16 @@ const tasksSlice = createSlice({
     changeModalState(state, { payload }) {
       state.ui.mode = payload;
     },
+    setEditingTaskId(state, { payload }) {
+      state.board.openedTaskId = payload;
+    },
+    setCurrentTask(state, { payload }) {
+      state.board.currentTask = payload;
+    },
   },
 });
 
-const { loadColumnSuccess, showSnackbar, changeModalState } = tasksSlice.actions;
+const { loadColumnSuccess, showSnackbar, changeModalState, setEditingTaskId, setCurrentTask } = tasksSlice.actions;
 
 export default tasksSlice.reducer;
 
@@ -61,8 +69,6 @@ export const useTasksActions = () => {
       dispatch(loadColumnSuccess({ ...data, columnId: state }));
     });
   };
-
-  const loadTask = (id) => TasksRepository.show(id).then(({ data: { task } }) => task);
 
   const createTask = (attributes) =>
     TasksRepository.create(attributes)
@@ -85,22 +91,45 @@ export const useTasksActions = () => {
         dispatch(changeModalState(MODE.NONE));
       })
       .catch((error) => {
-        dispatch(showSnackbar({ type: SEVERITY.ERROR, text: `Update Failed! Error: ${error?.message || ''}` }));
+        dispatch(showSnackbar({ type: SEVERITY.ERROR, text: `Task updating failed! Error: ${error?.message || ''}` }));
       });
 
   const destroyTask = (task) =>
     TasksRepository.destroy(task.id)
       .then(() => {
         loadColumn(task.state);
-        dispatch(showSnackbar({ type: SEVERITY.SUCCESS, text: 'Task was updated!' }));
+        dispatch(showSnackbar({ type: SEVERITY.SUCCESS, text: 'Task was destroyed!' }));
 
         dispatch(changeModalState(MODE.NONE));
       })
       .catch((error) => {
-        dispatch(showSnackbar({ type: SEVERITY.ERROR, text: `Update Failed! Error: ${error?.message || ''}` }));
+        dispatch(
+          showSnackbar({ type: SEVERITY.ERROR, text: `Task destroying was failed! Error: ${error?.message || ''}` }),
+        );
       });
 
-  return { loadColumn, loadTask, createTask, updateTask, destroyTask };
+  const setEditingTask = (id) => {
+    dispatch(setEditingTaskId(id));
+    dispatch(changeModalState(MODE.EDIT));
+  };
+
+  const loadTask = (taskId) => {
+    dispatch(changeModalState(MODE.EDIT));
+
+    TasksRepository.show(taskId)
+      .then(({ data: { task } }) => dispatch(setCurrentTask(task)))
+      .catch((error) => {
+        dispatch(
+          showSnackbar({
+            type: SEVERITY.ERROR,
+            text: `Load task failed! Please, try again. Error: ${error?.message || ''}`,
+          }),
+        );
+        dispatch(changeModalState(MODE.NONE));
+      });
+  };
+
+  return { loadColumn, loadTask, createTask, updateTask, destroyTask, setEditingTask };
 };
 
 export const useUiAction = () => {
