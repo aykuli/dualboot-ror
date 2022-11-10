@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { IconButton } from '@material-ui/core';
 import { SystemUpdateAlt } from '@material-ui/icons';
 
+import TaskPresenter from 'presenters/TaskPresenter';
+
 import useStyles from './useStyles';
 
 function ColumnHeader({ column, onLoadMore }) {
@@ -36,7 +38,7 @@ ColumnHeader.propTypes = {
   column: PropTypes.shape({
     id: PropTypes.string,
     title: PropTypes.string,
-    cards: PropTypes.arrayOf(PropTypes.shape()),
+    cards: PropTypes.arrayOf(TaskPresenter.shape()),
     meta: PropTypes.shape({
       perPage: PropTypes.number,
       totalCount: PropTypes.number,

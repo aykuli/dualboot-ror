@@ -68,7 +68,7 @@ function Form({ task, errors, onChange, onSubmit }) {
 }
 
 Form.propTypes = {
-  task: PropTypes.shape().isRequired,
+  task: TaskPresenter.shape().isRequired,
   errors: PropTypes.shape({
     name: PropTypes.arrayOf(PropTypes.string),
     author: PropTypes.arrayOf(PropTypes.string),
