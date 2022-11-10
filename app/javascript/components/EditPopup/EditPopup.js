@@ -15,8 +15,8 @@ import { Close, Delete, Save } from '@material-ui/icons';
 import Form from 'components/Form';
 import TaskPresenter from 'presenters/TaskPresenter';
 import { MODE } from 'constants/board';
-
 import TaskForm from 'forms/TaskForm';
+
 import { useTasksActions, useUiAction } from 'slices/TasksSlice';
 import useStyles from './useStyles';
 import useTasks from 'hooks/store/useTasks';

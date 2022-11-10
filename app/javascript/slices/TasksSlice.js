@@ -82,6 +82,11 @@ export const useTasksActions = () => {
         dispatch(showSnackbar({ type: SEVERITY.ERROR, text: `Task creating failed! ${error?.message || ''}` }));
       });
 
+  const updateTaskForDragAndDrop = (sourceColumnId, destinationColumnId) => {
+    loadColumn(sourceColumnId);
+    loadColumn(destinationColumnId);
+  };
+
   const updateTask = (task, attributes) =>
     TasksRepository.update(task.id, attributes)
       .then(() => {
@@ -129,7 +134,7 @@ export const useTasksActions = () => {
       });
   };
 
-  return { loadColumn, loadTask, createTask, updateTask, destroyTask, setEditingTask };
+  return { loadColumn, loadTask, createTask, updateTask, destroyTask, setEditingTask, updateTaskForDragAndDrop };
 };
 
 export const useUiAction = () => {

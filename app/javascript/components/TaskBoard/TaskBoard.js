@@ -4,23 +4,23 @@ import '@asseinfo/react-kanban/dist/styles.css';
 import { Fab } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 
+import { MODE } from 'constants/board';
 import ColumnHeader from 'components/ColumnHeader';
 import Snackbar from 'components/Snackbar';
 import AddPopup from 'components/AddPopup';
 import EditPopup from 'components/EditPopup';
 import Task from 'components/Task';
-import { MODE } from 'constants/board';
-import useTasks from 'hooks/store/useTasks';
 
+import useTasks from 'hooks/store/useTasks';
 import { useTasksActions, useUiAction } from 'slices/TasksSlice';
 import useStyles from './useStyles';
 
 function TaskBoard() {
   const styles = useStyles();
 
-  const { board, ui, loadBoard } = useTasks();
-  const { loadColumn, updateTask } = useTasksActions();
   const { setMode } = useUiAction();
+  const { board, ui, loadBoard } = useTasks();
+  const { loadColumn, updateTask, updateTaskForDragAndDrop } = useTasksActions();
 
   const handleCardDragEnd = (task, source, destination) => {
     const transition = task.transitions.find(({ to }) => destination.toColumnId === to);
@@ -28,7 +28,9 @@ function TaskBoard() {
       return null;
     }
 
-    return updateTask(task, { task: { stateEvent: transition.event } });
+    return updateTask(task, { task: { stateEvent: transition.event } }).then(() =>
+      updateTaskForDragAndDrop(source.fromColumnId, destination.toColumnId),
+    );
   };
 
   useEffect(() => {
