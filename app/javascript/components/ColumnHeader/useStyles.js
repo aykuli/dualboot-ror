@@ -6,7 +6,8 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 12,
+    paddingTop: 8,
+    paddingBottom: 24,
   },
   title: {
     width: '100%',
@@ -14,6 +15,7 @@ const useStyles = makeStyles(() => ({
   paginationWrap: {
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
 }));
 

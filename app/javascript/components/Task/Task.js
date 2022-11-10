@@ -34,36 +34,38 @@ function Task({ task, onClick }) {
         }}
       />
       <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
+        <Typography variant="body1" color="textSecondary" component="p">
           {TaskPresenter.description(task)}
         </Typography>
-        {expiredAt && (
-          <div className={styles.expiredAt}>
-            <Typography color="textSecondary" component="h5" className={styles.expiredAtTitle}>
-              Expires at:
+        <div className={styles.taskInfo}>
+          {expiredAt && (
+            <div className={styles.taskInfoRow}>
+              <Typography color="textSecondary" component="h5" variant="body2" className={styles.infoTitle}>
+                Expires at:
+              </Typography>
+              <Typography color="textSecondary" component="span" variant="body2">
+                {TaskPresenter.expiredDate(task)}
+              </Typography>
+            </div>
+          )}
+
+          <div className={styles.taskInfoRow}>
+            <Typography color="textSecondary" component="h5" variant="body2" className={styles.infoTitle}>
+              Assigned to:
             </Typography>
-            <Typography color="textSecondary" component="span">
-              {TaskPresenter.expiredDate(task)}
+            <Typography color="textSecondary" component="span" variant="body2">
+              {UserPresenter.fullName(task.assignee)}
             </Typography>
           </div>
-        )}
 
-        <div className={styles.expiredAt}>
-          <Typography color="textSecondary" component="h5" className={styles.expiredAtTitle}>
-            Assignee:
-          </Typography>
-          <Typography color="textSecondary" component="span">
-            {UserPresenter.fullName(task.assignee)}
-          </Typography>
-        </div>
-
-        <div className={styles.expiredAt}>
-          <Typography color="textSecondary" component="h5" className={styles.expiredAtTitle}>
-            Author:
-          </Typography>
-          <Typography color="textSecondary" component="span">
-            {UserPresenter.fullName(task.author)}
-          </Typography>
+          <div className={styles.taskInfoRow}>
+            <Typography color="textSecondary" component="h5" variant="body2" className={styles.infoTitle}>
+              Author:
+            </Typography>
+            <Typography color="textSecondary" component="span" variant="body2">
+              {UserPresenter.fullName(task.author)}
+            </Typography>
+          </div>
         </div>
       </CardContent>
     </Card>

@@ -23,7 +23,7 @@ function ColumnHeader({ column, onLoadMore }) {
   return (
     <div className={styles.root}>
       <div className={styles.title}>
-        <Typography variant="h3" component="p" color="primary">
+        <Typography variant="h5" component="p" color="secondary" gutterBottom>
           {title}
         </Typography>
         <div className={styles.paginationWrap}>
