@@ -62,7 +62,7 @@ UserSelect.propTypes = {
   isDisabled: PropTypes.bool,
   isRequired: PropTypes.bool,
   onChange: PropTypes.func,
-  value: PropTypes.shape(),
+  value: UserPresenter.shape(),
   error: PropTypes.bool,
 };
 

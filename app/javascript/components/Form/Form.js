@@ -5,7 +5,6 @@ import { TextField, InputLabel, InputBase, FormControl } from '@material-ui/core
 
 import UserSelect from 'components/UserSelect';
 import TaskPresenter from 'presenters/TaskPresenter';
-import UserPresenter from 'presenters/UserPresenter';
 
 import useStyles from './useStyles';
 
@@ -39,13 +38,15 @@ function Form({ task, errors, onChange, onSubmit }) {
       />
 
       <FormControl variant="standard" margin="dense" className={styles.dateFromControl}>
-        <InputLabel htmlFor="date">Expires at:</InputLabel>
+        <InputLabel htmlFor="date" shrink>
+          Expires at:
+        </InputLabel>
         <InputBase
           id="date"
           type="date"
           className={styles.dateInput}
           inputProps={{ min: new Date() }}
-          value={TaskPresenter.expiredAt(task)}
+          value={TaskPresenter.dateInputExpiredAt(task)}
           onChange={handleChangeTextField('expiredAt')}
           autoFocus
         />
@@ -54,7 +55,7 @@ function Form({ task, errors, onChange, onSubmit }) {
       <FormControl variant="standard" margin="dense">
         <UserSelect
           label="Assignee"
-          value={UserPresenter.fullName(task.assignee)}
+          value={task.assignee}
           onChange={handleChangeSelect('assignee')}
           error={has('assignee', errors)}
           helperText={errors.assignee}

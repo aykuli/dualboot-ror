@@ -11,13 +11,32 @@ export default new PropTypesPresenter(
     expiredAt: PropTypes.string,
   },
   {
-    expiredDate(task) {
+    twoDigit(value) {
+      return `${value < 10 ? '0' : ''}${value}`;
+    },
+    dateObject(task) {
       const isoDate = new Date(this.expiredAt(task));
       const year = isoDate.getFullYear();
       const month = isoDate.getMonth();
       const date = isoDate.getDate();
 
-      return `${date}/${month}/${year}`;
+      return { year, month, date };
+    },
+    expiredDate(task) {
+      if (!this.expiredAt(task)) {
+        return null;
+      }
+
+      const { year, month, date } = this.dateObject(task);
+      return `${this.twoDigit(date)}/${this.twoDigit(month)}/${year}`;
+    },
+    dateInputExpiredAt(task) {
+      if (!this.expiredAt(task)) {
+        return null;
+      }
+
+      const { year, month, date } = this.dateObject(task);
+      return `${year}-${this.twoDigit(month)}-${this.twoDigit(date)}`;
     },
     invalid(task) {
       return !(this.name(task) && this.description(task) && this.assignee(task));
