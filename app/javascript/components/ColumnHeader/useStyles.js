@@ -6,6 +6,14 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+  title: {
+    width: '100%',
+  },
+  paginationWrap: {
+    display: 'flex',
+    justifyContent: 'space-between',
   },
 }));
 

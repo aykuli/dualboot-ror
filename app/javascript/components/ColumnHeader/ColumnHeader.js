@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { IconButton } from '@material-ui/core';
-import { SystemUpdateAlt } from '@material-ui/icons';
+import { Pagination } from '@material-ui/lab';
+import { Typography } from '@material-ui/core';
 
 import TaskPresenter from 'presenters/TaskPresenter';
 
@@ -13,22 +13,29 @@ function ColumnHeader({ column, onLoadMore }) {
     id,
     title,
     cards,
-    meta: { totalCount, currentPage, perPage },
+    meta: { totalCount, currentPage, totalPages },
   } = column;
-  const count = cards.length;
-  const isShowloadIcon = currentPage * perPage < totalCount;
+
+  const handleChangePage = (page) => {
+    onLoadMore({ id, currentPage: page });
+  };
 
   return (
     <div className={styles.root}>
       <div className={styles.title}>
-        <b>{title}</b> ({count}/{totalCount || '…'})
-      </div>
-      <div className={styles.actions}>
-        {isShowloadIcon && (
-          <IconButton aria-label="Load more" onClick={() => onLoadMore({ id, currentPage: currentPage + 1 })}>
-            <SystemUpdateAlt fontSize="small" />
-          </IconButton>
-        )}
+        <Typography variant="h3" component="p" color="primary">
+          {title}
+        </Typography>
+        <div className={styles.paginationWrap}>
+          <div>
+            ({cards.length}/{Number.isNaN(totalCount) ? '…' : totalCount})
+          </div>
+          {!!totalCount && (
+            <div>
+              <Pagination count={totalPages} page={currentPage} onChange={handleChangePage} size="small" />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -43,6 +50,7 @@ ColumnHeader.propTypes = {
       perPage: PropTypes.number,
       totalCount: PropTypes.number,
       currentPage: PropTypes.number,
+      totalPages: PropTypes.number,
     }),
   }).isRequired,
   onLoadMore: PropTypes.func.isRequired,

@@ -135,7 +135,9 @@ function TaskBoard() {
         renderColumnHeader={(column) => (
           <ColumnHeader
             column={column}
-            onLoadMore={(options) => loadColumnInitial(options.id, options.currentPage, 10)}
+            onLoadMore={(options) =>
+              loadColumnInitial(options.id, options.currentPage, 10).then(() => setIsUpdateBoard(true))
+            }
           />
         )}
         onCardDragEnd={handleCardDragEnd}
