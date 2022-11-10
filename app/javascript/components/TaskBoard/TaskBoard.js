@@ -13,6 +13,7 @@ import Task from 'components/Task';
 
 import { useTasksActions } from 'slices/useTasksActions';
 import { useUiAction } from 'slices/useUiAction';
+import useTasks from 'hooks/store/useTasks';
 import useStyles from './useStyles';
 
 function TaskBoard() {
