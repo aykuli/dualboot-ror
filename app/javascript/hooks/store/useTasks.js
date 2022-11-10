@@ -1,14 +1,16 @@
 import { useSelector } from 'react-redux';
 
 import { useTasksActions } from 'slices/TasksSlice';
-import { states } from 'presenters/TaskPresenter';
+import { COLUMNS } from 'constants/board';
 
 const useTasks = () => {
-  const board = useSelector((state) => state.TasksSlice.board);
   const { loadColumn } = useTasksActions();
-  const setBoard = () => Promise.all(states.map(({ key }) => loadColumn(key)));
 
-  return { board, setBoard };
+  const board = useSelector((state) => state.TasksSlice.board);
+
+  const loadBoard = () => Promise.all(COLUMNS.map(({ key }) => loadColumn(key)));
+
+  return { board, loadBoard };
 };
 
 export default useTasks;
