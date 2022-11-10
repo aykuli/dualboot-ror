@@ -17,7 +17,7 @@ import TaskForm from 'forms/TaskForm';
 import TaskPresenter from 'presenters/TaskPresenter';
 
 import { useTasksActions } from 'slices/useTasksActions';
-import { useUiAction } from 'slices/useUiAction';
+import { useUiAction } from 'slices/useUiActions';
 import useStyles from './useStyles';
 
 function AddPopup() {

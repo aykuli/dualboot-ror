@@ -12,7 +12,7 @@ import EditPopup from 'components/EditPopup';
 import Task from 'components/Task';
 
 import { useTasksActions } from 'slices/useTasksActions';
-import { useUiAction } from 'slices/useUiAction';
+import { useUiAction } from 'slices/useUiActions';
 import useTasks from 'hooks/store/useTasks';
 import useStyles from './useStyles';
 
