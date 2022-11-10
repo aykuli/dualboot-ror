@@ -18,10 +18,12 @@ import Form from 'components/Form';
 import { SEVERITY } from 'constants/ui';
 import TaskPresenter from 'presenters/TaskPresenter';
 
+import { useTasksActions } from 'slices/TasksSlice';
 import useStyles from './useStyles';
 
-function EditPopup({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard }) {
+function EditPopup({ cardId, onClose, onDestroyCard, onUpdateCard }) {
   const styles = useStyles();
+  const { loadTask } = useTasksActions();
 
   const [task, setTask] = useState(null);
 
@@ -32,7 +34,7 @@ function EditPopup({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard })
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    onLoadCard(cardId).then(setTask);
+    loadTask(cardId).then(setTask);
   }, []);
 
   const handleCardUpdate = () => {
@@ -118,7 +120,6 @@ function EditPopup({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard })
 EditPopup.propTypes = {
   cardId: PropTypes.number.isRequired,
   onClose: PropTypes.func.isRequired,
-  onLoadCard: PropTypes.func.isRequired,
   onUpdateCard: PropTypes.func.isRequired,
   onDestroyCard: PropTypes.func.isRequired,
 };

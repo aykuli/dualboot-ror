@@ -4,10 +4,19 @@ import { useDispatch } from 'react-redux';
 import { changeColumn } from '@asseinfo/react-kanban';
 
 import TasksRepository from 'repositories/TasksRepository';
-import { initialBoard } from 'constants/board';
+import { initialColumns, MODE, STATE } from 'constants/board';
+import { SEVERITY } from 'constants/ui';
 
 const initialState = {
-  board: initialBoard,
+  board: {
+    columns: initialColumns,
+    snackbar: {
+      isOpen: false,
+      text: '',
+      type: SEVERITY.ERROR,
+    },
+    modalState: MODE.NONE,
+  },
 };
 
 const tasksSlice = createSlice({
@@ -25,10 +34,16 @@ const tasksSlice = createSlice({
 
       return state;
     },
+    showSnackbar(state, payload) {
+      state.board.snackbar = { isOpen: true, ...payload };
+    },
+    changeModalState(state, payload) {
+      state.board.modalState = payload;
+    },
   },
 });
 
-const { loadColumnSuccess } = tasksSlice.actions;
+const { loadColumnSuccess, showSnackbar, changeModalState } = tasksSlice.actions;
 
 export default tasksSlice.reducer;
 
@@ -45,5 +60,15 @@ export const useTasksActions = () => {
     });
   };
 
-  return { loadColumn };
+  const loadTask = (id) => TasksRepository.show(id).then(({ data: { task } }) => task);
+
+  const createTask = (attributes) =>
+    TasksRepository.create(attributes).then(() => {
+      loadColumn(STATE.NEW_TASK);
+      dispatch(showSnackbar({ type: SEVERITY.SUCCESS, text: 'Task created and saved!' }));
+
+      changeModalState(MODE.NONE);
+    });
+
+  return { loadColumn, loadTask, createTask };
 };

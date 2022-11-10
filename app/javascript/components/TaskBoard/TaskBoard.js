@@ -10,12 +10,12 @@ import AddPopup from 'components/AddPopup';
 import EditPopup from 'components/EditPopup';
 import Task from 'components/Task';
 import TaskForm from 'forms/TaskForm';
-import { MODE, STATE } from 'constants/board';
+import { MODE } from 'constants/board';
 import { SEVERITY } from 'constants/ui';
 import TasksRepository from 'repositories/TasksRepository';
 import useTasks from 'hooks/store/useTasks';
-import { useTasksActions } from 'slices/TasksSlice';
 
+import { useTasksActions } from 'slices/TasksSlice';
 import useStyles from './useStyles';
 
 function TaskBoard() {
@@ -56,20 +56,6 @@ function TaskBoard() {
     loadBoard();
   }, []);
 
-  const createTask = (params) => {
-    const attributes = TaskForm.attributesToSubmit(params);
-    return TasksRepository.create(attributes).then(() => {
-      loadColumn(STATE.NEW_TASK);
-
-      setMessage({ type: SEVERITY.SUCCESS, text: 'Task created and saved!' });
-      setIsOpenSnackbar(true);
-
-      setMode(MODE.NONE);
-    });
-  };
-
-  const loadTask = (id) => TasksRepository.show(id).then(({ data: { task } }) => loadColumn(task.state));
-
   const handleClose = () => {
     setMode(MODE.NONE);
     setOpenedTaskId(null);
@@ -98,7 +84,7 @@ function TaskBoard() {
   };
 
   return (
-    <>
+    <div className={styles.kanbanWrapper}>
       <KanbanBoard
         renderCard={(card, index) => <Task key={index} task={card} onClick={handleOpenEditPopup} />}
         renderColumnHeader={(column) => (
@@ -113,20 +99,14 @@ function TaskBoard() {
         <Add />
       </Fab>
 
-      {mode === MODE.ADD && <AddPopup onCreateCard={createTask} onClose={() => setMode(MODE.NONE)} />}
+      {mode === MODE.ADD && <AddPopup onClose={() => setMode(MODE.NONE)} />}
 
       {mode === MODE.EDIT && (
-        <EditPopup
-          cardId={openedTaskId}
-          onClose={handleClose}
-          onLoadCard={loadTask}
-          onUpdateCard={updateTask}
-          onDestroyCard={destroyTask}
-        />
+        <EditPopup cardId={openedTaskId} onClose={handleClose} onUpdateCard={updateTask} onDestroyCard={destroyTask} />
       )}
 
       {isOpenSnackbar && <Snackbar isOpen={isOpenSnackbar} type={message.type} text={message.text} />}
-    </>
+    </div>
   );
 }
 

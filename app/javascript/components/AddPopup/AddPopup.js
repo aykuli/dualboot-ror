@@ -18,10 +18,13 @@ import TaskForm from 'forms/TaskForm';
 import { SEVERITY } from 'constants/ui';
 import TaskPresenter from 'presenters/TaskPresenter';
 
+import { useTasksActions } from 'slices/TasksSlice';
 import useStyles from './useStyles';
 
-function AddPopup({ onClose, onCreateCard }) {
+function AddPopup({ onClose }) {
   const styles = useStyles();
+
+  const { createTask } = useTasksActions();
 
   const [task, setTask] = useState(TaskForm.defaultAttributes());
   const [isOpenSnackbar, setIsOpenSnackbar] = useState(false);
@@ -31,16 +34,8 @@ function AddPopup({ onClose, onCreateCard }) {
 
   const handleCreate = () => {
     setSaving(true);
-
-    onCreateCard(task).catch((error) => {
-      setSaving(false);
-      setErrors(error || {});
-
-      if (error instanceof Error) {
-        setMessage({ type: SEVERITY.ERROR, text: `Task saving failed! ${error?.message || ''}` });
-        setIsOpenSnackbar(true);
-      }
-    });
+    const attributes = TaskForm.attributesToSubmit(task);
+    createTask(attributes);
   };
 
   return (
@@ -82,7 +77,6 @@ function AddPopup({ onClose, onCreateCard }) {
 
 AddPopup.propTypes = {
   onClose: PropTypes.func.isRequired,
-  onCreateCard: PropTypes.func.isRequired,
 };
 
 export default AddPopup;
