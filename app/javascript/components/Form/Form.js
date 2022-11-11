@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import { has } from 'ramda';
 import { TextField, InputLabel, InputBase, FormControl } from '@material-ui/core';
 
+import UserSelect from 'components/UserSelect';
+import TaskPresenter from 'presenters/TaskPresenter';
+
 import useStyles from './useStyles';
 
 function Form({ task, errors, onChange, onSubmit }) {
@@ -10,11 +13,13 @@ function Form({ task, errors, onChange, onSubmit }) {
 
   const handleChangeTextField = (fieldName) => (event) => onChange({ ...task, [fieldName]: event.target.value });
 
+  const handleChangeSelect = (fieldName) => (user) => onChange({ ...task, [fieldName]: user });
+
   return (
     <form className={styles.root} onSubmit={onSubmit}>
       <TextField
         label="Name"
-        value={task.name}
+        value={TaskPresenter.name(task)}
         error={has('name', errors)}
         helperText={errors.name}
         onChange={handleChangeTextField('name')}
@@ -23,7 +28,7 @@ function Form({ task, errors, onChange, onSubmit }) {
       />
       <TextField
         label="Description"
-        value={task.description}
+        value={TaskPresenter.description(task)}
         error={has('description', errors)}
         helperText={errors.description}
         onChange={handleChangeTextField('description')}
@@ -33,15 +38,30 @@ function Form({ task, errors, onChange, onSubmit }) {
       />
 
       <FormControl variant="standard" margin="dense" className={styles.dateFromControl}>
-        <InputLabel htmlFor="date">Expires at:</InputLabel>
+        <InputLabel htmlFor="date" shrink>
+          Expires at:
+        </InputLabel>
         <InputBase
           id="date"
           type="date"
           className={styles.dateInput}
           inputProps={{ min: new Date() }}
-          value={task.expiredAt || new Date()}
+          value={TaskPresenter.dateInputExpiredAt(task)}
           onChange={handleChangeTextField('expiredAt')}
           autoFocus
+        />
+      </FormControl>
+
+      <FormControl variant="standard" margin="dense">
+        <UserSelect
+          label="Assignee"
+          value={task.assignee}
+          onChange={handleChangeSelect('assignee')}
+          error={has('assignee', errors)}
+          helperText={errors.assignee}
+          isSearchable
+          isClearable
+          isRequired
         />
       </FormControl>
     </form>
@@ -49,7 +69,7 @@ function Form({ task, errors, onChange, onSubmit }) {
 }
 
 Form.propTypes = {
-  task: PropTypes.shape().isRequired,
+  task: TaskPresenter.shape().isRequired,
   errors: PropTypes.shape({
     name: PropTypes.arrayOf(PropTypes.string),
     author: PropTypes.arrayOf(PropTypes.string),

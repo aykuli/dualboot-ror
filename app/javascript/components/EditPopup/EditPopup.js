@@ -16,6 +16,7 @@ import { Close, Delete, Save } from '@material-ui/icons';
 import Snackbar from 'components/Snackbar';
 import Form from 'components/Form';
 import { SEVERITY } from 'constants/ui';
+import TaskPresenter from 'presenters/TaskPresenter';
 
 import useStyles from './useStyles';
 
@@ -72,7 +73,7 @@ function EditPopup({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard })
                 <Close />
               </IconButton>
             }
-            title={isLoading ? 'Your task is loading...' : `Task # ${task.id} [${task.name}]`}
+            title={isLoading ? 'Your task is loading...' : TaskPresenter.title(task)}
           />
           <CardContent>
             {isLoading ? (

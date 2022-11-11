@@ -16,6 +16,7 @@ import Snackbar from 'components/Snackbar';
 import Form from 'components/Form';
 import TaskForm from 'forms/TaskForm';
 import { SEVERITY } from 'constants/ui';
+import TaskPresenter from 'presenters/TaskPresenter';
 
 import useStyles from './useStyles';
 
@@ -65,7 +66,7 @@ function AddPopup({ onClose, onCreateCard }) {
               size="medium"
               className={styles.btn}
               onClick={handleCreate}
-              disabled={isSaving}
+              disabled={isSaving || TaskPresenter.isInvalid(task)}
               startIcon={isSaving ? <CircularProgress size={15} /> : <Save />}
             >
               Add

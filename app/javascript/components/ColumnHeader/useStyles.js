@@ -6,6 +6,16 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingTop: 8,
+    paddingBottom: 24,
+  },
+  title: {
+    width: '100%',
+  },
+  paginationWrap: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 }));
 

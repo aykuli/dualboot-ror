@@ -16,13 +16,21 @@ const useStyles = makeStyles(() => ({
     textOverflow: 'ellipsis',
     overflow: 'hidden',
   },
-  expiredAt: {
-    display: 'flex',
+  taskInfo: {
     marginTop: 16,
   },
-  expiredAtTitle: {
+  expiredAt: {
+    display: 'flex',
+  },
+  infoTitle: {
     marginRight: 4,
     fontWeight: 600,
+  },
+  taskInfoRow: {
+    display: 'grid',
+    gridTemplateColumns: '80px 1fr',
+    gridColumnGap: 4,
+    marginBottom: 2,
   },
 }));
 

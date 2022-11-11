@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import KanbanBoard from '@asseinfo/react-kanban';
 import '@asseinfo/react-kanban/dist/styles.css';
 import { propOr } from 'ramda';
@@ -31,10 +31,13 @@ function TaskBoard() {
 
   const loadColumn = (state, page, perPage) => TasksRepository.index({ q: { stateEq: state }, page, perPage });
 
-  const loadColumnInitial = (state, page = 1, perPage = 10) =>
-    loadColumn(state, page, perPage).then(({ data: { items, meta } }) => {
-      setBoardCards((prev) => ({ ...prev, [state]: { cards: items, meta } }));
-    });
+  const loadColumnInitial = useCallback(
+    (state, page = 1, perPage = 10) =>
+      loadColumn(state, page, perPage).then(({ data: { items, meta } }) =>
+        setBoardCards((prev) => ({ ...prev, [state]: { cards: items, meta } })),
+      ),
+    [boardCards],
+  );
 
   const updateBoard = () => {
     setBoard({
@@ -135,7 +138,9 @@ function TaskBoard() {
         renderColumnHeader={(column) => (
           <ColumnHeader
             column={column}
-            onLoadMore={(options) => loadColumnInitial(options.id, options.currentPage, 10)}
+            onLoadMore={(options) =>
+              loadColumnInitial(options.id, options.currentPage, 10).then(() => setIsUpdateBoard(true))
+            }
           />
         )}
         onCardDragEnd={handleCardDragEnd}
