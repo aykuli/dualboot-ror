@@ -41,3 +41,7 @@ After installing ` webpacker` run this command to build files in `public` folder
 bundle exec rails assets:precompile
 bundle exec rails webpacker:compile
 ```
+
+- errors in form
+- -drag and drop
+- -do smt with snackbar

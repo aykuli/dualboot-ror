@@ -15,6 +15,7 @@ function ColumnHeader({ column, onLoadMore }) {
     cards,
     meta: { totalCount, currentPage, totalPages },
   } = column;
+  const count = cards.length;
 
   return (
     <div className={styles.root}>
@@ -22,19 +23,19 @@ function ColumnHeader({ column, onLoadMore }) {
         <Typography variant="h5" component="p" color="secondary" gutterBottom>
           {title}
         </Typography>
-        <div className={styles.paginationWrap}>
-          <div>
-            ({cards.length}/{Number.isNaN(totalCount) ? '…' : totalCount})
-          </div>
-          {!!totalCount && (
+        {!!totalCount && (
+          <div className={styles.paginationWrap}>
+            <div>
+              {count}/{totalCount}
+            </div>
             <Pagination
               count={totalPages}
               page={currentPage}
               onChange={(page) => onLoadMore({ id, currentPage: page })}
               size="small"
             />
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

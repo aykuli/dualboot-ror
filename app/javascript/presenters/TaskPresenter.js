@@ -27,8 +27,9 @@ export default new PropTypesPresenter(
         return null;
       }
 
-      const { year, month, date } = this.dateObject(task);
-      return `${this.twoDigit(date)}/${this.twoDigit(month)}/${year}`;
+      const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+      const date = new Date(this.expiredAt(task));
+      return date.toLocaleDateString(undefined, options);
     },
     dateInputExpiredAt(task) {
       if (!this.expiredAt(task)) {
