@@ -18,17 +18,20 @@ import TaskPresenter from 'presenters/TaskPresenter';
 
 import useTasksActions from 'slices/useTasksActions';
 import useUiAction from 'slices/useUiActions';
+import useTasks from 'hooks/store/useTasks';
 import useStyles from './useStyles';
 
 function AddPopup() {
   const styles = useStyles();
 
   const { createTask } = useTasksActions();
-  const { setMode } = useUiAction();
+  const { setMode, clearErrors } = useUiAction();
+  const {
+    ui: { errors },
+  } = useTasks();
 
   const [task, setTask] = useState(TaskForm.defaultAttributes());
   const [isSaving, setIsSaving] = useState(false);
-  const [errors] = useState({});
 
   const handleCreate = () => {
     setIsSaving(true);
@@ -36,7 +39,10 @@ function AddPopup() {
     createTask(attributes).then(() => setIsSaving(false));
   };
 
-  const handleClose = () => setMode(MODE.NONE);
+  const handleClose = () => {
+    setMode(MODE.NONE);
+    clearErrors();
+  };
 
   return (
     <Modal className={styles.modal} open onClose={handleClose}>

@@ -4,7 +4,14 @@ import TasksRepository from 'repositories/TasksRepository';
 import { MODE, STATE } from 'constants/board';
 import { SEVERITY } from 'constants/ui';
 
-import { loadColumnSuccess, showSnackbar, changeModalState, setEditingTaskId, setCurrentTask } from './TasksSlice';
+import {
+  loadColumnSuccess,
+  showSnackbar,
+  changeModalState,
+  setEditingTaskId,
+  setCurrentTask,
+  setFormErrors,
+} from './TasksSlice';
 
 export default () => {
   const dispatch = useDispatch();
@@ -14,9 +21,11 @@ export default () => {
       q: { stateEq: state },
       page,
       perPage,
-    }).then(({ data }) => {
-      dispatch(loadColumnSuccess({ ...data, columnId: state }));
-    });
+    })
+      .then(({ data }) => {
+        dispatch(loadColumnSuccess({ ...data, columnId: state }));
+      })
+      .catch(() => dispatch(showSnackbar({ type: SEVERITY.ERROR, text: 'Something went wrong! Please, try again' })));
   };
 
   const createTask = (attributes) =>
@@ -24,11 +33,11 @@ export default () => {
       .then(() => {
         loadColumn(STATE.NEW_TASK);
         dispatch(showSnackbar({ type: SEVERITY.SUCCESS, text: 'Task created and saved!' }));
-
         dispatch(changeModalState(MODE.NONE));
       })
       .catch((error) => {
         dispatch(showSnackbar({ type: SEVERITY.ERROR, text: `Task creating failed! ${error?.message || ''}` }));
+        dispatch(setFormErrors(error));
       });
 
   const updateTaskForDragAndDrop = (sourceColumnId, destinationColumnId) => {
@@ -46,6 +55,7 @@ export default () => {
       })
       .catch((error) => {
         dispatch(showSnackbar({ type: SEVERITY.ERROR, text: `Task updating failed! Error: ${error?.message || ''}` }));
+        dispatch(setFormErrors(error));
       });
 
   const destroyTask = (task) =>

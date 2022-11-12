@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { has } from 'ramda';
-import { TextField, InputLabel, InputBase, FormControl } from '@material-ui/core';
+import { TextField, InputLabel, InputBase, FormControl, FormHelperText } from '@material-ui/core';
 
 import UserSelect from 'components/UserSelect';
 import TaskPresenter from 'presenters/TaskPresenter';
@@ -21,7 +21,7 @@ function Form({ task, errors, onChange, onSubmit }) {
         label="Name"
         value={TaskPresenter.name(task)}
         error={has('name', errors)}
-        helperText={errors.name}
+        helperText={errors?.name}
         onChange={handleChangeTextField('name')}
         margin="dense"
         required
@@ -30,14 +30,19 @@ function Form({ task, errors, onChange, onSubmit }) {
         label="Description"
         value={TaskPresenter.description(task)}
         error={has('description', errors)}
-        helperText={errors.description}
+        helperText={errors?.description}
         onChange={handleChangeTextField('description')}
         multiline
         margin="dense"
         required
       />
 
-      <FormControl variant="standard" margin="dense" className={styles.dateFromControl}>
+      <FormControl
+        error={has('expiredAt', errors)}
+        variant="standard"
+        margin="dense"
+        className={styles.dateFromControl}
+      >
         <InputLabel htmlFor="date" shrink>
           Expires at:
         </InputLabel>
@@ -48,8 +53,10 @@ function Form({ task, errors, onChange, onSubmit }) {
           inputProps={{ min: new Date() }}
           value={TaskPresenter.dateInputExpiredAt(task)}
           onChange={handleChangeTextField('expiredAt')}
+          error={has('expiredAt', errors)}
           autoFocus
         />
+        <FormHelperText id="component-error-text">{errors?.expiredAt}</FormHelperText>
       </FormControl>
 
       <FormControl variant="standard" margin="dense">
@@ -58,7 +65,7 @@ function Form({ task, errors, onChange, onSubmit }) {
           value={task.assignee}
           onChange={handleChangeSelect('assignee')}
           error={has('assignee', errors)}
-          helperText={errors.assignee}
+          helperText={errors?.assignee}
           isSearchable
           isClearable
           isRequired

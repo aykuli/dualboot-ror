@@ -1,10 +1,8 @@
 import { propEq } from 'ramda';
 import { createSlice } from '@reduxjs/toolkit';
-import { useDispatch } from 'react-redux';
 import { changeColumn } from '@asseinfo/react-kanban';
 
-import TasksRepository from 'repositories/TasksRepository';
-import { initialColumns, MODE, STATE } from 'constants/board';
+import { initialColumns, MODE } from 'constants/board';
 import { SEVERITY } from 'constants/ui';
 
 const initialState = {
@@ -20,6 +18,7 @@ const initialState = {
       type: SEVERITY.ERROR,
     },
     mode: MODE.NONE,
+    errors: null,
   },
 };
 
@@ -50,10 +49,13 @@ const tasksSlice = createSlice({
     setCurrentTask(state, { payload }) {
       state.board.currentTask = payload;
     },
+    setFormErrors(state, { payload }) {
+      state.ui.errors = payload;
+    },
   },
 });
 
-export const { loadColumnSuccess, showSnackbar, changeModalState, setEditingTaskId, setCurrentTask } =
+export const { loadColumnSuccess, showSnackbar, changeModalState, setEditingTaskId, setCurrentTask, setFormErrors } =
   tasksSlice.actions;
 
 export default tasksSlice.reducer;

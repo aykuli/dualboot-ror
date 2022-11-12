@@ -19,23 +19,23 @@ import TaskForm from 'forms/TaskForm';
 
 import useTasksActions from 'slices/useTasksActions';
 import useUiAction from 'slices/useUiActions';
-import useStyles from './useStyles';
 import useTasks from 'hooks/store/useTasks';
+import useStyles from './useStyles';
 
 function EditPopup() {
   const styles = useStyles();
 
-  const { setMode } = useUiAction();
+  const { setMode, clearErrors } = useUiAction();
   const { loadTask, updateTask, destroyTask } = useTasksActions();
   const {
     board: { openedTaskId, currentTask },
+    ui: { errors },
   } = useTasks();
 
   const [task, setTask] = useState(null);
 
   const [isDestroying, setIsDestroying] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  // const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (currentTask) {
@@ -58,7 +58,10 @@ function EditPopup() {
     destroyTask(task).then(() => setIsDestroying(false));
   };
 
-  const handleClose = () => setMode(MODE.NONE);
+  const handleClose = () => {
+    setMode(MODE.NONE);
+    clearErrors();
+  };
 
   const isLoading = isNil(task);
   const isDisableActions = isLoading || isSaving || isDestroying;
@@ -80,7 +83,7 @@ function EditPopup() {
               <CircularProgress />
             </div>
           ) : (
-            <Form onChange={setTask} task={task} onSubmit={handleCardUpdate} />
+            <Form errors={errors} onChange={setTask} task={task} onSubmit={handleCardUpdate} />
           )}
         </CardContent>
         <CardActions className={styles.actions}>
