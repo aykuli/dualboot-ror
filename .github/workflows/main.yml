@@ -10,11 +10,31 @@ on:
 
 jobs:
   build:
+    name: Build
+    environment: development
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Run tests
         env:
           COVERAGE: true
+          COVERALLS_DUALBOOT_TOKEN: ${{ secrets.COVERALLS_DUALBOOT_TOKEN }}
           RAILS_ENV: test
         run: docker-compose --file docker-compose.ci.yml run ci
+
+      - name: Publish to coveralls.io
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  rubocop:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.7.1'
+          bundler-cache: true
+      - name: Run rubocop
+        run: bundle exec rubocop -a --parallel

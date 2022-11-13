@@ -9,7 +9,15 @@ services:
       - db
     environment:
       - COVERAGE
+      - COVERALLS_DUALBOOT_TOKEN
       - RAILS_ENV
       - DATABASE_HOST=db
       - DATABASE_USERNAME=postgres
-    command: sh -c "bundle exec rails webpacker:install && bundle exec rails db:create db:migrate && bundle exec rake test"
+    volumes:
+      - ./coverage:/task_manager/coverage
+    command: sh -c "bundle exec rails webpacker:install
+      && bundle exec rails db:create db:migrate
+      && cp config/webpacker.example.yml config/webpacker.yml
+      && cp babel.config.example.js babel.config.js
+      && bundle exec rails webpacker:compile
+      && bundle exec rake test"
