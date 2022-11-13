@@ -1,5 +1,7 @@
 # Task manager
 
+[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fhttps%3A%2F%2Fgithub.com%2Faykuli%2Fdualboot-ror%2Fbadge%3Fref%3Ddevelop&style=plastic)](https://actions-badge.atrox.dev/https://github.com/aykuli/dualboot-ror/goto?ref=develop)
+
 **Learning platform**: [Dualboot Partners courses](https://learn.dualboot.ru/courses)
 **Student**: Aynur Shauerman aykuli@ya.ru
 
