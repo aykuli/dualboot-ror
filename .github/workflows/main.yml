@@ -3,10 +3,10 @@ name: Main
 on:
   pull_request:
     branches:
-      - 'develop'
+      - 'feature/devops'
   push:
     branches:
-      - 'develop'
+      - 'feature/devops'
 
 jobs:
   build:
