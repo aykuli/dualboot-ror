@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import KanbanBoard from '@asseinfo/react-kanban';
 import '@asseinfo/react-kanban/dist/styles.css';
-import { propOr } from 'ramda';
 import { Fab } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 
@@ -11,9 +10,9 @@ import AddPopup from 'components/AddPopup';
 import EditPopup from 'components/EditPopup';
 import Task from 'components/Task';
 import TaskForm from 'forms/TaskForm';
-import { COLUMNS, META_DEFAULT, initialBoard, MODE, STATE } from 'constants/board';
+import { MODE, STATE } from 'constants/board';
 import { SEVERITY } from 'constants/ui';
-import TasksRepository from 'repositories/TasksRepository';
+import { useTasksActions } from 'slices/TasksSlice';
 import useTasks from 'hooks/store/useTasks';
 
 import useStyles from './useStyles';
@@ -21,42 +20,13 @@ import useStyles from './useStyles';
 function TaskBoard() {
   const styles = useStyles();
 
-  const { board, setBoard } = useTasks(initialBoard);
-  const [boardCards, setBoardCards] = useState({});
+  const { board, loadBoard } = useTasks();
+  const { loadColumn, createTask, loadTask, updateTask, destroyTask } = useTasksActions();
 
   const [mode, setMode] = useState(MODE.NONE);
   const [message, setMessage] = useState(null);
   const [openedTaskId, setOpenedTaskId] = useState(null);
-  const [isUpdateBoard, setIsUpdateBoard] = useState(false);
   const [isOpenSnackbar, setIsOpenSnackbar] = useState(false);
-
-  const loadColumn = (state, page, perPage) => TasksRepository.index({ q: { stateEq: state }, page, perPage });
-
-  const loadColumnInitial = useCallback(
-    (state, page = 1, perPage = 10) =>
-      loadColumn(state, page, perPage).then(({ data: { items, meta } }) =>
-        setBoardCards((prev) => ({ ...prev, [state]: { cards: items, meta } })),
-      ),
-    [boardCards],
-  );
-
-  const updateBoard = () => {
-    setBoard({
-      columns: COLUMNS.map(({ key, value }) => ({
-        id: key,
-        title: value,
-        cards: propOr([], 'cards', boardCards[key]),
-        meta: propOr(META_DEFAULT, 'meta', boardCards[key]),
-      })),
-    });
-
-    setIsUpdateBoard(false);
-  };
-
-  const loadBoard = () =>
-    COLUMNS.forEach(({ key }, index) =>
-      loadColumnInitial(key).then(() => index === COLUMNS.length - 1 && setIsUpdateBoard(true)),
-    );
 
   const handleCardDragEnd = (task, source, destination) => {
     const transition = task.transitions.find(({ to }) => destination.toColumnId === to);
@@ -64,10 +34,10 @@ function TaskBoard() {
       return null;
     }
 
-    return TasksRepository.update(task.id, { task: { stateEvent: transition.event } })
+    return updateTask(task, { task: { stateEvent: transition.event } })
       .then(() => {
-        loadColumnInitial(destination.toColumnId);
-        loadColumnInitial(source.fromColumnId).then(() => setIsUpdateBoard(true));
+        loadColumn(destination.toColumnId);
+        loadColumn(source.fromColumnId);
 
         setMessage({
           type: SEVERITY.SUCCESS,
@@ -85,16 +55,30 @@ function TaskBoard() {
     loadBoard();
   }, []);
 
-  useEffect(() => {
-    if (isUpdateBoard) {
-      updateBoard();
-    }
-  }, [isUpdateBoard]);
+  const handleClose = () => {
+    setMode(MODE.NONE);
+    setOpenedTaskId(null);
+  };
 
-  const createTask = (params) => {
-    const attributes = TaskForm.attributesToSubmit(params);
-    return TasksRepository.create(attributes).then(() => {
-      loadColumnInitial(STATE.NEW_TASK).then(() => setIsUpdateBoard(true));
+  const handleUpdateTask = (task) => {
+    const attributes = TaskForm.attributesToSubmit(task);
+
+    return updateTask(task, attributes).then(() => {
+      loadColumn(task.state);
+      handleClose();
+    });
+  };
+
+  const handleDestroyTask = (task) => destroyTask(task).then(() => handleClose());
+
+  const handleOpenEditPopup = (task) => {
+    setOpenedTaskId(task.id);
+    setMode(MODE.EDIT);
+  };
+
+  const handleCreateTask = (params) => {
+    createTask(params).then(() => {
+      loadColumn(STATE.NEW_TASK);
 
       setMessage({ type: SEVERITY.SUCCESS, text: 'Task created and saved!' });
       setIsOpenSnackbar(true);
@@ -103,47 +87,13 @@ function TaskBoard() {
     });
   };
 
-  const loadTask = (id) => TasksRepository.show(id).then(({ data: { task } }) => task);
-
-  const handleClose = () => {
-    setMode(MODE.NONE);
-    setOpenedTaskId(null);
-  };
-
-  const updateTask = (task) => {
-    const attributes = TaskForm.attributesToSubmit(task);
-
-    return TasksRepository.update(task.id, attributes).then(() => {
-      loadColumnInitial(task.state).then(() => setIsUpdateBoard(true));
-
-      handleClose();
-    });
-  };
-
-  const destroyTask = (task) =>
-    TasksRepository.destroy(task.id).then(() => {
-      loadColumnInitial(task.state).then(() => setIsUpdateBoard(true));
-
-      handleClose();
-    });
-
-  const handleOpenEditPopup = (task) => {
-    setOpenedTaskId(task.id);
-    setMode(MODE.EDIT);
-  };
+  const loadColumnMore = (options) => loadColumn(options.id, options.currentPage, 10);
 
   return (
     <>
       <KanbanBoard
         renderCard={(card, index) => <Task key={index} task={card} onClick={handleOpenEditPopup} />}
-        renderColumnHeader={(column) => (
-          <ColumnHeader
-            column={column}
-            onLoadMore={(options) =>
-              loadColumnInitial(options.id, options.currentPage, 10).then(() => setIsUpdateBoard(true))
-            }
-          />
-        )}
+        renderColumnHeader={(column) => <ColumnHeader column={column} onLoadMore={loadColumnMore} />}
         onCardDragEnd={handleCardDragEnd}
       >
         {board}
@@ -153,15 +103,15 @@ function TaskBoard() {
         <Add />
       </Fab>
 
-      {mode === MODE.ADD && <AddPopup onCreateCard={createTask} onClose={() => setMode(MODE.NONE)} />}
+      {mode === MODE.ADD && <AddPopup onCreateCard={handleCreateTask} onClose={() => setMode(MODE.NONE)} />}
 
       {mode === MODE.EDIT && (
         <EditPopup
           cardId={openedTaskId}
           onClose={handleClose}
           onLoadCard={loadTask}
-          onUpdateCard={updateTask}
-          onDestroyCard={destroyTask}
+          onUpdateCard={handleUpdateTask}
+          onDestroyCard={handleDestroyTask}
         />
       )}
 

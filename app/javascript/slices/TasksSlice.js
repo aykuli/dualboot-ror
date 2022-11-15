@@ -52,11 +52,6 @@ export const useTasksActions = () => {
       loadColumn(STATE.NEW_TASK);
     });
 
-  const updateTaskForDragAndDrop = (sourceColumnId, destinationColumnId) => {
-    loadColumn(sourceColumnId);
-    loadColumn(destinationColumnId);
-  };
-
   const updateTask = (task, attributes) =>
     TasksRepository.update(task.id, attributes).then(() => {
       loadColumn(task.state);
@@ -67,7 +62,7 @@ export const useTasksActions = () => {
       loadColumn(task.state);
     });
 
-  const loadTask = (taskId) => TasksRepository.show(taskId);
+  const loadTask = (taskId) => TasksRepository.show(taskId).then(({ data: { task } }) => task);
 
-  return { loadColumn, loadTask, createTask, updateTask, destroyTask, updateTaskForDragAndDrop };
+  return { loadColumn, loadTask, createTask, updateTask, destroyTask };
 };
