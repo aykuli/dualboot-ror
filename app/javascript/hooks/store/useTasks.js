@@ -7,11 +7,10 @@ const useTasks = () => {
   const { loadColumn } = useTasksActions();
 
   const board = useSelector((state) => state.TasksSlice.board);
-  const ui = useSelector((state) => state.TasksSlice.ui);
 
   const loadBoard = () => Promise.all(COLUMNS.map(({ key }) => loadColumn(key)));
 
-  return { board, ui, loadBoard };
+  return { board, loadBoard };
 };
 
 export default useTasks;

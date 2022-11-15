@@ -4,22 +4,11 @@ import { useDispatch } from 'react-redux';
 import { changeColumn } from '@asseinfo/react-kanban';
 
 import TasksRepository from 'repositories/TasksRepository';
-import { initialColumns, MODE, STATE } from 'constants/board';
-import { SEVERITY } from 'constants/ui';
+import { initialColumns, STATE } from 'constants/board';
 
 const initialState = {
   board: {
-    currentTask: null,
-    openedTaskId: null,
     columns: initialColumns,
-  },
-  ui: {
-    snackbar: {
-      isOpen: false,
-      text: '',
-      type: SEVERITY.ERROR,
-    },
-    mode: MODE.NONE,
   },
 };
 
@@ -38,25 +27,10 @@ const tasksSlice = createSlice({
 
       return state;
     },
-    showSnackbar(state, { payload }) {
-      state.ui.snackbar = { isOpen: true, ...payload };
-    },
-    changeModalState(state, { payload }) {
-      state.ui.mode = payload;
-    },
-    setEditingTaskId(state, { payload }) {
-      state.board.openedTaskId = payload;
-    },
-    setCurrentTask(state, { payload }) {
-      state.board.currentTask = payload;
-    },
-    setFormErrors(state, { payload }) {
-      state.ui.errors = payload;
-    },
   },
 });
 
-const { loadColumnSuccess, showSnackbar, changeModalState, setEditingTaskId, setCurrentTask } = tasksSlice.actions;
+const { loadColumnSuccess } = tasksSlice.actions;
 
 export default tasksSlice.reducer;
 
@@ -74,16 +48,9 @@ export const useTasksActions = () => {
   };
 
   const createTask = (attributes) =>
-    TasksRepository.create(attributes)
-      .then(() => {
-        loadColumn(STATE.NEW_TASK);
-        dispatch(showSnackbar({ type: SEVERITY.SUCCESS, text: 'Task created and saved!' }));
-
-        dispatch(changeModalState(MODE.NONE));
-      })
-      .catch((error) => {
-        dispatch(showSnackbar({ type: SEVERITY.ERROR, text: `Task creating failed! ${error?.message || ''}` }));
-      });
+    TasksRepository.create(attributes).then(() => {
+      loadColumn(STATE.NEW_TASK);
+    });
 
   const updateTaskForDragAndDrop = (sourceColumnId, destinationColumnId) => {
     loadColumn(sourceColumnId);
@@ -91,59 +58,16 @@ export const useTasksActions = () => {
   };
 
   const updateTask = (task, attributes) =>
-    TasksRepository.update(task.id, attributes)
-      .then(() => {
-        loadColumn(task.state);
-        dispatch(showSnackbar({ type: SEVERITY.SUCCESS, text: 'Task was updated!' }));
-
-        dispatch(changeModalState(MODE.NONE));
-      })
-      .catch((error) => {
-        dispatch(showSnackbar({ type: SEVERITY.ERROR, text: `Task updating failed! Error: ${error?.message || ''}` }));
-      });
+    TasksRepository.update(task.id, attributes).then(() => {
+      loadColumn(task.state);
+    });
 
   const destroyTask = (task) =>
-    TasksRepository.destroy(task.id)
-      .then(() => {
-        loadColumn(task.state);
-        dispatch(showSnackbar({ type: SEVERITY.SUCCESS, text: 'Task was destroyed!' }));
+    TasksRepository.destroy(task.id).then(() => {
+      loadColumn(task.state);
+    });
 
-        dispatch(changeModalState(MODE.NONE));
-      })
-      .catch((error) => {
-        dispatch(
-          showSnackbar({ type: SEVERITY.ERROR, text: `Task destroying was failed! Error: ${error?.message || ''}` }),
-        );
-      });
+  const loadTask = (taskId) => TasksRepository.show(taskId);
 
-  const setEditingTask = (id) => {
-    dispatch(setEditingTaskId(id));
-    dispatch(changeModalState(MODE.EDIT));
-  };
-
-  const loadTask = (taskId) => {
-    dispatch(changeModalState(MODE.EDIT));
-
-    TasksRepository.show(taskId)
-      .then(({ data: { task } }) => dispatch(setCurrentTask(task)))
-      .catch((error) => {
-        dispatch(
-          showSnackbar({
-            type: SEVERITY.ERROR,
-            text: `Load task failed! Please, try again. Error: ${error?.message || ''}`,
-          }),
-        );
-        dispatch(changeModalState(MODE.NONE));
-      });
-  };
-
-  return { loadColumn, loadTask, createTask, updateTask, destroyTask, setEditingTask, updateTaskForDragAndDrop };
-};
-
-export const useUiAction = () => {
-  const dispatch = useDispatch();
-
-  const setMode = (mode) => dispatch(changeModalState(mode));
-
-  return { setMode };
+  return { loadColumn, loadTask, createTask, updateTask, destroyTask, updateTaskForDragAndDrop };
 };
