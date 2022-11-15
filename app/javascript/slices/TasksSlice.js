@@ -4,12 +4,10 @@ import { useDispatch } from 'react-redux';
 import { changeColumn } from '@asseinfo/react-kanban';
 
 import TasksRepository from 'repositories/TasksRepository';
-import { initialColumns, STATE } from 'constants/board';
+import { initialBoard, STATE } from 'constants/board';
 
 const initialState = {
-  board: {
-    columns: initialColumns,
-  },
+  board: initialBoard,
 };
 
 const tasksSlice = createSlice({
