@@ -4,7 +4,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 
 import store from 'store';
 import theme from 'theme';
-import TaskBoard from 'components/TaskBoard';
+import TaskBoard from 'containers/TaskBoard';
 
 function App() {
   return (
