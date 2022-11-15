@@ -1,20 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Card, CardHeader, CardContent, Typography, IconButton } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
 
 import TaskPresenter from 'presenters/TaskPresenter';
 import UserPresenter from 'presenters/UserPresenter';
 
-import { useTasksActions } from 'slices/TasksSlice';
 import useStyles from './useStyles';
 
-function Task({ task }) {
+function Task({ task, onClick }) {
   const styles = useStyles();
 
-  const { setEditingTask } = useTasksActions();
-
   const action = (
-    <IconButton onClick={() => setEditingTask(task.id)}>
+    <IconButton onClick={() => onClick(task)}>
       <Edit />
     </IconButton>
   );
@@ -47,14 +45,16 @@ function Task({ task }) {
             </div>
           )}
 
-          <div className={styles.taskInfoRow}>
-            <Typography color="textSecondary" component="h5" variant="body2" className={styles.infoTitle}>
-              Assigned to:
-            </Typography>
-            <Typography color="textSecondary" component="span" variant="body2">
-              {UserPresenter.fullName(task.assignee)}
-            </Typography>
-          </div>
+          {task.assignee && (
+            <div className={styles.taskInfoRow}>
+              <Typography color="textSecondary" component="h5" variant="body2" className={styles.infoTitle}>
+                Assigned to:
+              </Typography>
+              <Typography color="textSecondary" component="span" variant="body2">
+                {UserPresenter.fullName(task.assignee)}
+              </Typography>
+            </div>
+          )}
 
           <div className={styles.taskInfoRow}>
             <Typography color="textSecondary" component="h5" variant="body2" className={styles.infoTitle}>
@@ -72,6 +72,7 @@ function Task({ task }) {
 
 Task.propTypes = {
   task: TaskPresenter.shape().isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default Task;

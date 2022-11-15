@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { has } from 'ramda';
-import { TextField, InputLabel, InputBase, FormControl, FormHelperText } from '@material-ui/core';
+import { TextField, InputLabel, InputBase, FormControl } from '@material-ui/core';
 
 import UserSelect from 'components/UserSelect';
 import TaskPresenter from 'presenters/TaskPresenter';
@@ -37,12 +37,7 @@ function Form({ task, errors, onChange, onSubmit }) {
         required
       />
 
-      <FormControl
-        error={has('expiredAt', errors)}
-        variant="standard"
-        margin="dense"
-        className={styles.dateFromControl}
-      >
+      <FormControl variant="standard" margin="dense" className={styles.dateFromControl}>
         <InputLabel htmlFor="date" shrink>
           Expires at:
         </InputLabel>
@@ -56,7 +51,6 @@ function Form({ task, errors, onChange, onSubmit }) {
           error={has('expiredAt', errors)}
           autoFocus
         />
-        <FormHelperText id="component-error-text">{errors?.expiredAt}</FormHelperText>
       </FormControl>
 
       <FormControl variant="standard" margin="dense">

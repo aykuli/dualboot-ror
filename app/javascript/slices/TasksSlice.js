@@ -35,7 +35,7 @@ export default tasksSlice.reducer;
 export const useTasksActions = () => {
   const dispatch = useDispatch();
 
-  const loadColumn = (state, page = 1, perPage = 10) => {
+  const loadColumn = (state, page = 1, perPage = 10) =>
     TasksRepository.index({
       q: { stateEq: state },
       page,
@@ -43,7 +43,6 @@ export const useTasksActions = () => {
     }).then(({ data }) => {
       dispatch(loadColumnSuccess({ ...data, columnId: state }));
     });
-  };
 
   const createTask = (attributes) =>
     TasksRepository.create(attributes).then(() => {

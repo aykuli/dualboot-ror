@@ -77,7 +77,9 @@ function TaskBoard() {
   };
 
   const handleCreateTask = (params) => {
-    createTask(params).then(() => {
+    const attributes = TaskForm.attributesToSubmit(params);
+
+    return createTask(attributes).then(() => {
       loadColumn(STATE.NEW_TASK);
 
       setMessage({ type: SEVERITY.SUCCESS, text: 'Task created and saved!' });

@@ -42,7 +42,7 @@ function EditPopup({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard })
       setSaving(false);
       setErrors(error || {});
 
-      setMessage({ type: SEVERITY.ERROR, text: `Update Failed! Error: ${error?.message || ''}` });
+      setMessage({ type: SEVERITY.ERROR, text: 'Update failed!' });
       setIsOpenSnackbar(true);
     });
   };
@@ -50,10 +50,10 @@ function EditPopup({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard })
   const handleCardDestroy = () => {
     setIsDestroying(true);
 
-    onDestroyCard(task).catch((error) => {
+    onDestroyCard(task).catch(() => {
       setIsDestroying(false);
 
-      setMessage({ type: SEVERITY.ERROR, text: `Destrucion Failed! Error: ${error?.message || ''}` });
+      setMessage({ type: SEVERITY.ERROR, text: 'Deleting failed!' });
       setIsOpenSnackbar(true);
     });
   };

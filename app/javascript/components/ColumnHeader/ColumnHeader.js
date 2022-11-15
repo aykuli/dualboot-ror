@@ -31,7 +31,7 @@ function ColumnHeader({ column, onLoadMore }) {
             <Pagination
               count={totalPages}
               page={currentPage}
-              onChange={(page) => onLoadMore({ id, currentPage: page })}
+              onChange={(_, page) => onLoadMore({ id, currentPage: page })}
               size="small"
             />
           </div>
