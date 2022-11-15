@@ -1,22 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Card, CardHeader, CardContent, Typography, IconButton } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
 
 import TaskPresenter from 'presenters/TaskPresenter';
 import UserPresenter from 'presenters/UserPresenter';
 
+import useTasksActions from 'slices/useTasksActions';
 import useStyles from './useStyles';
 
-function Task({ task, onClick }) {
+function Task({ task }) {
   const styles = useStyles();
 
-  const { expiredAt } = task;
-
-  const handleClick = () => onClick(task);
+  const { setEditingTask } = useTasksActions();
 
   const action = (
-    <IconButton onClick={handleClick}>
+    <IconButton onClick={() => setEditingTask(task.id)}>
       <Edit />
     </IconButton>
   );
@@ -38,7 +36,7 @@ function Task({ task, onClick }) {
           {TaskPresenter.description(task)}
         </Typography>
         <div className={styles.taskInfo}>
-          {expiredAt && (
+          {task.expiredAt && (
             <div className={styles.taskInfoRow}>
               <Typography color="textSecondary" component="h5" variant="body2" className={styles.infoTitle}>
                 Expires at:
@@ -74,7 +72,6 @@ function Task({ task, onClick }) {
 
 Task.propTypes = {
   task: TaskPresenter.shape().isRequired,
-  onClick: PropTypes.func.isRequired,
 };
 
 export default Task;

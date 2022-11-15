@@ -1,61 +1,27 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import KanbanBoard from '@asseinfo/react-kanban';
 import '@asseinfo/react-kanban/dist/styles.css';
-import { propOr } from 'ramda';
 import { Fab } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 
+import { MODE } from 'constants/board';
 import ColumnHeader from 'components/ColumnHeader';
 import Snackbar from 'components/Snackbar';
 import AddPopup from 'components/AddPopup';
 import EditPopup from 'components/EditPopup';
 import Task from 'components/Task';
-import TaskForm from 'forms/TaskForm';
-import { COLUMNS, META_DEFAULT, initialBoard, MODE, STATE } from 'constants/board';
-import { SEVERITY } from 'constants/ui';
-import TasksRepository from 'repositories/TasksRepository';
 
+import useTasksActions from 'slices/useTasksActions';
+import useUiAction from 'slices/useUiActions';
+import useTasks from 'hooks/store/useTasks';
 import useStyles from './useStyles';
 
 function TaskBoard() {
   const styles = useStyles();
 
-  const [board, setBoard] = useState(initialBoard);
-  const [boardCards, setBoardCards] = useState({});
-
-  const [mode, setMode] = useState(MODE.NONE);
-  const [message, setMessage] = useState(null);
-  const [openedTaskId, setOpenedTaskId] = useState(null);
-  const [isUpdateBoard, setIsUpdateBoard] = useState(false);
-  const [isOpenSnackbar, setIsOpenSnackbar] = useState(false);
-
-  const loadColumn = (state, page, perPage) => TasksRepository.index({ q: { stateEq: state }, page, perPage });
-
-  const loadColumnInitial = useCallback(
-    (state, page = 1, perPage = 10) =>
-      loadColumn(state, page, perPage).then(({ data: { items, meta } }) =>
-        setBoardCards((prev) => ({ ...prev, [state]: { cards: items, meta } })),
-      ),
-    [boardCards],
-  );
-
-  const updateBoard = () => {
-    setBoard({
-      columns: COLUMNS.map(({ key, value }) => ({
-        id: key,
-        title: value,
-        cards: propOr([], 'cards', boardCards[key]),
-        meta: propOr(META_DEFAULT, 'meta', boardCards[key]),
-      })),
-    });
-
-    setIsUpdateBoard(false);
-  };
-
-  const loadBoard = () =>
-    COLUMNS.forEach(({ key }, index) =>
-      loadColumnInitial(key).then(() => index === COLUMNS.length - 1 && setIsUpdateBoard(true)),
-    );
+  const { setMode } = useUiAction();
+  const { board, ui, loadBoard } = useTasks();
+  const { loadColumn, updateTask, updateTaskForDragAndDrop } = useTasksActions();
 
   const handleCardDragEnd = (task, source, destination) => {
     const transition = task.transitions.find(({ to }) => destination.toColumnId === to);
@@ -63,109 +29,37 @@ function TaskBoard() {
       return null;
     }
 
-    return TasksRepository.update(task.id, { task: { stateEvent: transition.event } })
-      .then(() => {
-        loadColumnInitial(destination.toColumnId);
-        loadColumnInitial(source.fromColumnId).then(() => setIsUpdateBoard(true));
-
-        setMessage({
-          type: SEVERITY.SUCCESS,
-          text: `Task "${task.name}" moved from state ${source.fromColumnId} to ${destination.toColumnId}`,
-        });
-        setIsOpenSnackbar(true);
-      })
-      .catch((error) => {
-        setMessage({ type: SEVERITY.ERROR, text: `Move failed! ${error?.message || ''}` });
-        setIsOpenSnackbar(true);
-      });
+    return updateTask(task, { task: { stateEvent: transition.event } }).then(() =>
+      updateTaskForDragAndDrop(source.fromColumnId, destination.toColumnId),
+    );
   };
 
   useEffect(() => {
     loadBoard();
   }, []);
 
-  useEffect(() => {
-    if (isUpdateBoard) {
-      updateBoard();
-    }
-  }, [isUpdateBoard]);
-
-  const createTask = (params) => {
-    const attributes = TaskForm.attributesToSubmit(params);
-    return TasksRepository.create(attributes).then(() => {
-      loadColumnInitial(STATE.NEW_TASK).then(() => setIsUpdateBoard(true));
-
-      setMessage({ type: SEVERITY.SUCCESS, text: 'Task created and saved!' });
-      setIsOpenSnackbar(true);
-
-      setMode(MODE.NONE);
-    });
-  };
-
-  const loadTask = (id) => TasksRepository.show(id).then(({ data: { task } }) => task);
-
-  const handleClose = () => {
-    setMode(MODE.NONE);
-    setOpenedTaskId(null);
-  };
-
-  const updateTask = (task) => {
-    const attributes = TaskForm.attributesToSubmit(task);
-
-    return TasksRepository.update(task.id, attributes).then(() => {
-      loadColumnInitial(task.state).then(() => setIsUpdateBoard(true));
-
-      handleClose();
-    });
-  };
-
-  const destroyTask = (task) =>
-    TasksRepository.destroy(task.id).then(() => {
-      loadColumnInitial(task.state).then(() => setIsUpdateBoard(true));
-
-      handleClose();
-    });
-
-  const handleOpenEditPopup = (task) => {
-    setOpenedTaskId(task.id);
-    setMode(MODE.EDIT);
-  };
-
   return (
-    <>
+    <div className={styles.kanbanWrapper}>
       <KanbanBoard
-        renderCard={(card, index) => <Task key={index} task={card} onClick={handleOpenEditPopup} />}
+        renderCard={(card, index) => <Task key={index} task={card} />}
         renderColumnHeader={(column) => (
-          <ColumnHeader
-            column={column}
-            onLoadMore={(options) =>
-              loadColumnInitial(options.id, options.currentPage, 10).then(() => setIsUpdateBoard(true))
-            }
-          />
+          <ColumnHeader column={column} onLoadMore={(options) => loadColumn(options.id, options.currentPage, 10)} />
         )}
         onCardDragEnd={handleCardDragEnd}
       >
         {board}
       </KanbanBoard>
 
-      <Fab className={styles.addButton} color="primary" aria-label="add" onClick={() => setMode(MODE.ADD)}>
+      <Fab className={styles.addButton} color="secondary" aria-label="add" onClick={() => setMode(MODE.ADD)}>
         <Add />
       </Fab>
 
-      {mode === MODE.ADD && <AddPopup onCreateCard={createTask} onClose={() => setMode(MODE.NONE)} />}
+      {ui.mode === MODE.ADD && <AddPopup />}
 
-      {mode === MODE.EDIT && (
-        <EditPopup
-          cardId={openedTaskId}
-          onClose={handleClose}
-          onLoadCard={loadTask}
-          onUpdateCard={updateTask}
-          onDestroyCard={destroyTask}
-        />
-      )}
+      {ui.mode === MODE.EDIT && <EditPopup />}
 
-      {isOpenSnackbar && <Snackbar isOpen={isOpenSnackbar} type={message.type} text={message.text} />}
-    </>
+      {ui.snackbar.isOpen && <Snackbar isOpen={ui.snackbar.isOpen} type={ui.snackbar.type} text={ui.snackbar.text} />}
+    </div>
   );
 }
 

@@ -19,14 +19,12 @@ export const COLUMNS = [
 
 export const META_DEFAULT = { count: 0, totalCount: 0, currentPage: 0, perPage: 10 };
 
-export const initialBoard = {
-  columns: COLUMNS.map(({ key, value }) => ({
-    id: key,
-    title: value,
-    cards: [],
-    meta: META_DEFAULT,
-  })),
-};
+export const initialColumns = COLUMNS.map(({ key, value }) => ({
+  id: key,
+  title: value,
+  cards: [],
+  meta: META_DEFAULT,
+}));
 
 export const MODE = {
   ADD: 'add',
