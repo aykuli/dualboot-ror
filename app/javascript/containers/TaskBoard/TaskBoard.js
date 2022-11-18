@@ -10,7 +10,7 @@ import AddPopup from 'components/AddPopup';
 import EditPopup from 'components/EditPopup';
 import Task from 'components/Task';
 import TaskForm from 'forms/TaskForm';
-import { MODE, STATE } from 'constants/board';
+import { MODE } from 'constants/board';
 import { SEVERITY } from 'constants/ui';
 import useTasks from 'hooks/store/useTasks';
 
@@ -61,10 +61,7 @@ function TaskBoard() {
   const handleUpdateTask = (task) => {
     const attributes = TaskForm.attributesToSubmit(task);
 
-    return updateTask(task, attributes).then(() => {
-      loadColumn(task.state);
-      handleClose();
-    });
+    return updateTask(task, attributes).then(handleClose);
   };
 
   const handleDestroyTask = (task) => destroyTask(task).then(() => handleClose());
@@ -78,8 +75,6 @@ function TaskBoard() {
     const attributes = TaskForm.attributesToSubmit(params);
 
     return createTask(attributes).then(() => {
-      loadColumn(STATE.NEW_TASK);
-
       setMessage({ type: SEVERITY.SUCCESS, text: 'Task created and saved!' });
       setIsOpenSnackbar(true);
 

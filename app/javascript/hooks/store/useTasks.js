@@ -10,7 +10,7 @@ const useTasks = () => {
 
   const loadBoard = () => Promise.all(COLUMNS.map(({ key }) => loadColumn(key)));
 
-  return { board, loadBoard, loadTask, createTask, updateTask, destroyTask };
+  return { board, loadColumn, loadBoard, loadTask, createTask, updateTask, destroyTask };
 };
 
 export default useTasks;

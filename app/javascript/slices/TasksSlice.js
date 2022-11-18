@@ -37,12 +37,10 @@ export const useTasksActions = () => {
 
   const loadColumn = (state, page = 1, perPage = 10) =>
     TasksRepository.index({
-      q: { stateEq: state },
+      q: { stateEq: state, sortEq: 'created_at desc' },
       page,
       perPage,
-    }).then(({ data }) => {
-      dispatch(loadColumnSuccess({ ...data, columnId: state }));
-    });
+    }).then(({ data }) => dispatch(loadColumnSuccess({ ...data, columnId: state })));
 
   const createTask = (attributes) =>
     TasksRepository.create(attributes).then(() => {
