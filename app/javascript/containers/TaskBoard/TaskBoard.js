@@ -13,7 +13,6 @@ import TaskForm from 'forms/TaskForm';
 import { MODE } from 'constants/board';
 import { SEVERITY } from 'constants/ui';
 import useTasks from 'hooks/store/useTasks';
-
 import useStyles from './useStyles';
 
 function TaskBoard() {
