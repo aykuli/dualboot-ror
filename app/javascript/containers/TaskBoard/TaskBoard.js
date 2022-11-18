@@ -12,7 +12,6 @@ import Task from 'components/Task';
 import TaskForm from 'forms/TaskForm';
 import { MODE, STATE } from 'constants/board';
 import { SEVERITY } from 'constants/ui';
-import { useTasksActions } from 'slices/TasksSlice';
 import useTasks from 'hooks/store/useTasks';
 
 import useStyles from './useStyles';
@@ -20,8 +19,7 @@ import useStyles from './useStyles';
 function TaskBoard() {
   const styles = useStyles();
 
-  const { board, loadBoard } = useTasks();
-  const { loadColumn, createTask, loadTask, updateTask, destroyTask } = useTasksActions();
+  const { board, loadBoard, loadColumn, createTask, loadTask, updateTask, destroyTask } = useTasks();
 
   const [mode, setMode] = useState(MODE.NONE);
   const [message, setMessage] = useState(null);
