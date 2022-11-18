@@ -25,7 +25,7 @@ axios.defaults.headers = {
 
 axios.interceptors.response.use(null, (error) => {
   if (error.response.status === 422) {
-    const { errors } = error.response.data;
+    const { errors } = error.response.data.errors;
     return Promise.reject(errors);
   }
 

@@ -9,8 +9,8 @@ import 'channels';
 import 'material-design-lite/material';
 import WebpackerReact from 'webpacker-react';
 
-import App from './App';
+import TaskBoard from 'components/TaskBoard';
 
 Rails.start();
 ActiveStorage.start();
-WebpackerReact.setup({ App });
+WebpackerReact.setup({ TaskBoard });
