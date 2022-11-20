@@ -21,7 +21,7 @@ function Form({ task, errors, onChange, onSubmit }) {
         label="Name"
         value={TaskPresenter.name(task)}
         error={has('name', errors)}
-        helperText={errors.name}
+        helperText={errors?.name}
         onChange={handleChangeTextField('name')}
         margin="dense"
         required
@@ -30,7 +30,7 @@ function Form({ task, errors, onChange, onSubmit }) {
         label="Description"
         value={TaskPresenter.description(task)}
         error={has('description', errors)}
-        helperText={errors.description}
+        helperText={errors?.description}
         onChange={handleChangeTextField('description')}
         multiline
         margin="dense"
@@ -48,6 +48,7 @@ function Form({ task, errors, onChange, onSubmit }) {
           inputProps={{ min: new Date() }}
           value={TaskPresenter.dateInputExpiredAt(task)}
           onChange={handleChangeTextField('expiredAt')}
+          error={has('expiredAt', errors)}
           autoFocus
         />
       </FormControl>
@@ -58,7 +59,7 @@ function Form({ task, errors, onChange, onSubmit }) {
           value={task.assignee}
           onChange={handleChangeSelect('assignee')}
           error={has('assignee', errors)}
-          helperText={errors.assignee}
+          helperText={errors?.assignee}
           isSearchable
           isClearable
           isRequired

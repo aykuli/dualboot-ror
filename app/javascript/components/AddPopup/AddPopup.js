@@ -36,10 +36,8 @@ function AddPopup({ onClose, onCreateCard }) {
       setSaving(false);
       setErrors(error || {});
 
-      if (error instanceof Error) {
-        setMessage({ type: SEVERITY.ERROR, text: `Task saving failed! ${error?.message || ''}` });
-        setIsOpenSnackbar(true);
-      }
+      setMessage({ type: SEVERITY.ERROR, text: 'Task saving failed!' });
+      setIsOpenSnackbar(true);
     });
   };
 

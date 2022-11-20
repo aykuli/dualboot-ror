@@ -11,12 +11,8 @@ import useStyles from './useStyles';
 function Task({ task, onClick }) {
   const styles = useStyles();
 
-  const { expiredAt } = task;
-
-  const handleClick = () => onClick(task);
-
   const action = (
-    <IconButton onClick={handleClick}>
+    <IconButton onClick={() => onClick(task)}>
       <Edit />
     </IconButton>
   );
@@ -38,7 +34,7 @@ function Task({ task, onClick }) {
           {TaskPresenter.description(task)}
         </Typography>
         <div className={styles.taskInfo}>
-          {expiredAt && (
+          {task.expiredAt && (
             <div className={styles.taskInfoRow}>
               <Typography color="textSecondary" component="h5" variant="body2" className={styles.infoTitle}>
                 Expires at:
@@ -49,14 +45,16 @@ function Task({ task, onClick }) {
             </div>
           )}
 
-          <div className={styles.taskInfoRow}>
-            <Typography color="textSecondary" component="h5" variant="body2" className={styles.infoTitle}>
-              Assigned to:
-            </Typography>
-            <Typography color="textSecondary" component="span" variant="body2">
-              {UserPresenter.fullName(task.assignee)}
-            </Typography>
-          </div>
+          {task.assignee && (
+            <div className={styles.taskInfoRow}>
+              <Typography color="textSecondary" component="h5" variant="body2" className={styles.infoTitle}>
+                Assigned to:
+              </Typography>
+              <Typography color="textSecondary" component="span" variant="body2">
+                {UserPresenter.fullName(task.assignee)}
+              </Typography>
+            </div>
+          )}
 
           <div className={styles.taskInfoRow}>
             <Typography color="textSecondary" component="h5" variant="body2" className={styles.infoTitle}>

@@ -20,7 +20,7 @@ function ColumnHeader({ column, onLoadMore }) {
   return (
     <div className={styles.root}>
       <div className={styles.title}>
-        <Typography variant="h5" component="p" color="secondary" gutterBottom>
+        <Typography variant="h5" component="p" color="primary" gutterBottom>
           {title}
         </Typography>
         {!!totalCount && (
@@ -31,7 +31,7 @@ function ColumnHeader({ column, onLoadMore }) {
             <Pagination
               count={totalPages}
               page={currentPage}
-              onChange={(page) => onLoadMore({ id, currentPage: page })}
+              onChange={(_, page) => onLoadMore({ id, currentPage: page })}
               size="small"
             />
           </div>

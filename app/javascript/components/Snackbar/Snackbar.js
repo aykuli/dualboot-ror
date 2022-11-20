@@ -4,7 +4,7 @@ import { Snackbar as MuiSnackbar, IconButton } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab/';
 
-import { SEVERITY } from 'constants/ui';
+import { SEVERITY, SNACKBAR_HIDE_DURATION } from 'constants/ui';
 
 function Snackbar({ isOpen, text, type }) {
   const [open, setOpen] = useState(isOpen);
@@ -24,7 +24,7 @@ function Snackbar({ isOpen, text, type }) {
   );
 
   return (
-    <MuiSnackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+    <MuiSnackbar open={open} autoHideDuration={SNACKBAR_HIDE_DURATION} onClose={handleClose}>
       <Alert severity={type} onClose={handleClose} sx={{ width: '100%' }} action={action}>
         {text}
       </Alert>
