@@ -6,18 +6,18 @@ class Web::SessionsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  # test 'should post create' do
-  #   password = generate(:string)
+  test 'should post create' do
+    password = generate(:string)
 
-  #   user = create(:user, { password: password })
-  #   attributes = { email: user.email, password: password }
+    user = create(:user, { password: password })
+    attributes = { email: user.email, password: password }
 
-  #   post :create, params: { session_form: attributes }
-  #   assert_response :redirect
-  # end
+    post :create, params: { session_form: attributes }
+    assert_response :redirect
+  end
 
-  # test 'should delete' do
-  #   delete :destroy
-  #   assert_response :redirect
-  # end
+  test 'should delete' do
+    delete :destroy
+    assert_response :redirect
+  end
 end
