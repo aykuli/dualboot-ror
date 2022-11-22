@@ -41,7 +41,10 @@ class Api::V1::TasksControllerTest < ActionController::TestCase
     task = create(:task, author: author)
     task_attributes = attributes_for(:task).merge({ author_id: author.id, assignee_id: assignee.id }).stringify_keys
 
-    patch :update, params: { id: task.id, format: :json, task: task_attributes }
+    assert_emails 1 do
+      patch :update, params: { id: task.id, format: :json, task: task_attributes }
+    end
+
     assert_response :success
 
     task.reload
@@ -55,7 +58,11 @@ class Api::V1::TasksControllerTest < ActionController::TestCase
   test 'should delete task' do
     author = create(:user)
     task = create(:task, author: author)
-    delete :destroy, params: { id: task.id, format: :json }
+
+    assert_emails 1 do
+      delete :destroy, params: { id: task.id, format: :json }
+    end
+
     assert_response :success
 
     assert_not Task.where(id: task.id).exists?
