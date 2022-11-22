@@ -1,5 +1,6 @@
 databases:
   - name: task-manager
+    plan: free
     databaseName: db
     user: aynur
 
