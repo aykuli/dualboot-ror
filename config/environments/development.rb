@@ -73,4 +73,23 @@ Rails.application.configure do
 
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
+
+  config.after_initialize do
+    Bullet.enable = true
+
+    # Pop up a JavaScript alert in the browser
+    Bullet.alert = true
+
+    # Log to the Bullet log file (Rails.root/log/bullet.log)
+    Bullet.bullet_logger = true
+
+    # Log warnings to your browser's console.log
+    Bullet.console = true
+   
+    # Add warnings directly to the Rails log
+    Bullet.rails_logger = true
+
+    # Adds the details in the bottom left corner of the page. Double click the footer or use close button to hide footer.
+    Bullet.add_footer = true
+  end
 end
