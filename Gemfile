@@ -53,6 +53,11 @@ group :development do
   gem 'rack-mini-profiler', '~> 2.0'
   gem 'listen', '~> 3.3'
   gem 'bullet'
+
+  # Preview email in the default browser instead of sending it. 
+  gem 'letter_opener'
+  # Gives letter_opener an interface for browsing sent emails.
+  gem 'letter_opener_web', '~> 2.0'
 end
 
 group :test do
