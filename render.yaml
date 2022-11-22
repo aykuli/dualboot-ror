@@ -18,3 +18,18 @@ services:
           property: connectionString
       - key: RAILS_MASTER_KEY
         sync: false
+      - key: DATABASE_NAME
+        fromService:
+          type: web
+          name: db-name
+          envVarKey: DATABASE_NAME
+      - key: DATABASE_PASSWORD
+        fromService:
+          type: web
+          name: db-password
+          envVarKey: DATABASE_PASSWORD
+      - key: DATABASE_USERNAME
+        fromService:
+          type: web
+          name: db-user
+          envVarKey: DATABASE_USERNAME
