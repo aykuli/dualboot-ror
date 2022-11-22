@@ -39,6 +39,10 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'factory_bot_rails'
   gem 'rubocop'
+
+  # https://github.com/simplecov-ruby/simplecov
+  # Code coverage for Ruby
+  gem 'simplecov'
 end
 
 group :development do
@@ -81,3 +85,12 @@ gem 'webpacker-react'
 # https://github.com/railsware/js-routes
 # Generates javascript file that defines all Rails named routes as javascript helpers
 gem 'js-routes'
+
+# https://github.com/lemurheavy/coveralls-ruby
+gem 'coveralls'
+
+# https://github.com/fortissimo1997/simplecov-lcov
+gem 'simplecov-lcov', '~> 0.7.0'
+
+# https://github.com/tagliala/coveralls-ruby-reborn
+gem 'coveralls_reborn', '~> 0.25.0'
