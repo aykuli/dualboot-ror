@@ -54,9 +54,12 @@ group :development do
   gem 'listen', '~> 3.3'
   gem 'bullet'
 
-  # Preview email in the default browser instead of sending it. 
+  # Preview email in the default browser instead of sending it.
+  # https://github.com/ryanb/letter_opener
   gem 'letter_opener'
+  
   # Gives letter_opener an interface for browsing sent emails.
+  # https://github.com/fgrehm/letter_opener_web
   gem 'letter_opener_web', '~> 2.0'
 end
 
