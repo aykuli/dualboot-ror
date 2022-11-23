@@ -11,4 +11,27 @@ admin.save
   u.save
 end
 
+manager = Manager.first
+developer = Developer.first
+developer_second = Developer.second
+
+10.times do |i|
+  task = manager.my_tasks.new(
+    name: "Task #{i} for developer 1",
+    description: "Task description #{i} for developer 1",
+    assignee_id: developer.id,
+  )
+  task.save
+end
+
+5.times do |i|
+  task = manager.my_tasks.new(
+    name: "Task 1 #{i} for developer 2",
+    description: "Task description 1 #{i} for developer 2",
+    assignee: developer_second,
+  )
+  task.save
+end
+
+
 

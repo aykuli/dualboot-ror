@@ -60,6 +60,15 @@ group :test do
   gem 'selenium-webdriver'
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers'
+
+  # https://github.com/lemurheavy/coveralls-ruby
+  gem 'coveralls'
+
+  # https://github.com/fortissimo1997/simplecov-lcov
+  gem 'simplecov-lcov', '~> 0.7.0'
+
+  # https://github.com/tagliala/coveralls-ruby-reborn
+  gem 'coveralls_reborn', '~> 0.25.0'
 end
 
 # https://github.com/kaminari/kaminari
@@ -85,12 +94,3 @@ gem 'webpacker-react'
 # https://github.com/railsware/js-routes
 # Generates javascript file that defines all Rails named routes as javascript helpers
 gem 'js-routes'
-
-# https://github.com/lemurheavy/coveralls-ruby
-gem 'coveralls'
-
-# https://github.com/fortissimo1997/simplecov-lcov
-gem 'simplecov-lcov', '~> 0.7.0'
-
-# https://github.com/tagliala/coveralls-ruby-reborn
-gem 'coveralls_reborn', '~> 0.25.0'
