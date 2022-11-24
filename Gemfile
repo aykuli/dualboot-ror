@@ -95,3 +95,6 @@ gem 'webpacker-react'
 # https://github.com/railsware/js-routes
 # Generates javascript file that defines all Rails named routes as javascript helpers
 gem 'js-routes'
+
+# https://docs.rollbar.com/docs/rails
+gem 'rollbar'
