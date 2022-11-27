@@ -5,7 +5,7 @@ class Api::V1::TasksControllerTest < ActionController::TestCase
     admin = create(:admin)
     sign_in admin
   end
-  
+
   test 'should get show' do
     author = create(:user)
     task = create(:task, author: author)

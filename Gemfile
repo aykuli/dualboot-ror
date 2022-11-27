@@ -26,6 +26,7 @@ gem 'bcrypt', '~> 3.1.7'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
+# https://github.com/heartcombo/simple_form
 gem 'simple_form'
 gem 'state_machines'
 gem 'state_machines-activerecord'
@@ -57,7 +58,7 @@ group :development do
   # Preview email in the default browser instead of sending it.
   # https://github.com/ryanb/letter_opener
   gem 'letter_opener'
-  
+
   # Gives letter_opener an interface for browsing sent emails.
   # https://github.com/fgrehm/letter_opener_web
   gem 'letter_opener_web', '~> 2.0'

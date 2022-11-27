@@ -13,7 +13,7 @@ class User < ApplicationRecord
             format: { with: URI::MailTo::EMAIL_REGEXP },
             uniqueness: { case_sensitive: false }
 
-  attr_accessor :remember_token, :reset_token
+  attr_accessor :remember_token, :reset_token, :password_confirmation
 
   class << self
     def new_token
@@ -34,5 +34,9 @@ class User < ApplicationRecord
     byebug
     update_attribute(:reset_digest, User.digest(reset_token))
     update_attribute(:reset_sent_at, Time.now)
+  end
+
+  def password_reset_expired?
+    reset_sent_at < 24.hours.ago
   end
 end

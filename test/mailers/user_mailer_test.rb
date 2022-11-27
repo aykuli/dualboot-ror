@@ -1,7 +1,7 @@
-require "test_helper"
+require 'test_helper'
 
 class UserMailerTest < ActionMailer::TestCase
-  test "task created" do
+  test 'task created' do
     user = create(:user)
     task = create(:task)
     params = { user: user, task: task }
@@ -17,7 +17,7 @@ class UserMailerTest < ActionMailer::TestCase
     assert email.body.to_s.include?("Task &#39;#{task.name}&#39; was created")
   end
 
-  test "task updated" do
+  test 'task updated' do
     user = create(:user)
     task = create(:task)
     params = { user: user, task: task }
@@ -33,7 +33,7 @@ class UserMailerTest < ActionMailer::TestCase
     assert email.body.to_s.include?("Task &#39;#{task.name}&#39; was updated")
   end
 
-  test "task destroyed" do
+  test 'task destroyed' do
     user = create(:user)
     task = create(:task)
     params = { user: user, task: task }
@@ -60,7 +60,7 @@ class UserMailerTest < ActionMailer::TestCase
     end
 
     assert_equal ['noreply@taskmanager.com'], email.from
-    assert_equal "Password reset", email.subject
+    assert_equal 'Password reset', email.subject
     assert_equal [user.email], email.to
     assert_match user.reset_token, email.body.encoded
   end

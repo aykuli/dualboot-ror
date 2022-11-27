@@ -1,2 +1,8 @@
-h1 Web::PasswordResets#edit
-p Find me in app/views/web/password_resets/edit.html.slim
+h4 Reset password
+= simple_form_for @user, url: password_reset_path(params[:id]) do |f|
+  p
+    = f.input :email, :as => :hidden, :input_html => { "value" => @user.email }
+    = f.input :password
+    = f.input :password_confirmation, 'Confirm'
+  p
+    = f.button :submit, 'Update password', class: 'mdl-button--accent mdl-js-ripple-effect'
