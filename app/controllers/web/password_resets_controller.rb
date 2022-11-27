@@ -7,7 +7,7 @@ class Web::PasswordResetsController < Web::ApplicationController
 
     if @user
       @user.create_reset_digest
-      UserMailer.with({ user: @user, task: task }).password_reset.deliver_now
+      UserMailer.with({ user: @user }).password_reset.deliver_now
 
       redirect_to root_url
     else
@@ -16,5 +16,6 @@ class Web::PasswordResetsController < Web::ApplicationController
   end
 
   def edit
+
   end
 end

@@ -23,8 +23,8 @@ class UserMailer < ApplicationMailer
   end
 
   def password_reset
-    user = params[:user]
-    byebug
-    mail(to: user.email, subject: "Password reset")
+    @user = params[:user]
+
+    mail(to: @user.email, subject: "Password reset")
   end
 end

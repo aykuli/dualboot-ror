@@ -13,6 +13,8 @@ class User < ApplicationRecord
             format: { with: URI::MailTo::EMAIL_REGEXP },
             uniqueness: { case_sensitive: false }
 
+  attr_accessor :remember_token, :reset_token
+
   class << self
     def new_token
       SecureRandom.urlsafe_base64
@@ -28,7 +30,8 @@ class User < ApplicationRecord
   end
 
   def create_reset_digest
-    reset_token = User.new_token
+    self.reset_token = User.new_token
+    byebug
     update_attribute(:reset_digest, User.digest(reset_token))
     update_attribute(:reset_sent_at, Time.now)
   end

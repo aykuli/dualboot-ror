@@ -5,8 +5,8 @@ class UserMailerTest < ActionMailer::TestCase
     user = create(:user)
     task = create(:task)
     params = { user: user, task: task }
-    email = UserMailer.with(params).task_created
 
+    email = UserMailer.with(params).task_created
     assert_emails 1 do
       email.deliver_now
     end
@@ -21,8 +21,8 @@ class UserMailerTest < ActionMailer::TestCase
     user = create(:user)
     task = create(:task)
     params = { user: user, task: task }
-    email = UserMailer.with(params).task_updated
 
+    email = UserMailer.with(params).task_updated
     assert_emails 1 do
       email.deliver_now
     end
@@ -37,8 +37,8 @@ class UserMailerTest < ActionMailer::TestCase
     user = create(:user)
     task = create(:task)
     params = { user: user, task: task }
-    email = UserMailer.with(params).task_destroyed
 
+    email = UserMailer.with(params).task_destroyed
     assert_emails 1 do
       email.deliver_now
     end
@@ -51,18 +51,17 @@ class UserMailerTest < ActionMailer::TestCase
 
   test 'password reset' do
     user = create(:user)
-    user.reset_token = User.new_token
+    user.create_reset_digest
     params = { user: user }
 
     email = UserMailer.with(params).password_reset
-
     assert_emails 1 do
       email.deliver_now
     end
 
     assert_equal ['noreply@taskmanager.com'], email.from
     assert_equal "Password reset", email.subject
-    assert_equal [user.email], eail.to
+    assert_equal [user.email], email.to
     assert_match user.reset_token, email.body.encoded
   end
 end
