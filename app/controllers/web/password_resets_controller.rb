@@ -1,5 +1,5 @@
 class Web::PasswordResetsController < Web::ApplicationController
-  before_action :get_user, only: [:edit, :update]
+  before_action :get_user,          only: [:edit, :update]
 
   def new; end
 
@@ -10,31 +10,32 @@ class Web::PasswordResetsController < Web::ApplicationController
       @user.create_reset_digest
       UserMailer.with({ user: @user }).password_reset.deliver_now
 
-      flash[:info] = 'Email sent with password reset link.'
+      flash.now[:info] = 'Email sent with password reset link.'
       redirect_to(root_url)
     else
-      flash[:danger] = 'Email address not found.'
+      flash.now[:danger] = 'Email address not found.'
       render('new')
     end
   end
 
   def update
-    if password_blank?
-      flash[:danger] = 'Password cannot be blank.'
-      render('edit')
-    elsif @user.update_attribute(:password, User.digest(params[:password]))
+    check_password
+    byebug
+    if @user.update_attribute(:password, params[:password])
       sign_in(@user)
-      flash[:success] = 'Password has been reset.'
+      flash.now[:success] = 'Password has been reset.'
       redirect_to root_url
     else
+      flash.now[:danger] = 'Something went wrong. Please, try again.'
       render('edit')
     end
   end
 
   private
 
+
   def user_params
-    params.permit(:email, :password, :password_confirmation)
+    params.permit(:id, :email, :password, :password_confirmation)
   end
 
   def password_blank?
@@ -47,8 +48,28 @@ class Web::PasswordResetsController < Web::ApplicationController
 
   def check_expiration
     if @user.password_reset_expired?
-      flash[:danger] = 'Password reset was expired.'
-      redirect_to(new_password_resets_url)
+      flash.now[:danger] = 'Password reset was expired.'
+      render 'new'
+    end
+  end
+
+  def password_invalid?
+    byebug
+    return true if params[:password].blank?
+    return true unless params[:password] == params[:password_confirmation]
+
+    false
+  end
+
+  def check_password
+    byebug
+    message = 'Password reset was expired.' if @user.password_reset_expired?
+    message = 'Password and confirmations should be the same.' if password_invalid?
+
+    if @user.password_reset_expired? || password_invalid?
+      byebug
+      flash[:danger] = message
+      render 'new'
     end
   end
 end
