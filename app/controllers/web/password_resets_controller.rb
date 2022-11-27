@@ -1,6 +1,5 @@
 class Web::PasswordResetsController < Web::ApplicationController
-  before_action :get_user, onlu: [:edit, :update]
-  before_action :valid_user, onlu: [:edit, :update]
+  before_action :get_user, only: [:edit, :update]
 
   def new; end
 
@@ -23,10 +22,10 @@ class Web::PasswordResetsController < Web::ApplicationController
     if password_blank?
       flash[:danger] = 'Password cannot be blank.'
       render('edit')
-    elsif @user.update_attributes(user_params)
-      log_in(@user)
+    elsif @user.update_attribute(:password, User.digest(params[:password]))
+      sign_in(@user)
       flash[:success] = 'Password has been reset.'
-      redirect_to(@user)
+      redirect_to root_url
     else
       render('edit')
     end
@@ -35,11 +34,11 @@ class Web::PasswordResetsController < Web::ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:password, :password_confirmation)
+    params.permit(:email, :password, :password_confirmation)
   end
 
   def password_blank?
-    params[:user][:password].blank?
+    params[:password].blank?
   end
 
   def get_user

@@ -1,8 +1,8 @@
 h4 Reset password
-= simple_form_for @user, url: password_reset_path(params[:id]) do |f|
+= form_with(url: password_reset_url(params[:id]), method: :put) do |f|
   p
-    = f.input :email, :as => :hidden, :input_html => { "value" => @user.email }
-    = f.input :password
-    = f.input :password_confirmation, 'Confirm'
+    = f.hidden_field :email, value: @user.email
+    = f.password_field :password
+    = f.password_field :password_confirmation
   p
-    = f.button :submit, 'Update password', class: 'mdl-button--accent mdl-js-ripple-effect'
+    = f.submit 'Update password'
