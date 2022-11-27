@@ -13,7 +13,23 @@ class User < ApplicationRecord
             format: { with: URI::MailTo::EMAIL_REGEXP },
             uniqueness: { case_sensitive: false }
 
+  class << self
+    def new_token
+      SecureRandom.urlsafe_base64
+    end
+
+    def digest(token)
+      BCrypt::Password.create(token, cost: BCrypt::Engine.cost)
+    end
+  end
+
   def email=(value)
     super(value.mb_chars.downcase)
+  end
+
+  def create_reset_digest
+    reset_token = User.new_token
+    update_attribute(:reset_digest, User.digest(reset_token))
+    update_attribute(:reset_sent_at, Time.now)
   end
 end

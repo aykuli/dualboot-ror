@@ -1,4 +1,6 @@
 class Api::V1::UsersController < Api::V1::ApplicationController
+  attr_accessor :remember_token, :reset_token
+
   def index
     users = User.ransack(ransack_params).result.page(page).per(per_page)
 
