@@ -26,8 +26,8 @@ end
 
 5.times do |i|
   task = manager.my_tasks.new(
-    name: "Task 1 #{i} for developer 2",
-    description: "Task description 1 #{i} for developer 2",
+    name: "Task 1 #{i} for developer",
+    description: "Task description #{i} for developer 2",
     assignee: developer_second,
   )
   task.save

@@ -36,6 +36,8 @@ docker-compose run --rm --service-ports web /bin/bash
 bundle exec rubocop -a
 ```
 
+To watch letters locally in development open link: [http://localhost:3000/letter_opener](http://localhost:3000/letter_opener)
+
 ## Webpacker
 
 After installing ` webpacker` run this command to build files in `public` folder:

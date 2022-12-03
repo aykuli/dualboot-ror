@@ -1,0 +1,8 @@
+h4 Reset password
+= form_with(url: password_reset_url(params[:id]), method: :put) do |f|
+  p
+    = f.hidden_field :email, value: @user.email
+    = f.password_field :password
+    = f.password_field :password_confirmation
+  p
+    = f.submit 'Update password'

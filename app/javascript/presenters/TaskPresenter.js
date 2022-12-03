@@ -43,7 +43,7 @@ export default new PropTypesPresenter(
       return !(this.name(task) && this.description(task) && this.assignee(task));
     },
     title(task) {
-      return `Task # ${this.id(task)} [${this.name(task)}]`;
+      return `Task #${this.id(task)} [${this.name(task)}]`;
     },
   },
 );
