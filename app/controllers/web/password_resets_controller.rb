@@ -1,5 +1,5 @@
 class Web::PasswordResetsController < Web::ApplicationController
-  before_action :get_user,          only: [:edit, :update]
+  before_action :get_user, only: [:edit, :update]
 
   def new; end
 
@@ -19,57 +19,42 @@ class Web::PasswordResetsController < Web::ApplicationController
   end
 
   def update
-    check_password
-    byebug
-    if @user.update_attribute(:password, params[:password])
+    valid = password_valid? && reset_digest_valid?
+
+    if valid
+      @user.update_attribute(:password, params[:password])
+      @user.update_attribute(:reset_digest, nil)
+
       sign_in(@user)
       flash.now[:success] = 'Password has been reset.'
-      redirect_to root_url
+      redirect_to(root_url)
     else
-      flash.now[:danger] = 'Something went wrong. Please, try again.'
-      render('edit')
+      flash.now[:danger] = 'You cannot reset password. Please, try again.'
+      render('new')
     end
   end
 
   private
 
-
   def user_params
     params.permit(:id, :email, :password, :password_confirmation)
-  end
-
-  def password_blank?
-    params[:password].blank?
   end
 
   def get_user
     @user = User.find_by_email(params[:email])
   end
 
-  def check_expiration
-    if @user.password_reset_expired?
-      flash.now[:danger] = 'Password reset was expired.'
-      render 'new'
-    end
+  def password_valid?
+    return if @user.password_reset_expired?
+    return if params[:password].blank?
+    return unless params[:password] == params[:password_confirmation]
+
+    true
   end
 
-  def password_invalid?
-    byebug
-    return true if params[:password].blank?
-    return true unless params[:password] == params[:password_confirmation]
+  def reset_digest_valid?
+    return if @user.reset_digest.nil?
 
-    false
-  end
-
-  def check_password
-    byebug
-    message = 'Password reset was expired.' if @user.password_reset_expired?
-    message = 'Password and confirmations should be the same.' if password_invalid?
-
-    if @user.password_reset_expired? || password_invalid?
-      byebug
-      flash[:danger] = message
-      render 'new'
-    end
+    BCrypt::Password.new(@user.reset_digest).is_password?(params[:id])
   end
 end

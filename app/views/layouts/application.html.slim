@@ -38,6 +38,12 @@ html lang="en"
 
     main.mdl-layout__content.container
       .page-content
+        - if flash[:danger]
+          span.password-reset-danger
+            = flash[:danger]
+        - if flash[:success]
+          span.password-reset-success
+            = flash[:success]
         = yield
 
     footer#footer.mdl-mini-footer

@@ -41,3 +41,17 @@ body {
   margin-right: 5px;
   color: #3f51b5;
 }
+
+.password-reset-success {
+  padding: 5px 10px;
+  border: 1px solid green;
+  border-radius: 5px;
+  background-color: #d6e0d6;
+}
+
+.password-reset-danger {
+  padding: 5px 10px;
+  border: 1px solid red;
+  border-radius: 5px;
+  background-color: #f4d9d9;
+}
