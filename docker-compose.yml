@@ -1,4 +1,4 @@
-version: "3.7"
+version: '3.7'
 
 services:
   web:
@@ -32,6 +32,18 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+
+  infrastructure:
+    container_name: newrelic-infra
+    network_mode: host
+    privileged: false
+    pid: host
+    volumes:
+      - '/:/host:ro'
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    environment:
+      - NRIA_LICENSE_KEY
+    image: 'newrelic/infrastructure:latest'
 
 volumes:
   bundle_cache:
