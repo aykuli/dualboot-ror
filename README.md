@@ -52,3 +52,11 @@ To generate coverage report run test:
 ```bash
 rails test
 ```
+
+## Sidekiq
+
+- Web panel `http://localhost:3000/admin/sidekiq`
+
+* Retries `http://localhost:3000/admin/sidekiq/retries`
+
+* Failures `http://localhost:3000/admin/sidekiq/failures`
