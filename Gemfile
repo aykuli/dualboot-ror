@@ -113,3 +113,6 @@ gem 'newrelic_rpm'
 
 # https://github.com/mperham/sidekiq
 gem 'sidekiq'
+
+# https://github.com/mhfs/sidekiq-failures
+gem 'sidekiq-failures'
