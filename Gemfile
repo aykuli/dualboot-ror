@@ -108,4 +108,8 @@ gem 'js-routes'
 # https://docs.rollbar.com/docs/rails
 gem 'rollbar'
 
+# https://github.com/newrelic/newrelic-ruby-agent
 gem 'newrelic_rpm'
+
+# https://github.com/mperham/sidekiq
+gem 'sidekiq'
