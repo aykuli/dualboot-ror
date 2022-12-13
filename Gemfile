@@ -107,3 +107,5 @@ gem 'js-routes'
 
 # https://docs.rollbar.com/docs/rails
 gem 'rollbar'
+
+gem 'newrelic_rpm'
