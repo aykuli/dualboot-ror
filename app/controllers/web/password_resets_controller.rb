@@ -8,7 +8,7 @@ class Web::PasswordResetsController < Web::ApplicationController
 
     if @user
       @user.create_reset_digest
-      UserMailer.with({ user: @user }).password_reset.deliver_now
+      UserMailer.with({ user: @user }).password_reset.deliver_later
 
       flash.now[:info] = 'Email sent with password reset link.'
       redirect_to(root_url)

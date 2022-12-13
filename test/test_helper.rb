@@ -1,3 +1,4 @@
+require 'sidekiq/testing'
 require 'simplecov'
 
 SimpleCov.start('rails') do
