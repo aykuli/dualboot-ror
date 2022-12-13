@@ -60,3 +60,5 @@ rails test
 * Retries `http://localhost:3000/admin/sidekiq/retries`
 
 * Failures `http://localhost:3000/admin/sidekiq/failures`
+
+* Throttled(constrained tasks) `http://localhost:3000/admin/sidekiq/throttled`

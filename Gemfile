@@ -116,3 +116,6 @@ gem 'sidekiq'
 
 # https://github.com/mhfs/sidekiq-failures
 gem 'sidekiq-failures'
+
+# https://github.com/sensortower/sidekiq-throttled
+gem 'sidekiq-throttled'

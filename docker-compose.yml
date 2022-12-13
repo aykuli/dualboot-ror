@@ -16,6 +16,7 @@ services:
       - db
       - redis
       - sidekiq
+
     environment: &web-environment
       REDIS_URL: redis://redis
       BUNDLE_PATH: /bundle_cache
